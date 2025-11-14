@@ -86,13 +86,13 @@ lib.create_window = function(theme, menu_key)
     Tabs.BackgroundColor3 = themes[theme]["Tabs"]
     Tabs.BorderColor3 = Color3.fromRGB(21, 21, 21)
     Tabs.Position = UDim2.new(0, 1, 0.00330578513, 0)
-    Tabs.Size = UDim2.new(0, 100, 0, 602)
+    Tabs.Size = UDim2.new(0, 130, 0, 602)
     UIGridLayout.Parent = Tabs
     UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
     UIGridLayout.CellPadding = UDim2.new(0, 15, 0, 0)
-    UIGridLayout.CellSize = UDim2.new(0, 85, 0, 70)
+    UIGridLayout.CellSize = UDim2.new(0, 100, 0, 70)
     UIPadding.Parent = Tabs
-    UIPadding.PaddingLeft = UDim.new(0, 14)
+    UIPadding.PaddingLeft = UDim.new(0, 15)
     UIPadding.PaddingTop = UDim.new(0, 15)
     TopGradient.Name = "TopGradient"
     TopGradient.Parent = Main
@@ -108,12 +108,12 @@ lib.create_window = function(theme, menu_key)
     Content.BackgroundTransparency = 1.000
     Content.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Content.BorderSizePixel = 0
-    Content.Position = UDim2.new(0.165000007, 0, 0.0247933883, 0)
-    Content.Size = UDim2.new(0, 553, 0, 579)
+    Content.Position = UDim2.new(0.195, 0, 0.0247933883, 0)
+    Content.Size = UDim2.new(0, 523, 0, 579)
     UIListLayout.Parent = Content
     UIListLayout.FillDirection = Enum.FillDirection.Horizontal
     UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    UIListLayout.Padding = UDim.new(0, 10)
+    UIListLayout.Padding = UDim.new(0, 8)
     Tabs.InputBegan:Connect(function(input)
         window.drag_began(input)
     end)
@@ -140,16 +140,8 @@ lib.create_window = function(theme, menu_key)
     window.selected_tab = ""
     window.show_tab = function(name)
         for _, content in pairs(window.tab_contents) do
-            content[2].Visible = false
+            content[2].Visible = (content[1] == name)
         end
-        for _, content in pairs(window.tab_contents) do
-            if content[1] == name then
-                content[2].Visible = true
-            end
-        end
-        task.spawn(function()
-            task.wait()
-        end)
     end
     window.tab_active = function(tab)
         tab.BackgroundTransparency = 0
@@ -221,7 +213,7 @@ lib.create_window = function(theme, menu_key)
             Sector.BorderColor3 = Color3.fromRGB(34, 34, 34)
             Sector.BorderSizePixel = 1
             Sector.Position = UDim2.new(0, 5, 0, 0)
-            Sector.Size = UDim2.new(0.5, -5, 1, 0)
+            Sector.Size = UDim2.new(0.5, -3, 1, 0)
             Sector.Visible = false
             Title.Name = "Title"
             Title.Parent = Sector
@@ -251,7 +243,7 @@ lib.create_window = function(theme, menu_key)
             SectorContent.ScrollBarThickness = 3
             UIListLayout.Parent = SectorContent
             UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-            UIListLayout.Padding = UDim.new(0,7)
+            UIListLayout.Padding = UDim.new(0,5)
             UIPadding.Parent = SectorContent
             UIPadding.PaddingLeft = UDim.new(0, 5)
             local UIGradient = Instance.new("UIGradient")
@@ -265,316 +257,10 @@ lib.create_window = function(theme, menu_key)
                 local totalHeight = 0
                 for _, element in pairs(SectorContent:GetChildren()) do
                     if element:IsA("GuiObject") and element.Name ~= "UIListLayout" and element.Name ~= "UIPadding" then
-                        totalHeight = totalHeight + element.AbsoluteSize.Y + 7
+                        totalHeight = totalHeight + element.AbsoluteSize.Y + 5
                     end
                 end
                 SectorContent.CanvasSize = UDim2.new(0, 0, 0, totalHeight)
-            end
-            sector.text = function(_text)
-                local text = {}
-                local Text = Instance.new("TextLabel")
-                Text.Name = _text
-                Text.Parent = SectorContent
-                Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                Text.BackgroundTransparency = 1.000
-                Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                Text.BorderSizePixel = 0
-                Text.Size = UDim2.new(0, 249, 0, 13)
-                Text.Font = Enum.Font.SourceSans
-                Text.Text = _text
-                Text.TextColor3 = themes[theme]["Text"]
-                Text.TextSize = 14.000
-                Text.TextStrokeTransparency = 0.800
-                Text.TextXAlignment = Enum.TextXAlignment.Left
-                text.delete = function()
-                    Text:Destroy()
-                    sector.increase_scrollbar_size()
-                end
-                text.set = function(new_text)
-                    Text.Text = new_text
-                end
-                sector.increase_scrollbar_size()
-                return text
-            end
-            sector.warning = function(_text)
-                local text = {}
-                local Text = Instance.new("TextLabel")
-                Text.Name = _text
-                Text.Parent = SectorContent
-                Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                Text.BackgroundTransparency = 1.000
-                Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                Text.BorderSizePixel = 0
-                Text.Size = UDim2.new(0, 249, 0, 13)
-                Text.Font = Enum.Font.SourceSans
-                Text.Text = _text
-                Text.TextColor3 = Color3.fromRGB(142, 127, 74)
-                Text.TextSize = 14.000
-                Text.TextStrokeTransparency = 0.800
-                Text.TextXAlignment = Enum.TextXAlignment.Left
-                text.delete = function()
-                    Text:Destroy()
-                    sector.increase_scrollbar_size()
-                end
-                text.set = function(new_text)
-                    Text.Text = new_text
-                end
-                sector.increase_scrollbar_size()
-                return text
-            end
-            sector.error = function(_text)
-                local text = {}
-                local Text = Instance.new("TextLabel")
-                Text.Name = _text
-                Text.Parent = SectorContent
-                Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                Text.BackgroundTransparency = 1.000
-                Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                Text.BorderSizePixel = 0
-                Text.Size = UDim2.new(0, 249, 0, 13)
-                Text.Font = Enum.Font.SourceSans
-                Text.Text = _text
-                Text.TextColor3 = Color3.fromRGB(142, 74, 65)
-                Text.TextSize = 14.000
-                Text.TextStrokeTransparency = 0.800
-                Text.TextXAlignment = Enum.TextXAlignment.Left
-                text.delete = function()
-                    Text:Destroy()
-                    sector.increase_scrollbar_size()
-                end
-                text.set = function(new_text)
-                    Text.Text = new_text
-                end
-                sector.increase_scrollbar_size()
-                return text
-            end
-            sector.info = function(_text)
-                local text = {}
-                local Text = Instance.new("TextLabel")
-                Text.Name = _text
-                Text.Parent = SectorContent
-                Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                Text.BackgroundTransparency = 1.000
-                Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                Text.BorderSizePixel = 0
-                Text.Size = UDim2.new(0, 249, 0, 13)
-                Text.Font = Enum.Font.SourceSans
-                Text.Text = _text
-                Text.TextColor3 = Color3.fromRGB(63, 110, 152)
-                Text.TextSize = 14.000
-                Text.TextStrokeTransparency = 0.800
-                Text.TextXAlignment = Enum.TextXAlignment.Left
-                text.delete = function()
-                    Text:Destroy()
-                    sector.increase_scrollbar_size()
-                end
-                text.set = function(new_text)
-                    Text.Text = new_text
-                end
-                sector.increase_scrollbar_size()
-                return text
-            end
-            sector.textbox = function(placeholder, default, callback)
-                local textbox = {}
-                local TextBox = Instance.new("TextBox")
-                local UIPadding = Instance.new("UIPadding")
-                TextBox.Parent = SectorContent
-                TextBox.BackgroundColor3 = themes[theme]["ElementBg"]
-                TextBox.BorderColor3 = themes[theme]["ElementOutline"]
-                TextBox.BorderSizePixel = 1
-                TextBox.Size = UDim2.new(0, 249, 0, 21)
-                TextBox.ClearTextOnFocus = false
-                TextBox.Font = Enum.Font.SourceSans
-                TextBox.PlaceholderColor3 = Color3.fromRGB(72, 72, 72)
-                TextBox.PlaceholderText = placeholder
-                TextBox.Text = default
-                TextBox.TextColor3 = themes[theme]["Text"]
-                TextBox.TextSize = 14.000
-                TextBox.TextStrokeTransparency = 0.800
-                TextBox.TextXAlignment = Enum.TextXAlignment.Left
-                UIPadding.Parent = TextBox
-                UIPadding.PaddingLeft = UDim.new(0, 5)
-                textbox.set = function(new_text)
-                    TextBox.Text = new_text
-                end
-                textbox.get = function()
-                    return TextBox.Text
-                end
-                textbox.delete = function()
-                    TextBox:Destroy()
-                    sector.increase_scrollbar_size()
-                end
-                TextBox:GetPropertyChangedSignal("Text"):Connect(function()
-                    callback(TextBox.Text)
-                end)
-                callback(default)
-                sector.increase_scrollbar_size()
-                return textbox
-            end
-            sector.button = function(text, callback)
-                local button = {}
-                local Button = Instance.new("TextButton")
-                Button.Name = ""
-                Button.Parent = SectorContent
-                Button.BackgroundColor3 = themes[theme]["ElementBg"]
-                Button.BorderColor3 = themes[theme]["ElementOutline"]
-                Button.BorderSizePixel = 1
-                Button.Size = UDim2.new(0, 249, 0, 21)
-                Button.AutoButtonColor = false
-                Button.Font = Enum.Font.SourceSans
-                Button.TextColor3 = themes[theme]["Text"]
-                Button.TextSize = 14.000
-                Button.Text = text
-                Button.MouseButton1Down:Connect(function()
-                    callback()
-                end)
-                sector.increase_scrollbar_size()
-                button.delete = function()
-                    Button:Destroy()
-                    sector.increase_scrollbar_size()
-                end
-                button.set = function(new_text)
-                    Button.Text = new_text
-                end
-                return button
-            end
-            sector.dropdown = function(text, options, default, callback)
-                local dropdown = {}
-                dropdown.selected = default
-                local Dropdown = Instance.new("TextButton")
-                local UIPadding = Instance.new("UIPadding")
-                local Image = Instance.new("ImageLabel")
-                local DropdownContent = Instance.new("ScrollingFrame")
-                local UIPadding_2 = Instance.new("UIPadding")
-                local UIListLayout = Instance.new("UIListLayout")
-                Dropdown.Name = ""
-                Dropdown.Parent = SectorContent
-                Dropdown.BackgroundColor3 = themes[theme]["ElementBg"]
-                Dropdown.BorderColor3 = themes[theme]["ElementOutline"]
-                Dropdown.BorderSizePixel = 1
-                Dropdown.Size = UDim2.new(0, 249, 0, 21)
-                Dropdown.AutoButtonColor = false
-                Dropdown.Font = Enum.Font.SourceSans
-                Dropdown.Text = text .. ": " .. default
-                Dropdown.TextColor3 = themes[theme]["Text"]
-                Dropdown.TextSize = 14.000
-                Dropdown.TextXAlignment = Enum.TextXAlignment.Left
-                Dropdown.ZIndex = 100
-                UIPadding.Parent = Dropdown
-                UIPadding.PaddingLeft = UDim.new(0, 5)
-                Image.Name = "Image"
-                Image.Parent = Dropdown
-                Image.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                Image.BackgroundTransparency = 1.000
-                Image.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                Image.BorderSizePixel = 0
-                Image.Position = UDim2.new(1, -20, 0.5, -7.5)
-                Image.Size = UDim2.new(0, 15, 0, 15)
-                Image.Image = "rbxassetid://74187648454886"
-                Image.ImageColor3 = Color3.fromRGB(115, 115, 115)
-                Image.ZIndex = 101
-                DropdownContent.Name = "DropdownContent"
-                DropdownContent.Parent = Dropdown
-                DropdownContent.Active = true
-                DropdownContent.BackgroundColor3 = themes[theme]["ElementBg"]
-                DropdownContent.BorderColor3 = themes[theme]["ElementOutline"]
-                DropdownContent.BorderSizePixel = 1
-                DropdownContent.Position = UDim2.new(0, 0, 1, 0)
-                DropdownContent.Size = UDim2.new(0, 249, 0, 0)
-                DropdownContent.CanvasSize = UDim2.new(0, 0, 0, 0)
-                DropdownContent.ScrollBarThickness = 3
-                DropdownContent.ScrollBarImageColor3 = Color3.fromRGB(50, 50, 50)
-                DropdownContent.Visible = false
-                DropdownContent.ZIndex = 102
-                UIPadding_2.Parent = DropdownContent
-                UIPadding_2.PaddingLeft = UDim.new(0, 5)
-                UIPadding_2.PaddingTop = UDim.new(0, 5)
-                UIListLayout.Parent = DropdownContent
-                UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-                UIListLayout.Padding = UDim.new(0, 5)
-                Dropdown.MouseButton1Down:Connect(function()
-                    DropdownContent.Visible = not DropdownContent.Visible
-                    Image.Image = DropdownContent.Visible and "rbxassetid://74187648454886" or "rbxassetid://97940921082727"
-                    Image.Rotation = DropdownContent.Visible and 180 or 0
-                end)
-                dropdown.unselect_all = function()
-                    for _, button in pairs(DropdownContent:GetChildren()) do
-                        if button:IsA("TextButton") then
-                            button.BorderColor3 = themes[theme]["ElementOutline"]
-                        end
-                    end
-                end
-                dropdown.set = function(name)
-                    dropdown.unselect_all()
-                    dropdown.selected = name
-                    local selectedButton = DropdownContent:FindFirstChild(name)
-                    if selectedButton then
-                        selectedButton.BorderColor3 = themes[theme]["DropdownSelected"]
-                    end
-                    Dropdown.Text = text .. ": " .. name
-                    callback(name)
-                    DropdownContent.Visible = false
-                    Image.Rotation = 0
-                end
-                dropdown.set_text = function(new_text)
-                    text = new_text
-                    Dropdown.Text = new_text .. ": " .. dropdown.selected
-                end
-                dropdown.get = function()
-                    return dropdown.selected
-                end
-                dropdown.add = function(name)
-                    local Button = Instance.new("TextButton")
-                    Button.Name = name
-                    Button.Parent = DropdownContent
-                    Button.BackgroundColor3 = themes[theme]["ElementBg"]
-                    Button.BorderColor3 = themes[theme]["ElementOutline"]
-                    Button.BorderSizePixel = 1
-                    Button.Size = UDim2.new(1, -10, 0, 21)
-                    Button.Font = Enum.Font.SourceSans
-                    Button.TextColor3 = themes[theme]["Text"]
-                    Button.TextSize = 14.000
-                    Button.Text = name
-                    Button.AutoButtonColor = false
-                    Button.ZIndex = 103
-                    local UIGradient = Instance.new("UIGradient")
-                    UIGradient.Color = ColorSequence.new{
-                        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
-                        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(175, 175, 175))
-                    }
-                    UIGradient.Rotation = 90
-                    UIGradient.Parent = Button
-                    Button.MouseButton1Down:Connect(function()
-                        dropdown.set(name)
-                    end)
-                    local oldSize = DropdownContent.CanvasSize.Y.Offset
-                    DropdownContent.CanvasSize = UDim2.new(0, 0, 0, oldSize + Button.AbsoluteSize.Y + 5)
-                    if name == default then
-                        dropdown.set(name)
-                    end
-                end
-                dropdown.remove = function(name)
-                    local btn = DropdownContent:FindFirstChild(name)
-                    if btn then
-                        local oldSize = DropdownContent.CanvasSize.Y.Offset
-                        local newSize = oldSize - (btn.AbsoluteSize.Y + 5)
-                        DropdownContent.CanvasSize = UDim2.new(0, 0, 0, math.max(0, newSize))
-                        btn:Destroy()
-                        if dropdown.selected == name then
-                            dropdown.selected = ""
-                            Dropdown.Text = text
-                        end
-                    end
-                end
-                dropdown.delete = function()
-                    Dropdown:Destroy()
-                    sector.increase_scrollbar_size()
-                end
-                for _, option in pairs(options) do
-                    dropdown.add(option)
-                end
-                sector.increase_scrollbar_size()
-                return dropdown
             end
             sector.checkbox = function(text, default, callback)
                 local checkbox = {}
@@ -627,11 +313,7 @@ lib.create_window = function(theme, menu_key)
                 UIGradient.Parent = Bg
                 checkbox.set = function(state)
                     value = state
-                    if value then
-                        Bg.BackgroundColor3 = themes[theme]["Toggle"]
-                    else
-                        Bg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
-                    end
+                    Bg.BackgroundColor3 = value and themes[theme]["Toggle"] or themes[theme]["ToggleUnchecked"]
                     callback(value)
                 end
                 checkbox.set_text = function(new_text)
@@ -692,8 +374,8 @@ lib.create_window = function(theme, menu_key)
                 Colorpicker.BackgroundColor3 = color_default
                 Colorpicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
                 Colorpicker.BorderSizePixel = 1
-                Colorpicker.Position = UDim2.new(1, -55, 0.5, -5)
-                Colorpicker.Size = UDim2.new(0, 20, 0, 10)
+                Colorpicker.Position = UDim2.new(1, -55, 0.5, -4)
+                Colorpicker.Size = UDim2.new(0, 20, 0, 8)
                 Colorpicker.AutoButtonColor = false
                 Colorpicker.Font = Enum.Font.SourceSans
                 Colorpicker.Text = ""
@@ -704,7 +386,7 @@ lib.create_window = function(theme, menu_key)
                 CheckboxBg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
                 CheckboxBg.BorderColor3 = themes[theme]["ElementOutline"]
                 CheckboxBg.BorderSizePixel = 1
-                CheckboxBg.Position = UDim2.new(1, -15, 0.5, -5)
+                CheckboxBg.Position = UDim2.new(1, -15, 0.5, -4)
                 CheckboxBg.Size = UDim2.new(0, 8, 0, 8)
                 CheckboxBg.Font = Enum.Font.SourceSans
                 CheckboxBg.Text = ""
@@ -719,11 +401,11 @@ lib.create_window = function(theme, menu_key)
                 local sat_value = default_saturation
                 local value_value = default_value
                 local ColorPicker = Instance.new("Frame")
+                local Hue = Instance.new("ImageButton")
+                local HueDrag = Instance.new("Frame")
                 local Saturation = Instance.new("TextButton")
                 local ValueGradient = Instance.new("UIGradient")
                 local SaturationDrag = Instance.new("Frame")
-                local Hue = Instance.new("ImageButton")
-                local HueDrag = Instance.new("Frame")
                 ColorPicker.Name = "ColorPicker"
                 ColorPicker.Parent = Sector
                 ColorPicker.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
@@ -733,6 +415,22 @@ lib.create_window = function(theme, menu_key)
                 ColorPicker.Visible = false
                 ColorPicker.Active = true
                 ColorPicker.Draggable = false
+                Hue.Name = "Hue"
+                Hue.Parent = ColorPicker
+                Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                Hue.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                Hue.BorderSizePixel = 0
+                Hue.Position = UDim2.new(0.08, 0, 0.1, 0)
+                Hue.Size = UDim2.new(0, 20, 0, 60)
+                Hue.Image = "rbxassetid://12966903157"
+                Hue.AutoButtonColor = false
+                HueDrag.Name = "HueDrag"
+                HueDrag.Parent = Hue
+                HueDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                HueDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                HueDrag.BorderSizePixel = 1
+                HueDrag.Size = UDim2.new(1, 0, 0, 4)
+                HueDrag.Position = UDim2.new(0, 0, 1 - hue_value, 0)
                 Saturation.Name = "Saturation"
                 Saturation.Parent = ColorPicker
                 Saturation.BackgroundColor3 = Color3.fromHSV(hue_value, 1, 1)
@@ -758,22 +456,6 @@ lib.create_window = function(theme, menu_key)
                 SaturationDrag.BorderSizePixel = 1
                 SaturationDrag.Size = UDim2.new(0, 4, 0, 4)
                 SaturationDrag.Position = UDim2.new(sat_value, -2, 1 - value_value, -2)
-                Hue.Name = "Hue"
-                Hue.Parent = ColorPicker
-                Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                Hue.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                Hue.BorderSizePixel = 0
-                Hue.Position = UDim2.new(0.08, 0, 0.1, 0)
-                Hue.Size = UDim2.new(0, 20, 0, 60)
-                Hue.Image = "rbxassetid://12966903157"
-                Hue.AutoButtonColor = false
-                HueDrag.Name = "HueDrag"
-                HueDrag.Parent = Hue
-                HueDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                HueDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                HueDrag.BorderSizePixel = 1
-                HueDrag.Size = UDim2.new(1, 0, 0, 4)
-                HueDrag.Position = UDim2.new(0, 0, 1 - hue_value, 0)
                 local function updateColor()
                     local color = Color3.fromHSV(hue_value, sat_value, value_value)
                     Saturation.BackgroundColor3 = Color3.fromHSV(hue_value, 1, 1)
@@ -841,11 +523,7 @@ lib.create_window = function(theme, menu_key)
                 set_cp(default_hue, default_saturation, default_value)
                 checkpicker.set = function(state)
                     value = state
-                    if value then
-                        CheckboxBg.BackgroundColor3 = themes[theme]["Toggle"]
-                    else
-                        CheckboxBg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
-                    end
+                    CheckboxBg.BackgroundColor3 = value and themes[theme]["Toggle"] or themes[theme]["ToggleUnchecked"]
                     callback(value)
                 end
                 checkpicker.set_text = function(new_text)
