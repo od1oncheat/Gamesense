@@ -244,8 +244,8 @@ Sector.Name = name
 Sector.Parent = Content
 Sector.BackgroundColor3 = themes[theme]["Sector"]
 Sector.BorderColor3 = Color3.fromRGB(34, 34, 34)
-Sector.Position = UDim2.new(pos_x, 0, 0.025, 0)
-Sector.Size = UDim2.new(0.5, 0, 0.95, 0)
+Sector.Position = UDim2.new(pos_x, 0, 0.03, 0)
+Sector.Size = UDim2.new(0.5, 0, 0.94, 0)
 Sector.Visible = false
 Title.Name = "Title"
 Title.Parent = Sector
@@ -270,7 +270,7 @@ SectorContent.BackgroundTransparency = 1.000
 SectorContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
 SectorContent.BorderSizePixel = 0
 SectorContent.Position = UDim2.new(0.028933093, 0, 0.04, 0)
-SectorContent.Size = UDim2.new(0, 259, 0, 515)
+SectorContent.Size = UDim2.new(0, 259, 0, 510)
 SectorContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 SectorContent.ScrollBarThickness = 3
 UIListLayout.Parent = SectorContent
@@ -509,7 +509,7 @@ DropdownContent.Parent = Dropdown
 DropdownContent.Active = true
 DropdownContent.BackgroundColor3 = themes[theme]["ElementBg"]
 DropdownContent.BorderColor3 = themes[theme]["ElementOutline"]
-DropdownContent.Position = UDim2.new(0, 0, 1, 2)
+DropdownContent.Position = UDim2.new(0, 0, 1.05, 0)
 DropdownContent.Size = UDim2.new(0, 226, 0, 116)
 DropdownContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 DropdownContent.ScrollBarThickness = 3
@@ -692,7 +692,7 @@ Saturation.Text = ""
 Saturation.TextColor3 = Color3.fromRGB(0, 0, 0)
 Saturation.TextSize = 14.000
 Saturation.AutoButtonColor = false
-UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))}
+UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(0.50, Color3.fromHSV(hue_value, 1, 1)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))}
 UIGradient.Rotation = 90
 UIGradient.Parent = Saturation
 SaturationDrag.Name = "SaturationDrag"
@@ -736,6 +736,7 @@ ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
 ColorSequenceKeypoint.new(0.50, Color3.fromHSV(hue_value, 1, 1)),
 ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))
 }
+Saturation.BackgroundColor3 = Color3.fromHSV(hue_value, 0, 1)
 Colorpicker.BackgroundColor3 = Color3.fromHSV(hue_value, sat_value, value_value)
 cpcallback(Colorpicker.BackgroundColor3)
 end
@@ -854,7 +855,7 @@ Fill.Parent = Bg
 Fill.BackgroundColor3 = themes[theme]["Slider"]
 Fill.BorderColor3 = themes[theme]["ElementOutline"]
 Fill.Position = UDim2.new(0, 0, 0, 0)
-Fill.Size = UDim2.new(0.5, 0, 1, 0)
+Fill.Size = UDim2.new(0, 0, 1, 0)
 Fill.AutoButtonColor = false
 Fill.Font = Enum.Font.Gotham
 Fill.Text = ""
