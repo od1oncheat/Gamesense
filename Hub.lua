@@ -143,7 +143,7 @@ lib.create_window = function(theme, menu_key)
 
 	UIGridLayout.Parent = Tabs
 	UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
-	UIGridLayout.CellPadding = UDim2.new(0, 15, 0, 0) -- Убраны вертикальные отступы
+	UIGridLayout.CellPadding = UDim2.new(0, 15, 0, 0)
 	UIGridLayout.CellSize = UDim2.new(0, 85, 0, 70)
 
 	UIPadding.Parent = Tabs
@@ -155,7 +155,7 @@ lib.create_window = function(theme, menu_key)
 	TopGradient.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 	TopGradient.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	TopGradient.BorderSizePixel = 0
-	TopGradient.Size = UDim2.new(0, 684, 0, 2) -- Увеличена высота в 2 раза
+	TopGradient.Size = UDim2.new(0, 684, 0, 2)
 
 	UIGradient.Color = themes[theme]["Gradient"]
 	UIGradient.Parent = TopGradient
@@ -270,10 +270,10 @@ lib.create_window = function(theme, menu_key)
 			Sector.BackgroundColor3 = themes[theme]["Sector"]
 			Sector.BorderColor3 = Color3.fromRGB(30, 30, 30)
 			Sector.Position = UDim2.new(-0.00108384306, 0, -0.0011133909, 0)
-			Sector.Size = UDim2.new(0.5, -5, 1, 0) -- Учитываем отступ между секторами
+			Sector.Size = UDim2.new(0.5, -5, 1, 0)
 			Sector.Visible = false
+			Sector.ClipsDescendants = true -- Чтобы значение слайдера не выходило за границы
 
-			-- Позиционируем вторую секцию правее
 			if tab.sectorCount == 2 then
 				Sector.Position = UDim2.new(0.5, 5, -0.0011133909, 0)
 			end
@@ -305,6 +305,7 @@ lib.create_window = function(theme, menu_key)
 			SectorContent.Size = UDim2.new(0, 259, 0, 558)
 			SectorContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 			SectorContent.ScrollBarThickness = 3
+			SectorContent.ClipsDescendants = true
 
 			UIListLayout.Parent = SectorContent
 			UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
@@ -479,7 +480,6 @@ lib.create_window = function(theme, menu_key)
 				UIPadding.Parent = TextBox
 				UIPadding.PaddingLeft = UDim.new(0, 5)
 				
-				-- Анимации для textbox
 				local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 				
 				TextBox.MouseEnter:Connect(function()
@@ -530,7 +530,6 @@ lib.create_window = function(theme, menu_key)
 				Button.TextSize = 14.000
 				Button.Text = text
 				
-				-- Анимации для кнопки
 				local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 				
 				Button.MouseEnter:Connect(function()
@@ -600,7 +599,7 @@ lib.create_window = function(theme, menu_key)
 				Image.BackgroundTransparency = 1.000
 				Image.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Image.BorderSizePixel = 0
-				Image.Position = UDim2.new(0.9, 0, 0.142857149, 0) -- Стрелочка справа
+				Image.Position = UDim2.new(0.9, 0, 0.142857149, 0)
 				Image.Size = UDim2.new(0, 15, 0, 15)
 				Image.Image = "rbxassetid://74187648454886"
 				Image.ImageColor3 = Color3.fromRGB(115, 115, 115)
@@ -612,7 +611,7 @@ lib.create_window = function(theme, menu_key)
 				DropdownContent.BackgroundColor3 = themes[theme]["ElementBg"]
 				DropdownContent.BorderColor3 = themes[theme]["ElementOutline"]
 				DropdownContent.Position = UDim2.new(0, 0, 1, 2)
-				DropdownContent.Size = UDim2.new(0, 249, 0, 0) -- Начальная высота 0 для анимации
+				DropdownContent.Size = UDim2.new(0, 249, 0, 0)
 				DropdownContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 				DropdownContent.ScrollBarThickness = 3
 				DropdownContent.ScrollBarImageColor3 = Color3.fromRGB(50, 50, 50)
@@ -628,7 +627,6 @@ lib.create_window = function(theme, menu_key)
 				UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 				UIListLayout.Padding = UDim.new(0, 5)
 
-				-- Анимации для dropdown
 				local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 				
 				Dropdown.MouseEnter:Connect(function()
@@ -699,7 +697,6 @@ lib.create_window = function(theme, menu_key)
 					Button.AutoButtonColor = false
 					Button.ZIndex = 103
 
-					-- Анимации для кнопок в dropdown
 					local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 					
 					Button.MouseEnter:Connect(function()
@@ -792,7 +789,6 @@ lib.create_window = function(theme, menu_key)
 				Bg.TextSize = 14.000
 				Bg.AutoButtonColor = false
 				
-				-- Анимации для toggle
 				local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 				
 				Bg.MouseEnter:Connect(function()
@@ -818,7 +814,6 @@ lib.create_window = function(theme, menu_key)
 
 					local choosing_hue = false
 					local choosing_saturation = false
-					local saturation
 
 					local Colorpicker = Instance.new("TextButton")
 
@@ -826,8 +821,8 @@ lib.create_window = function(theme, menu_key)
 					Colorpicker.Parent = Toggle
 					Colorpicker.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 					Colorpicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
-					Colorpicker.Position = UDim2.new(0.85, 0, 0.325, 0) -- Увеличена позиция X
-					Colorpicker.Size = UDim2.new(0, 22, 0, 11) -- Удвоена ширина
+					Colorpicker.Position = UDim2.new(0.85, 0, 0.325, 0)
+					Colorpicker.Size = UDim2.new(0, 22, 0, 11)
 					Colorpicker.AutoButtonColor = false
 					Colorpicker.Font = Enum.Font.SourceSans
 					Colorpicker.Text = ""
@@ -841,7 +836,9 @@ lib.create_window = function(theme, menu_key)
 
 					local ColorPicker = Instance.new("Frame")
 					local Saturation = Instance.new("TextButton")
-					local UIGradient = Instance.new("UIGradient")
+					local ColorGradient = Instance.new("Frame")
+					local WhiteToColorGradient = Instance.new("UIGradient")
+					local BlackGradient = Instance.new("UIGradient")
 					local SaturationDrag = Instance.new("Frame")
 					local Hue = Instance.new("ImageButton")
 					local SaturationDrag_2 = Instance.new("Frame")
@@ -867,9 +864,29 @@ lib.create_window = function(theme, menu_key)
 					Saturation.TextSize = 14.000
 					Saturation.AutoButtonColor = false
 
-					UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))}
-					UIGradient.Rotation = 90
-					UIGradient.Parent = Saturation
+					-- Новый градиент для цветового квадрата
+					ColorGradient.Name = "ColorGradient"
+					ColorGradient.Parent = Saturation
+					ColorGradient.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					ColorGradient.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					ColorGradient.BorderSizePixel = 0
+					ColorGradient.Size = UDim2.new(1, 0, 1, 0)
+
+					-- Горизонтальный градиент: от белого к выбранному цвету
+					WhiteToColorGradient.Color = ColorSequence.new{
+						ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+						ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, 1, 1))
+					}
+					WhiteToColorGradient.Rotation = 0
+					WhiteToColorGradient.Parent = ColorGradient
+
+					-- Вертикальный градиент: от прозрачного к черному
+					BlackGradient.Color = ColorSequence.new{
+						ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+						ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))
+					}
+					BlackGradient.Rotation = 90
+					BlackGradient.Parent = Saturation
 
 					SaturationDrag.Name = "SaturationDrag"
 					SaturationDrag.Parent = Saturation
@@ -907,14 +924,19 @@ lib.create_window = function(theme, menu_key)
 					end)
 
 					colorpicker.set = function(hue, sat, val)
-						SaturationDrag.Position = UDim2.new(sat - 0.03, 0, 1 - val, 0)
+						SaturationDrag.Position = UDim2.new(sat - 0.03, 0, val, 0)
 						SaturationDrag_2.Position = UDim2.new(0, 0, 1 - hue, 0)
 
 						hue_value = hue
 						sat_value = sat
 						value_value = val
 
-						Saturation.BackgroundColor3 = Color3.fromHSV(hue_value, sat_value, value_value)
+						-- Обновляем градиент с новым цветом
+						WhiteToColorGradient.Color = ColorSequence.new{
+							ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+							ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, 1, 1))
+						}
+
 						Colorpicker.BackgroundColor3 = Color3.fromHSV(hue_value, sat_value, value_value)
 						
 						cpcallback(Colorpicker.BackgroundColor3)
@@ -957,7 +979,7 @@ lib.create_window = function(theme, menu_key)
 						end
 
 						if choosing_hue and input.UserInputType == Enum.UserInputType.MouseMovement then
-							local mouse_pos = Vector2.new(game.Players.LocalPlayer:GetMouse().X, game.Players.LocalPlayer:GetMouse().Y)
+							local mouse_pos = Vector2.new(game.Players.LocalPlayer:GetMouse().Y, game.Players.LocalPlayer:GetMouse().Y)
 							local abs_pos = Hue.AbsolutePosition
 							local abs_size = Hue.AbsoluteSize
 
@@ -1002,7 +1024,7 @@ lib.create_window = function(theme, menu_key)
 				local Text = Instance.new("TextLabel")
 				local Bg = Instance.new("TextButton")
 				local Fill = Instance.new("TextButton")
-				local ValueLabel = Instance.new("TextLabel") -- Новый элемент для отображения значения
+				local ValueLabel = Instance.new("TextLabel")
 
 				Slider.Name = "Slider"
 				Slider.Parent = SectorContent
@@ -1011,7 +1033,7 @@ lib.create_window = function(theme, menu_key)
 				Slider.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Slider.BorderSizePixel = 0
 				Slider.Position = UDim2.new(0, 0, 0.306451619, 0)
-				Slider.Size = UDim2.new(0, 249, 0, 21)
+				Slider.Size = UDim2.new(0, 249, 0, 30) -- Увеличена высота для текста
 				Slider.Font = Enum.Font.SourceSans
 				Slider.Text = ""
 				Slider.TextColor3 = Color3.fromRGB(172, 172, 172)
@@ -1024,7 +1046,7 @@ lib.create_window = function(theme, menu_key)
 				Text.BackgroundTransparency = 1.000
 				Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Text.BorderSizePixel = 0
-				Text.Position = UDim2.new(0.0923694745, 0, 0, 0) -- Такая же позиция как у чекбокса
+				Text.Position = UDim2.new(0.0923694745, 0, -0.3, 0) -- Текст выше слайдера
 				Text.Size = UDim2.new(0, 226, 0, 21)
 				Text.Font = Enum.Font.SourceSans
 				Text.TextColor3 = themes[theme]["Text"]
@@ -1037,7 +1059,7 @@ lib.create_window = function(theme, menu_key)
 				Bg.Parent = Slider
 				Bg.BackgroundColor3 = themes[theme]["SliderBg"]
 				Bg.BorderColor3 = themes[theme]["ElementOutline"]
-				Bg.Position = UDim2.new(0, 5, 0.599998832, 0)
+				Bg.Position = UDim2.new(0, 5, 0.7, 0) -- Сдвинуто ниже для текста
 				Bg.Size = UDim2.new(0, 238, 0, 8)
 				Bg.AutoButtonColor = false
 				Bg.Font = Enum.Font.SourceSans
@@ -1058,19 +1080,18 @@ lib.create_window = function(theme, menu_key)
 				Fill.TextSize = 14.000
 
 				ValueLabel.Name = "ValueLabel"
-				ValueLabel.Parent = Fill
+				ValueLabel.Parent = Bg
 				ValueLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 				ValueLabel.BackgroundTransparency = 1.000
 				ValueLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				ValueLabel.BorderSizePixel = 0
-				ValueLabel.Position = UDim2.new(1, 2, 0, 10) -- Позиция в конце заполнения, чуть ниже
-				ValueLabel.Size = UDim2.new(0, 40, 0, 10)
+				ValueLabel.Position = UDim2.new(1, -35, 1, 2) -- Позиция в конце Bg, не выходит за границы
+				ValueLabel.Size = UDim2.new(0, 35, 0, 10)
 				ValueLabel.Font = Enum.Font.SourceSans
 				ValueLabel.TextColor3 = themes[theme]["Text"]
-				ValueLabel.TextSize = 12.000
-				ValueLabel.TextXAlignment = Enum.TextXAlignment.Left
+				ValueLabel.TextSize = 11.000
+				ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
 				
-				-- Анимации для slider
 				local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
 				
 				Bg.MouseEnter:Connect(function()
@@ -1087,8 +1108,6 @@ lib.create_window = function(theme, menu_key)
 					value = (percentage / 1) * (max - min) + min
 					callback(value)
 					
-					-- Обновляем позицию ValueLabel
-					ValueLabel.Position = UDim2.new(1, 2, 0, 10)
 					ValueLabel.Text = tostring(math.round(value * 100) / 100)..indicator
 				end
 				
