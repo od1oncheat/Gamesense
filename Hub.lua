@@ -781,268 +781,321 @@ lib.create_window = function(theme, menu_key)
             end
 
             sector.checkpicker = function(text, default, color_default, callback, color_callback)
-                local checkpicker = {}
-                local value = default
-                local Checkpicker = Instance.new("TextButton")
-                local Text = Instance.new("TextLabel")
-                local Colorpicker = Instance.new("TextButton")
-                local CheckboxBg = Instance.new("TextButton")
-                local UIGradient = Instance.new("UIGradient")
-
-                Checkpicker.Name = ""
-                Checkpicker.Parent = SectorContent
-                Checkpicker.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                Checkpicker.BackgroundTransparency = 1.000
-                Checkpicker.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                Checkpicker.BorderSizePixel = 0
-                Checkpicker.Size = UDim2.new(0, elementWidth, 0, elementHeight)
-                Checkpicker.Font = Enum.Font.SourceSans
-                Checkpicker.Text = ""
-                Checkpicker.TextColor3 = Color3.fromRGB(172, 172, 172)
-                Checkpicker.TextSize = 14.000
-                Checkpicker.TextXAlignment = Enum.TextXAlignment.Left
-                Checkpicker.AutoButtonColor = false
-
-                Text.Name = "Text"
-                Text.Parent = Checkpicker
-                Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                Text.BackgroundTransparency = 1.000
-                Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                Text.BorderSizePixel = 0
-                Text.Position = UDim2.new(0, 0, 0, 0)
-                Text.Size = UDim2.new(0, elementWidth - 70, 0, elementHeight)
-                Text.Font = Enum.Font.SourceSans
-                Text.TextColor3 = themes[theme]["Text"]
-                Text.TextSize = 14.000
-                Text.TextStrokeTransparency = 0.800
-                Text.TextXAlignment = Enum.TextXAlignment.Left
-                Text.Text = text
-
-                Colorpicker.Name = "Colorpicker"
-                Colorpicker.Parent = Checkpicker
-                Colorpicker.BackgroundColor3 = color_default
-                Colorpicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
-                Colorpicker.BorderSizePixel = 1
-                Colorpicker.Position = UDim2.new(1, -55, 0.5, -5)
-                Colorpicker.Size = UDim2.new(0, 20, 0, 10)
-                Colorpicker.AutoButtonColor = false
-                Colorpicker.Font = Enum.Font.SourceSans
-                Colorpicker.Text = ""
-                Colorpicker.TextColor3 = Color3.fromRGB(0, 0, 0)
-                Colorpicker.TextSize = 14.000
-
-                CheckboxBg.Name = "CheckboxBg"
-                CheckboxBg.Parent = Checkpicker
-                CheckboxBg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
-                CheckboxBg.BorderColor3 = themes[theme]["ElementOutline"]
-                CheckboxBg.BorderSizePixel = 1
-                CheckboxBg.Position = UDim2.new(1, -15, 0.5, -5)
-                CheckboxBg.Size = UDim2.new(0, 8, 0, 8)
-                CheckboxBg.Font = Enum.Font.SourceSans
-                CheckboxBg.Text = ""
-                CheckboxBg.TextColor3 = Color3.fromRGB(0, 0, 0)
-                CheckboxBg.TextSize = 14.000
-                CheckboxBg.AutoButtonColor = false
-
-                UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(175, 175, 175))}
-                UIGradient.Rotation = 90
-                UIGradient.Parent = CheckboxBg
-
-                local default_hue, default_saturation, default_value = color_default:ToHSV()
-                local hue_value = default_hue
-                local sat_value = default_saturation
-                local value_value = default_value
-
-                local ColorPicker = Instance.new("Frame")
-                local Saturation = Instance.new("Frame")
-                local SaturationGradient = Instance.new("UIGradient")
-                local WhiteGradient = Instance.new("UIGradient")
-                local BlackGradient = Instance.new("UIGradient")
-                local SaturationDrag = Instance.new("Frame")
-                local Hue = Instance.new("ImageButton")
-                local HueDrag = Instance.new("Frame")
-
-                ColorPicker.Name = "ColorPicker"
-                ColorPicker.Parent = Sector
-                ColorPicker.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
-                ColorPicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
-                ColorPicker.BorderSizePixel = 2
-                ColorPicker.Size = UDim2.new(0, 180, 0, 120) -- Увеличена высота в 3 раза
-                ColorPicker.Visible = false
-                ColorPicker.Active = true
-                ColorPicker.Draggable = false
-
-                Saturation.Name = "Saturation"
-                Saturation.Parent = ColorPicker
-                Saturation.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                Saturation.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                Saturation.BorderSizePixel = 0
-                Saturation.Position = UDim2.new(0.2, 0, 0.1, 0)
-                Saturation.Size = UDim2.new(0, 120, 0, 80) -- Увеличена область насыщенности
-                Saturation.ZIndex = 2
-
-                -- Основной градиент насыщенности (горизонтальный: белый -> выбранный цвет)
+            local checkpicker = {}
+            local value = default
+            local Checkpicker = Instance.new("TextButton")
+            local Text = Instance.new("TextLabel")
+            local Colorpicker = Instance.new("TextButton")
+            local CheckboxBg = Instance.new("TextButton")
+            local UIGradient = Instance.new("UIGradient")
+        
+            Checkpicker.Name = ""
+            Checkpicker.Parent = SectorContent
+            Checkpicker.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            Checkpicker.BackgroundTransparency = 1.000
+            Checkpicker.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            Checkpicker.BorderSizePixel = 0
+            Checkpicker.Size = UDim2.new(0, elementWidth, 0, elementHeight)
+            Checkpicker.Font = Enum.Font.SourceSans
+            Checkpicker.Text = ""
+            Checkpicker.TextColor3 = Color3.fromRGB(172, 172, 172)
+            Checkpicker.TextSize = 14.000
+            Checkpicker.TextXAlignment = Enum.TextXAlignment.Left
+            Checkpicker.AutoButtonColor = false
+        
+            Text.Name = "Text"
+            Text.Parent = Checkpicker
+            Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            Text.BackgroundTransparency = 1.000
+            Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            Text.BorderSizePixel = 0
+            Text.Position = UDim2.new(0, 0, 0, 0)
+            Text.Size = UDim2.new(0, elementWidth - 70, 0, elementHeight)
+            Text.Font = Enum.Font.SourceSans
+            Text.TextColor3 = themes[theme]["Text"]
+            Text.TextSize = 14.000
+            Text.TextStrokeTransparency = 0.800
+            Text.TextXAlignment = Enum.TextXAlignment.Left
+            Text.Text = text
+        
+            Colorpicker.Name = "Colorpicker"
+            Colorpicker.Parent = Checkpicker
+            Colorpicker.BackgroundColor3 = color_default
+            Colorpicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
+            Colorpicker.BorderSizePixel = 1
+            Colorpicker.Position = UDim2.new(1, -55, 0.5, -5)
+            Colorpicker.Size = UDim2.new(0, 20, 0, 10)
+            Colorpicker.AutoButtonColor = false
+            Colorpicker.Font = Enum.Font.SourceSans
+            Colorpicker.Text = ""
+            Colorpicker.TextColor3 = Color3.fromRGB(0, 0, 0)
+            Colorpicker.TextSize = 14.000
+        
+            CheckboxBg.Name = "CheckboxBg"
+            CheckboxBg.Parent = Checkpicker
+            CheckboxBg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
+            CheckboxBg.BorderColor3 = themes[theme]["ElementOutline"]
+            CheckboxBg.BorderSizePixel = 1
+            CheckboxBg.Position = UDim2.new(1, -15, 0.5, -5)
+            CheckboxBg.Size = UDim2.new(0, 8, 0, 8)
+            CheckboxBg.Font = Enum.Font.SourceSans
+            CheckboxBg.Text = ""
+            CheckboxBg.TextColor3 = Color3.fromRGB(0, 0, 0)
+            CheckboxBg.TextSize = 14.000
+            CheckboxBg.AutoButtonColor = false
+        
+            UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(175, 175, 175))}
+            UIGradient.Rotation = 90
+            UIGradient.Parent = CheckboxBg
+        
+            -- Переменные для выбора цвета
+            local choosing_hue = false
+            local choosing_saturation = false
+            local default_hue, default_saturation, default_value = color_default:ToHSV()
+            local hue_value = default_hue
+            local sat_value = default_saturation
+            local value_value = default_value
+        
+            -- Создаем панель выбора цвета
+            local ColorPicker = Instance.new("Frame")
+            local Saturation = Instance.new("TextButton")
+            local SaturationGradient = Instance.new("UIGradient")
+            local SaturationDrag = Instance.new("Frame")
+            local Hue = Instance.new("ImageButton")
+            local HueDrag = Instance.new("Frame")
+        
+            ColorPicker.Name = "ColorPicker"
+            ColorPicker.Parent = Sector
+            ColorPicker.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+            ColorPicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
+            ColorPicker.BorderSizePixel = 2
+            ColorPicker.Size = UDim2.new(0, 150, 0, 110) -- Уменьшена панель
+            ColorPicker.Visible = false
+            ColorPicker.Active = true
+            ColorPicker.Draggable = false
+        
+            -- Область насыщенности/яркости (больше)
+            Saturation.Name = "Saturation"
+            Saturation.Parent = ColorPicker
+            Saturation.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            Saturation.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            Saturation.BorderSizePixel = 0
+            Saturation.Position = UDim2.new(0.25, 0, 0.1, 0)
+            Saturation.Size = UDim2.new(0, 90, 0, 70) -- Увеличена область цвета
+            Saturation.Font = Enum.Font.SourceSans
+            Saturation.Text = ""
+            Saturation.TextColor3 = Color3.fromRGB(0, 0, 0)
+            Saturation.TextSize = 14.000
+            Saturation.AutoButtonColor = false
+            Saturation.ZIndex = 2
+        
+            -- Градиент для насыщенности/яркости (белый -> выбранный оттенок -> черный)
+            SaturationGradient.Color = ColorSequence.new{
+                ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
+                ColorSequenceKeypoint.new(0.50, Color3.fromHSV(hue_value, 1, 1)),
+                ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))
+            }
+            SaturationGradient.Rotation = 90
+            SaturationGradient.Parent = Saturation
+        
+            -- Маркер для выбора насыщенности/яркости
+            SaturationDrag.Name = "SaturationDrag"
+            SaturationDrag.Parent = Saturation
+            SaturationDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            SaturationDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            SaturationDrag.BorderSizePixel = 1
+            SaturationDrag.Size = UDim2.new(0, 3, 0, 3)
+            SaturationDrag.Position = UDim2.new(sat_value - 0.015, 0, 1 - value_value - 0.015, 0)
+            SaturationDrag.ZIndex = 3
+        
+            -- Область выбора оттенка (больше)
+            Hue.Name = "Hue"
+            Hue.Parent = ColorPicker
+            Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            Hue.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            Hue.BorderSizePixel = 0
+            Hue.Position = UDim2.new(0.08, 0, 0.1, 0)
+            Hue.Size = UDim2.new(0, 15, 0, 70) -- Увеличена область оттенка
+            Hue.Image = "rbxassetid://12966903157" -- Радужный градиент
+            Hue.AutoButtonColor = false
+            Hue.ZIndex = 2
+        
+            -- Маркер для выбора оттенка
+            HueDrag.Name = "HueDrag"
+            HueDrag.Parent = Hue
+            HueDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            HueDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            HueDrag.BorderSizePixel = 1
+            HueDrag.Size = UDim2.new(1, 0, 0, 3)
+            HueDrag.Position = UDim2.new(0, 0, 1 - hue_value - 0.02, 0)
+            HueDrag.ZIndex = 3
+        
+            -- Функция обновления цвета
+            local function updateColor()
+                local color = Color3.fromHSV(hue_value, sat_value, value_value)
+                
+                -- Обновляем градиент насыщенности с правильными цветами
                 SaturationGradient.Color = ColorSequence.new{
                     ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
-                    ColorSequenceKeypoint.new(1.00, Color3.fromHSV(hue_value, 1, 1))
-                }
-                SaturationGradient.Rotation = 0
-                SaturationGradient.Parent = Saturation
-
-                -- Вертикальный градиент поверх (прозрачный -> черный)
-                BlackGradient.Color = ColorSequence.new{
-                    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
+                    ColorSequenceKeypoint.new(0.50, Color3.fromHSV(hue_value, 1, 1)),
                     ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))
                 }
-                BlackGradient.Rotation = 90
-                BlackGradient.Parent = Saturation
-
-                SaturationDrag.Name = "SaturationDrag"
-                SaturationDrag.Parent = Saturation
-                SaturationDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                SaturationDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                SaturationDrag.BorderSizePixel = 1
-                SaturationDrag.Size = UDim2.new(0, 4, 0, 4)
-                SaturationDrag.Position = UDim2.new(sat_value, -2, 1 - value_value, -2)
-                SaturationDrag.ZIndex = 3
-
-                Hue.Name = "Hue"
-                Hue.Parent = ColorPicker
-                Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                Hue.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                Hue.BorderSizePixel = 0
-                Hue.Position = UDim2.new(0.05, 0, 0.1, 0)
-                Hue.Size = UDim2.new(0, 15, 0, 80) -- Увеличена высота
-                Hue.Image = "rbxassetid://12966903157" -- Rainbow gradient image
-                Hue.AutoButtonColor = false
-                Hue.ZIndex = 2
-
-                HueDrag.Name = "HueDrag"
-                HueDrag.Parent = Hue
-                HueDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                HueDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                HueDrag.BorderSizePixel = 1
-                HueDrag.Size = UDim2.new(1, 0, 0, 2)
-                HueDrag.Position = UDim2.new(0, 0, 1 - hue_value, 0)
-                HueDrag.ZIndex = 3
-
-                local function updateColor()
-                    local color = Color3.fromHSV(hue_value, sat_value, value_value)
-                    -- Обновляем градиент насыщенности
-                    SaturationGradient.Color = ColorSequence.new{
-                        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
-                        ColorSequenceKeypoint.new(1.00, Color3.fromHSV(hue_value, 1, 1))
-                    }
-                    Colorpicker.BackgroundColor3 = color
-                    color_callback(color)
-                end
-
-                local function set_cp(h, s, v)
-                    hue_value = h or hue_value
-                    sat_value = s or sat_value
-                    value_value = v or value_value
-                    SaturationDrag.Position = UDim2.new(sat_value, -2, 1 - value_value, -2)
-                    HueDrag.Position = UDim2.new(0, 0, 1 - hue_value, 0)
-                    updateColor()
-                end
-
-                local draggingConnection
-
-                Saturation.InputBegan:Connect(function(input)
-                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                        draggingConnection = services.run.RenderStepped:Connect(function()
-                            if not services.uis:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) then
-                                draggingConnection:Disconnect()
-                                return
-                            end
-                            local mouse = game.Players.LocalPlayer:GetMouse()
-                            local mouse_pos = Vector2.new(mouse.X, mouse.Y)
-                            local abs_pos = Saturation.AbsolutePosition
-                            local abs_size = Saturation.AbsoluteSize
-                            local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
-                            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-                            sat_value = x
-                            value_value = 1 - y
-                            set_cp(hue_value, sat_value, value_value)
-                        end)
-                    end
-                end)
-
-                Hue.InputBegan:Connect(function(input)
-                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                        draggingConnection = services.run.RenderStepped:Connect(function()
-                            if not services.uis:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) then
-                                draggingConnection:Disconnect()
-                                return
-                            end
-                            local mouse = game.Players.LocalPlayer:GetMouse()
-                            local mouse_pos = Vector2.new(mouse.X, mouse.Y)
-                            local abs_pos = Hue.AbsolutePosition
-                            local abs_size = Hue.AbsoluteSize
-                            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-                            hue_value = 1 - y
-                            set_cp(hue_value, sat_value, value_value)
-                        end)
-                    end
-                end)
-
-                Colorpicker.MouseButton1Down:Connect(function()
-                    for _, element in pairs(Sector:GetChildren()) do
-                        if element.Name == "ColorPicker" and element ~= ColorPicker then
-                            element.Visible = false
-                        end
-                    end
-                    local abs_pos = Colorpicker.AbsolutePosition
-                    ColorPicker.Position = UDim2.new(0, abs_pos.X - Sector.AbsolutePosition.X - 180, 0, abs_pos.Y - Sector.AbsolutePosition.Y + 5) -- Ближе к чекбоксу
-                    ColorPicker.Visible = not ColorPicker.Visible
-                    if draggingConnection then
-                        draggingConnection:Disconnect()
-                    end
-                end)
-
-                set_cp(default_hue, default_saturation, default_value)
-
-                checkpicker.set = function(state)
-                    value = state
-                    if value then
-                        CheckboxBg.BackgroundColor3 = themes[theme]["Toggle"]
-                    else
-                        CheckboxBg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
-                    end
-                    callback(value)
-                end
-
-                checkpicker.set_text = function(new_text)
-                    Text.Text = new_text
-                end
-
-                checkpicker.get = function()
-                    return value
-                end
-
-                checkpicker.get_color = function()
-                    return Colorpicker.BackgroundColor3
-                end
-
-                checkpicker.set_color = function(color)
-                    local h, s, v = color:ToHSV()
-                    set_cp(h, s, v)
-                end
-
-                Checkpicker.MouseButton1Down:Connect(function()
-                    value = not value
-                    checkpicker.set(value)
-                end)
-
-                CheckboxBg.MouseButton1Down:Connect(function()
-                    value = not value
-                    checkpicker.set(value)
-                end)
-
-                checkpicker.set(value)
-                sector.increase_scrollbar_size()
-                return checkpicker
+                
+                -- Обновляем цвет кнопки
+                Colorpicker.BackgroundColor3 = color
+                color_callback(color)
             end
+        
+            -- Функция установки цвета
+            checkpicker.set_color = function(hue, sat, val)
+                hue_value = hue or hue_value
+                sat_value = sat or sat_value
+                value_value = val or value_value
+        
+                -- Обновляем позиции маркеров
+                SaturationDrag.Position = UDim2.new(sat_value - 0.015, 0, 1 - value_value - 0.015, 0)
+                HueDrag.Position = UDim2.new(0, 0, 1 - hue_value - 0.02, 0)
+        
+                -- Обновляем цвет
+                updateColor()
+            end
+        
+            -- Обработка клика на кнопку цвета
+            Colorpicker.MouseButton1Down:Connect(function()
+                -- Скрываем другие колорпикеры
+                for _, element in pairs(Sector:GetChildren()) do
+                    if element.Name == "ColorPicker" and element ~= ColorPicker then
+                        element.Visible = false
+                    end
+                end
+                
+                -- Позиционируем колорпикер ближе к элементу
+                local abs_pos = Colorpicker.AbsolutePosition
+                ColorPicker.Position = UDim2.new(0, abs_pos.X - Sector.AbsolutePosition.X - 150, 0, abs_pos.Y - Sector.AbsolutePosition.Y + 5)
+                ColorPicker.Visible = not ColorPicker.Visible
+            end)
+        
+            -- Обработка выбора насыщенности/яркости
+            Saturation.InputBegan:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    choosing_saturation = true
+                    
+                    -- Немедленно обновляем позицию при клике
+                    local mouse = game.Players.LocalPlayer:GetMouse()
+                    local mouse_pos = Vector2.new(mouse.X, mouse.Y)
+                    local abs_pos = Saturation.AbsolutePosition
+                    local abs_size = Saturation.AbsoluteSize
+                    
+                    local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
+                    local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+                    
+                    checkpicker.set_color(hue_value, x, 1 - y)
+                end
+            end)
+        
+            Saturation.InputEnded:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    choosing_saturation = false
+                end
+            end)
+        
+            -- Обработка выбора оттенка
+            Hue.InputBegan:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    choosing_hue = true
+                    
+                    -- Немедленно обновляем позицию при клике
+                    local mouse = game.Players.LocalPlayer:GetMouse()
+                    local mouse_pos = Vector2.new(mouse.X, mouse.Y)
+                    local abs_pos = Hue.AbsolutePosition
+                    local abs_size = Hue.AbsoluteSize
+                    
+                    local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+                    
+                    checkpicker.set_color(1 - y, sat_value, value_value)
+                end
+            end)
+        
+            Hue.InputEnded:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                    choosing_hue = false
+                end
+            end)
+        
+            -- Обработка движения мыши при выборе
+            services.uis.InputChanged:Connect(function(input)
+                if input.UserInputType == Enum.UserInputType.MouseMovement then
+                    if choosing_saturation then
+                        local mouse = game.Players.LocalPlayer:GetMouse()
+                        local mouse_pos = Vector2.new(mouse.X, mouse.Y)
+                        local abs_pos = Saturation.AbsolutePosition
+                        local abs_size = Saturation.AbsoluteSize
+                        
+                        local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
+                        local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+                        
+                        checkpicker.set_color(hue_value, x, 1 - y)
+                    end
+                    
+                    if choosing_hue then
+                        local mouse = game.Players.LocalPlayer:GetMouse()
+                        local mouse_pos = Vector2.new(mouse.X, mouse.Y)
+                        local abs_pos = Hue.AbsolutePosition
+                        local abs_size = Hue.AbsoluteSize
+                        
+                        local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+                        
+                        checkpicker.set_color(1 - y, sat_value, value_value)
+                    end
+                end
+            end)
+        
+            -- Функции для чекбокса
+            checkpicker.set = function(state)
+                value = state
+                if value then
+                    CheckboxBg.BackgroundColor3 = themes[theme]["Toggle"]
+                else
+                    CheckboxBg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
+                end
+                callback(value)
+            end
+        
+            checkpicker.set_text = function(new_text)
+                Text.Text = new_text
+            end
+        
+            checkpicker.get = function()
+                return value
+            end
+        
+            checkpicker.get_color = function()
+                return Colorpicker.BackgroundColor3
+            end
+        
+            checkpicker.set_color_value = function(color)
+                local h, s, v = color:ToHSV()
+                checkpicker.set_color(h, s, v)
+            end
+        
+            -- Обработчики кликов на чекбокс
+            Checkpicker.MouseButton1Down:Connect(function()
+                value = not value
+                checkpicker.set(value)
+            end)
+        
+            CheckboxBg.MouseButton1Down:Connect(function()
+                value = not value
+                checkpicker.set(value)
+            end)
+        
+            -- Инициализация
+            checkpicker.set(value)
+            checkpicker.set_color(hue_value, sat_value, value_value)
+            sector.increase_scrollbar_size()
+            
+            return checkpicker
+        end
 
             sector.slider = function(text, indicator, min, max, default, callback)
                 local slider = {}
