@@ -1,24 +1,25 @@
 local lib = {}
 local themes = {
 ["gamesense"] = {
-["Window"] = Color3.fromRGB(16, 16, 16),
-["Tabs"] = Color3.fromRGB(12, 12, 12),
+["Window"] = Color3.fromRGB(12, 12, 12),
+["Tabs"] = Color3.fromRGB(10, 10, 10),
 ["Gradient"] = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(61, 130, 162)), ColorSequenceKeypoint.new(0.50, Color3.fromRGB(156, 59, 145)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(155, 161, 48))},
-["Sector"] = Color3.fromRGB(23, 23, 23),
-["Text"] = Color3.fromRGB(161, 161, 161),
-["TabSelected"] = Color3.fromRGB(17, 17, 17),
-["ElementBg"] = Color3.fromRGB(27, 27, 27),
-["ElementOutline"] = Color3.fromRGB(40,40,40),
+["Sector"] = Color3.fromRGB(20, 20, 20),
+["Text"] = Color3.fromRGB(150, 150, 150),
+["TabSelected"] = Color3.fromRGB(14, 14, 14),
+["ElementBg"] = Color3.fromRGB(24, 24, 24),
+["ElementOutline"] = Color3.fromRGB(35,35,35),
 ["DropdownSelected"] = Color3.fromRGB(135, 176, 27),
 ["Toggle"] = Color3.fromRGB(135, 176, 27),
-["ToggleUnchecked"] = Color3.fromRGB(30,30,30),
+["ToggleUnchecked"] = Color3.fromRGB(27,27,27),
 ["Slider"] = Color3.fromRGB(135, 176, 27),
-["SliderBg"] = Color3.fromRGB(27, 27, 27)
+["SliderBg"] = Color3.fromRGB(24, 24, 24)
 }
 }
 local services = {
 ["uis"] = game:GetService("UserInputService"),
-["run"] = game:GetService("RunService")
+["run"] = game:GetService("RunService"),
+["tween"] = game:GetService("TweenService")
 }
 local function gethui()
 return game.Players.LocalPlayer.PlayerGui
@@ -102,9 +103,9 @@ Main.Name = "Main"
 Main.Parent = Mute
 Main.BackgroundColor3 = themes[theme]["Window"]
 Main.BorderColor3 = Color3.fromRGB(45, 45, 45)
-Main.BorderSizePixel = 3
+Main.BorderSizePixel = 4
 Main.Position = UDim2.new(0.38166827, 0, 0.249408439, 0)
-Main.Size = UDim2.new(0, 684, 0, 605)
+Main.Size = UDim2.new(0, 720, 0, 605)
 Tabs.Name = "Tabs"
 Tabs.Parent = Main
 Tabs.BackgroundColor3 = themes[theme]["Tabs"]
@@ -114,16 +115,16 @@ Tabs.Size = UDim2.new(0, 100, 0, 602)
 UIGridLayout.Parent = Tabs
 UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UIGridLayout.CellPadding = UDim2.new(0, 15, 0, 0)
-UIGridLayout.CellSize = UDim2.new(0, 95, 0, 70)
+UIGridLayout.CellSize = UDim2.new(0, 100, 0, 70)
 UIPadding.Parent = Tabs
-UIPadding.PaddingLeft = UDim.new(0, 5)
+UIPadding.PaddingLeft = UDim.new(0, 0)
 UIPadding.PaddingTop = UDim.new(0, 15)
 TopGradient.Name = "TopGradient"
 TopGradient.Parent = Main
 TopGradient.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 TopGradient.BorderColor3 = Color3.fromRGB(0, 0, 0)
 TopGradient.BorderSizePixel = 0
-TopGradient.Size = UDim2.new(0, 684, 0, 1)
+TopGradient.Size = UDim2.new(0, 720, 0, 2)
 UIGradient.Color = themes[theme]["Gradient"]
 UIGradient.Parent = TopGradient
 Content.Name = "Content"
@@ -132,8 +133,8 @@ Content.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Content.BackgroundTransparency = 1.000
 Content.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Content.BorderSizePixel = 0
-Content.Position = UDim2.new(0.165000007, 0, 0.0247933883, 0)
-Content.Size = UDim2.new(0, 553, 0, 579)
+Content.Position = UDim2.new(0.15277778, 0, 0.0247933883, 0)
+Content.Size = UDim2.new(0, 590, 0, 579)
 UIListLayout.Parent = Content
 UIListLayout.FillDirection = Enum.FillDirection.Horizontal
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
@@ -168,6 +169,36 @@ end
 end
 end
 end
+local function createHoverEffects(element)
+local original = element.BackgroundColor3
+local hover = Color3.fromRGB(
+math.min(255, original.R * 255 + 20),
+math.min(255, original.G * 255 + 20),
+math.min(255, original.B * 255 + 20)
+)
+local press = Color3.fromRGB(
+math.max(0, original.R * 255 - 10),
+math.max(0, original.G * 255 - 10),
+math.max(0, original.B * 255 - 10)
+)
+local tweenInfo = TweenInfo.new(0.15, Enum.EasingStyle.Quad)
+element.MouseEnter:Connect(function()
+services.tween:Create(element, tweenInfo, {BackgroundColor3 = hover}):Play()
+end)
+element.MouseLeave:Connect(function()
+services.tween:Create(element, tweenInfo, {BackgroundColor3 = original}):Play()
+end)
+local connDown
+element.MouseButton1Down:Connect(function()
+connDown = services.tween:Create(element, tweenInfo, {BackgroundColor3 = press}):Play()
+end)
+element.MouseButton1Up:Connect(function()
+if connDown then
+connDown:Cancel()
+end
+services.tween:Create(element, tweenInfo, {BackgroundColor3 = hover}):Play()
+end)
+end
 window.create_tab = function(image)
 local tab = {}
 local Tab = Instance.new("TextButton")
@@ -179,7 +210,7 @@ Tab.BorderColor3 = Color3.fromRGB(20, 20, 20)
 Tab.BackgroundTransparency = 1
 Tab.BorderSizePixel = 2
 Tab.Position = UDim2.new(0, 0, 0.14480409, 0)
-Tab.Size = UDim2.new(0, 95, 0, 70)
+Tab.Size = UDim2.new(0, 100, 0, 70)
 Tab.AutoButtonColor = false
 Tab.Font = Enum.Font.SourceSans
 Tab.Text = ""
@@ -191,7 +222,7 @@ Open.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Open.BackgroundTransparency = 1.000
 Open.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Open.BorderSizePixel = 0
-Open.Position = UDim2.new(0.162790701, 0, 0.18571429, 0)
+Open.Position = UDim2.new(0.285, 0, 0.19285714, 0)
 Open.Size = UDim2.new(0, 43, 0, 43)
 Open.Image = image
 Open.ImageColor3 = Color3.fromRGB(90,90,90)
@@ -213,8 +244,8 @@ Sector.Name = name
 Sector.Parent = Content
 Sector.BackgroundColor3 = themes[theme]["Sector"]
 Sector.BorderColor3 = Color3.fromRGB(34, 34, 34)
-Sector.Position = UDim2.new(pos_x, 0, 0, 0)
-Sector.Size = UDim2.new(0.5, 0, 1, 0)
+Sector.Position = UDim2.new(pos_x, 0, 0.025, 0)
+Sector.Size = UDim2.new(0.5, 0, 0.95, 0)
 Sector.Visible = false
 Title.Name = "Title"
 Title.Parent = Sector
@@ -238,13 +269,13 @@ SectorContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 SectorContent.BackgroundTransparency = 1.000
 SectorContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
 SectorContent.BorderSizePixel = 0
-SectorContent.Position = UDim2.new(0.028933093, 0, 0.025906736, 0)
-SectorContent.Size = UDim2.new(0, 259, 0, 558)
+SectorContent.Position = UDim2.new(0.028933093, 0, 0.04, 0)
+SectorContent.Size = UDim2.new(0, 259, 0, 530)
 SectorContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 SectorContent.ScrollBarThickness = 3
 UIListLayout.Parent = SectorContent
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-UIListLayout.Padding = UDim.new(0,3)
+UIListLayout.Padding = UDim.new(0,4)
 UIPadding.Parent = SectorContent
 UIPadding.PaddingLeft = UDim.new(0, 5)
 local UIGradient = Instance.new("UIGradient")
@@ -370,7 +401,7 @@ local UIPadding = Instance.new("UIPadding")
 TextBox.Parent = SectorContent
 TextBox.BackgroundColor3 = themes[theme]["ElementBg"]
 TextBox.BorderColor3 = themes[theme]["ElementOutline"]
-TextBox.Position = UDim2.new(0, 0, 0.15053764, 0)
+TextBox.Position = UDim2.new(0, 0, 0, 0)
 TextBox.Size = UDim2.new(0, 249, 0, 21)
 TextBox.ClearTextOnFocus = false
 TextBox.Font = Enum.Font.SourceSans
@@ -406,7 +437,7 @@ Button.Name = "Button"
 Button.Parent = SectorContent
 Button.BackgroundColor3 = themes[theme]["ElementBg"]
 Button.BorderColor3 = themes[theme]["ElementOutline"]
-Button.Position = UDim2.new(0.0157480314, 0, 0.254480273, 0)
+Button.Position = UDim2.new(0, 0, 0, 0)
 Button.Size = UDim2.new(0, 249, 0, 21)
 Button.AutoButtonColor = false
 Button.Font = Enum.Font.SourceSans
@@ -416,6 +447,7 @@ Button.Text = text
 Button.MouseButton1Down:Connect(function()
 callback()
 end)
+createHoverEffects(Button)
 sector.increase_scrollbar_size()
 button.delete = function()
 Button:Destroy()
@@ -438,7 +470,7 @@ Dropdown.Name = "Dropdown"
 Dropdown.Parent = SectorContent
 Dropdown.BackgroundColor3 = themes[theme]["ElementBg"]
 Dropdown.BorderColor3 = themes[theme]["ElementOutline"]
-Dropdown.Position = UDim2.new(0.0157480314, 0, 0.254480273, 0)
+Dropdown.Position = UDim2.new(0, 0, 0, 0)
 Dropdown.Size = UDim2.new(0, 249, 0, 21)
 Dropdown.AutoButtonColor = false
 Dropdown.Font = Enum.Font.SourceSans
@@ -482,6 +514,7 @@ Dropdown.MouseButton1Down:Connect(function()
 DropdownContent.Visible = not DropdownContent.Visible
 Image.Image = DropdownContent.Visible and "rbxassetid://74187648454886" or "rbxassetid://97940921082727"
 end)
+createHoverEffects(Dropdown)
 dropdown.unselect_all = function()
 for _, button in pairs(DropdownContent:GetChildren()) do
 if button:IsA("TextButton") then
@@ -559,7 +592,7 @@ Toggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Toggle.BackgroundTransparency = 1.000
 Toggle.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Toggle.BorderSizePixel = 0
-Toggle.Position = UDim2.new(0, 0, 0.306451619, 0)
+Toggle.Position = UDim2.new(0, 0, 0, 0)
 Toggle.Size = UDim2.new(0, 249, 0, 21)
 Toggle.Font = Enum.Font.SourceSans
 Toggle.Text = ""
@@ -764,8 +797,8 @@ Slider.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Slider.BackgroundTransparency = 1.000
 Slider.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Slider.BorderSizePixel = 0
-Slider.Position = UDim2.new(0, 0, 0.306451619, 0)
-Slider.Size = UDim2.new(0, 249, 0, 35)
+Slider.Position = UDim2.new(0, 0, 0, 0)
+Slider.Size = UDim2.new(0, 249, 0, 28)
 Slider.Font = Enum.Font.SourceSans
 Slider.Text = ""
 Slider.TextColor3 = Color3.fromRGB(172, 172, 172)
@@ -788,8 +821,8 @@ Bg.Name = "Bg"
 Bg.Parent = Slider
 Bg.BackgroundColor3 = themes[theme]["SliderBg"]
 Bg.BorderColor3 = themes[theme]["ElementOutline"]
-Bg.Position = UDim2.new(0, 5, 0.7, 0)
-Bg.Size = UDim2.new(0, 238, 0, 8)
+Bg.Position = UDim2.new(0.092, 0, 0.75, 0)
+Bg.Size = UDim2.new(0, 226, 0, 8)
 Bg.AutoButtonColor = false
 Bg.Font = Enum.Font.SourceSans
 Bg.Text = ""
@@ -805,7 +838,7 @@ Fill.Name = "Fill"
 Fill.Parent = Bg
 Fill.BackgroundColor3 = themes[theme]["Slider"]
 Fill.BorderColor3 = themes[theme]["ElementOutline"]
-Fill.Position = UDim2.new(-0.0168067235, 5, -0.0250015259, 0)
+Fill.Position = UDim2.new(0, 0, 0, 0)
 Fill.Size = UDim2.new(0.5, 0, 1, 0)
 Fill.AutoButtonColor = false
 Fill.Font = Enum.Font.SourceSans
@@ -861,6 +894,7 @@ slider.set(size)
 end
 end)
 slider.set((default - min) / (max - min) * 100)
+sector.increase_scrollbar_size()
 return slider
 end
 table.insert(window.tab_contents,{
