@@ -86,11 +86,11 @@ lib.create_window = function(theme, menu_key)
     Tabs.BackgroundColor3 = themes[theme]["Tabs"]
     Tabs.BorderColor3 = Color3.fromRGB(21, 21, 21)
     Tabs.Position = UDim2.new(0, 1, 0.00330578513, 0)
-    Tabs.Size = UDim2.new(0, 100, 0, 602)
+    Tabs.Size = UDim2.new(0, 122, 0, 602) -- Уменьшил X для совпадения с кнопками (108 + padding 14)
     UIGridLayout.Parent = Tabs
     UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    UIGridLayout.CellPadding = UDim2.new(0, 15, 0, 0)
-    UIGridLayout.CellSize = UDim2.new(0, 85, 0, 70)
+    UIGridLayout.CellPadding = UDim2.new(0, 0, 0, 0) -- Убрал отступы Y и X для плотности
+    UIGridLayout.CellSize = UDim2.new(1, 0, 0, 70)
     UIPadding.Parent = Tabs
     UIPadding.PaddingLeft = UDim.new(0, 14)
     UIPadding.PaddingTop = UDim.new(0, 15)
@@ -374,6 +374,7 @@ lib.create_window = function(theme, menu_key)
                 TextBox.Parent = SectorContent
                 TextBox.BackgroundColor3 = themes[theme]["ElementBg"]
                 TextBox.BorderColor3 = themes[theme]["ElementOutline"]
+                TextBox.BorderSizePixel = 1
                 TextBox.Size = UDim2.new(0, 249, 0, 21)
                 TextBox.ClearTextOnFocus = false
                 TextBox.Font = Enum.Font.SourceSans
@@ -410,6 +411,7 @@ lib.create_window = function(theme, menu_key)
                 Button.Parent = SectorContent
                 Button.BackgroundColor3 = themes[theme]["ElementBg"]
                 Button.BorderColor3 = themes[theme]["ElementOutline"]
+                Button.BorderSizePixel = 1
                 Button.Size = UDim2.new(0, 249, 0, 21)
                 Button.AutoButtonColor = false
                 Button.Font = Enum.Font.SourceSans
@@ -442,6 +444,7 @@ lib.create_window = function(theme, menu_key)
                 Dropdown.Parent = SectorContent
                 Dropdown.BackgroundColor3 = themes[theme]["ElementBg"]
                 Dropdown.BorderColor3 = themes[theme]["ElementOutline"]
+                Dropdown.BorderSizePixel = 1
                 Dropdown.Size = UDim2.new(0, 249, 0, 21)
                 Dropdown.AutoButtonColor = false
                 Dropdown.Font = Enum.Font.SourceSans
@@ -468,6 +471,7 @@ lib.create_window = function(theme, menu_key)
                 DropdownContent.Active = true
                 DropdownContent.BackgroundColor3 = themes[theme]["ElementBg"]
                 DropdownContent.BorderColor3 = themes[theme]["ElementOutline"]
+                DropdownContent.BorderSizePixel = 1
                 DropdownContent.Position = UDim2.new(0, 0, 1, 0)
                 DropdownContent.Size = UDim2.new(0, 249, 0, 0)
                 DropdownContent.CanvasSize = UDim2.new(0, 0, 0, 0)
@@ -518,6 +522,7 @@ lib.create_window = function(theme, menu_key)
                     Button.Parent = DropdownContent
                     Button.BackgroundColor3 = themes[theme]["ElementBg"]
                     Button.BorderColor3 = themes[theme]["ElementOutline"]
+                    Button.BorderSizePixel = 1
                     Button.Size = UDim2.new(1, -10, 0, 21)
                     Button.Font = Enum.Font.SourceSans
                     Button.TextColor3 = themes[theme]["Text"]
@@ -602,6 +607,7 @@ lib.create_window = function(theme, menu_key)
                 Bg.Parent = Toggle
                 Bg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
                 Bg.BorderColor3 = themes[theme]["ElementOutline"]
+                Bg.BorderSizePixel = 1
                 Bg.Position = UDim2.new(1, -15, 0.5, -4)
                 Bg.Size = UDim2.new(0, 8, 0, 8)
                 Bg.Font = Enum.Font.SourceSans
@@ -616,10 +622,8 @@ lib.create_window = function(theme, menu_key)
                     value = state
                     if value then
                         Bg.BackgroundColor3 = themes[theme]["Toggle"]
-                        Bg.Position = UDim2.new(1, -8, 0.5, -4)
                     else
                         Bg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
-                        Bg.Position = UDim2.new(1, -15, 0.5, -4)
                     end
                     callback(value)
                 end
@@ -636,6 +640,7 @@ lib.create_window = function(theme, menu_key)
                     Colorpicker.Parent = Toggle
                     Colorpicker.BackgroundColor3 = _default
                     Colorpicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
+                    Colorpicker.BorderSizePixel = 1
                     Colorpicker.Position = UDim2.new(0.935, 0, 0.325, 0)
                     Colorpicker.Size = UDim2.new(0, 11, 0, 11)
                     Colorpicker.AutoButtonColor = false
@@ -782,7 +787,228 @@ lib.create_window = function(theme, menu_key)
                 sector.increase_scrollbar_size()
                 return toggle
             end
-            sector.slider = function(text, indicator, min, max, default, callback)
+            sector.checkpicker = function(text, default_bool, default_color, bool_callback, color_callback)
+                local checkpicker = {}
+                local value = default_bool
+                local Toggle = Instance.new("TextButton")
+                local Text = Instance.new("TextLabel")
+                local Bg = Instance.new("TextButton")
+                local UIGradient = Instance.new("UIGradient")
+                local Colorpicker = Instance.new("TextButton")
+                Toggle.Name = text
+                Toggle.Parent = SectorContent
+                Toggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                Toggle.BackgroundTransparency = 1.000
+                Toggle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                Toggle.BorderSizePixel = 0
+                Toggle.Size = UDim2.new(0, 249, 0, 21)
+                Toggle.Font = Enum.Font.SourceSans
+                Toggle.Text = ""
+                Toggle.TextColor3 = Color3.fromRGB(172, 172, 172)
+                Toggle.TextSize = 14.000
+                Toggle.TextXAlignment = Enum.TextXAlignment.Left
+                Toggle.AutoButtonColor = false
+                Text.Name = "Text"
+                Text.Parent = Toggle
+                Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                Text.BackgroundTransparency = 1.000
+                Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                Text.BorderSizePixel = 0
+                Text.Position = UDim2.new(0, 0, 0, 0)
+                Text.Size = UDim2.new(0, 226, 0, 21)
+                Text.Font = Enum.Font.SourceSans
+                Text.TextColor3 = themes[theme]["Text"]
+                Text.TextSize = 14.000
+                Text.TextStrokeTransparency = 0.800
+                Text.TextXAlignment = Enum.TextXAlignment.Left
+                Text.Text = text
+                Bg.Name = "Bg"
+                Bg.Parent = Toggle
+                Bg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
+                Bg.BorderColor3 = themes[theme]["ElementOutline"]
+                Bg.BorderSizePixel = 1
+                Bg.Position = UDim2.new(1, -15, 0.5, -4)
+                Bg.Size = UDim2.new(0, 8, 0, 8)
+                Bg.Font = Enum.Font.SourceSans
+                Bg.Text = ""
+                Bg.TextColor3 = Color3.fromRGB(0, 0, 0)
+                Bg.TextSize = 14.000
+                Bg.AutoButtonColor = false
+                UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(175, 175, 175))}
+                UIGradient.Rotation = 90
+                UIGradient.Parent = Bg
+                Colorpicker.Name = "Colorpicker"
+                Colorpicker.Parent = Toggle
+                Colorpicker.BackgroundColor3 = default_color
+                Colorpicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
+                Colorpicker.BorderSizePixel = 1
+                Colorpicker.Position = UDim2.new(1, -50, 0.5, -5.5)
+                Colorpicker.Size = UDim2.new(0, 22, 0, 11) -- 2x шире чекбокса
+                Colorpicker.AutoButtonColor = false
+                Colorpicker.Font = Enum.Font.SourceSans
+                Colorpicker.Text = ""
+                Colorpicker.TextColor3 = Color3.fromRGB(0, 0, 0)
+                Colorpicker.TextSize = 14.000
+                checkpicker.set_bool = function(state)
+                    value = state
+                    if value then
+                        Bg.BackgroundColor3 = themes[theme]["Toggle"]
+                    else
+                        Bg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
+                    end
+                    bool_callback(value)
+                end
+                checkpicker.set_text = function(new_text)
+                    Text.Text = new_text
+                end
+                checkpicker.get_bool = function()
+                    return value
+                end
+                checkpicker.add_color = function(_default, cpcallback)
+                    local colorpicker_inner = {}
+                    local default_hue, default_saturation, default_value = _default:ToHSV()
+                    local hue_value = default_hue
+                    local sat_value = default_saturation
+                    local value_value = default_value
+                    local ColorPicker = Instance.new("Frame")
+                    local Saturation = Instance.new("TextButton")
+                    local ValueGradient = Instance.new("UIGradient")
+                    local SaturationDrag = Instance.new("Frame")
+                    local Hue = Instance.new("ImageButton")
+                    local HueDrag = Instance.new("Frame")
+                    ColorPicker.Name = "ColorPicker"
+                    ColorPicker.Parent = Sector
+                    ColorPicker.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+                    ColorPicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
+                    ColorPicker.BorderSizePixel = 2
+                    ColorPicker.Size = UDim2.new(0, 180, 0, 120)
+                    ColorPicker.Visible = false
+                    ColorPicker.Active = true
+                    ColorPicker.Draggable = false
+                    Saturation.Name = "Saturation"
+                    Saturation.Parent = ColorPicker
+                    Saturation.BackgroundColor3 = Color3.fromHSV(hue_value, 1, 1)
+                    Saturation.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                    Saturation.BorderSizePixel = 0
+                    Saturation.Position = UDim2.new(0.3, 0, 0.1, 0)
+                    Saturation.Size = UDim2.new(0, 100, 0, 100)
+                    Saturation.Font = Enum.Font.SourceSans
+                    Saturation.Text = ""
+                    Saturation.TextColor3 = Color3.fromRGB(0, 0, 0)
+                    Saturation.TextSize = 14.000
+                    Saturation.AutoButtonColor = false
+                    ValueGradient.Color = ColorSequence.new{
+                        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
+                        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))
+                    }
+                    ValueGradient.Rotation = 90
+                    ValueGradient.Parent = Saturation
+                    SaturationDrag.Name = "SaturationDrag"
+                    SaturationDrag.Parent = Saturation
+                    SaturationDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                    SaturationDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                    SaturationDrag.BorderSizePixel = 1
+                    SaturationDrag.Size = UDim2.new(0, 4, 0, 4)
+                    SaturationDrag.Position = UDim2.new(sat_value, -2, 1 - value_value, -2)
+                    Hue.Name = "Hue"
+                    Hue.Parent = ColorPicker
+                    Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                    Hue.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                    Hue.BorderSizePixel = 0
+                    Hue.Position = UDim2.new(0.08, 0, 0.1, 0)
+                    Hue.Size = UDim2.new(0, 20, 0, 100)
+                    Hue.Image = "rbxassetid://12966903157"
+                    Hue.AutoButtonColor = false
+                    HueDrag.Name = "HueDrag"
+                    HueDrag.Parent = Hue
+                    HueDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                    HueDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                    HueDrag.BorderSizePixel = 1
+                    HueDrag.Size = UDim2.new(1, 0, 0, 4)
+                    HueDrag.Position = UDim2.new(0, 0, 1 - hue_value, 0)
+                    local function updateColor()
+                        local color = Color3.fromHSV(hue_value, sat_value, value_value)
+                        Saturation.BackgroundColor3 = Color3.fromHSV(hue_value, 1, 1)
+                        Colorpicker.BackgroundColor3 = color
+                        cpcallback(color)
+                    end
+                    colorpicker_inner.set = function(h, s, v)
+                        hue_value = h or hue_value
+                        sat_value = s or sat_value
+                        value_value = v or value_value
+                        SaturationDrag.Position = UDim2.new(sat_value, -2, 1 - value_value, -2)
+                        HueDrag.Position = UDim2.new(0, 0, 1 - hue_value, 0)
+                        updateColor()
+                    end
+                    local draggingConnection
+                    Saturation.InputBegan:Connect(function(input)
+                        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                            draggingConnection = services.run.RenderStepped:Connect(function()
+                                if not services.uis:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) then
+                                    draggingConnection:Disconnect()
+                                    return
+                                end
+                                local mouse = game.Players.LocalPlayer:GetMouse()
+                                local mouse_pos = Vector2.new(mouse.X, mouse.Y)
+                                local abs_pos = Saturation.AbsolutePosition
+                                local abs_size = Saturation.AbsoluteSize
+                                local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
+                                local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+                                sat_value = x
+                                value_value = 1 - y
+                                colorpicker_inner.set(hue_value, sat_value, value_value)
+                            end)
+                        end
+                    end)
+                    Hue.InputBegan:Connect(function(input)
+                        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                            draggingConnection = services.run.RenderStepped:Connect(function()
+                                if not services.uis:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) then
+                                    draggingConnection:Disconnect()
+                                    return
+                                end
+                                local mouse = game.Players.LocalPlayer:GetMouse()
+                                local mouse_pos = Vector2.new(mouse.X, mouse.Y)
+                                local abs_pos = Hue.AbsolutePosition
+                                local abs_size = Hue.AbsoluteSize
+                                local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+                                hue_value = 1 - y
+                                colorpicker_inner.set(hue_value, sat_value, value_value)
+                            end)
+                        end
+                    end)
+                    Colorpicker.MouseButton1Down:Connect(function()
+                        for _, element in pairs(Sector:GetChildren()) do
+                            if element.Name == "ColorPicker" and element ~= ColorPicker then
+                                element.Visible = false
+                            end
+                        end
+                        local abs_pos = Colorpicker.AbsolutePosition
+                        ColorPicker.Position = UDim2.new(0, abs_pos.X - Sector.AbsolutePosition.X - 180, 0, abs_pos.Y - Sector.AbsolutePosition.Y + 15)
+                        ColorPicker.Visible = not ColorPicker.Visible
+                        if draggingConnection then
+                            draggingConnection:Disconnect()
+                        end
+                    end)
+                    colorpicker_inner.set(default_hue, default_saturation, default_value)
+                    return colorpicker_inner
+                end
+                Toggle.MouseButton1Down:Connect(function()
+                    value = not value
+                    checkpicker.set_bool(value)
+                end)
+                Bg.MouseButton1Down:Connect(function()
+                    value = not value
+                    checkpicker.set_bool(value)
+                end)
+                Colorpicker.MouseButton1Down:Connect(function()
+                    -- Открытие колорпикера
+                end)
+                checkpicker.set_bool(default_bool)
+                sector.increase_scrollbar_size()
+                return checkpicker
+            end
+            sector.slider_int = function(text, indicator, min, max, default, callback)
                 local slider = {}
                 local value = default
                 local dragging = false
@@ -799,7 +1025,7 @@ lib.create_window = function(theme, menu_key)
                 Text.Name = "Text"
                 Text.Parent = Slider
                 Text.BackgroundTransparency = 1
-                Text.Position = UDim2.new(0, 5, 0, 0)
+                Text.Position = UDim2.new(0, 5, 0, 0) -- Выше, как у toggle
                 Text.Size = UDim2.new(0, 226, 0, 14)
                 Text.Font = Enum.Font.SourceSans
                 Text.TextColor3 = themes[theme]["Text"]
@@ -811,6 +1037,127 @@ lib.create_window = function(theme, menu_key)
                 Bg.Parent = Slider
                 Bg.BackgroundColor3 = themes[theme]["SliderBg"]
                 Bg.BorderColor3 = themes[theme]["ElementOutline"]
+                Bg.BorderSizePixel = 1
+                Bg.Position = UDim2.new(0, 0, 0.7, 0)
+                Bg.Size = UDim2.new(0, 238, 0, 8)
+                Bg.AutoButtonColor = false
+                Bg.Font = Enum.Font.SourceSans
+                Bg.Text = ""
+                Bg.TextColor3 = Color3.fromRGB(0, 0, 0)
+                Bg.TextSize = 14.000
+                UIGradient.Color = ColorSequence.new{
+                    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
+                    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(175, 175, 175))
+                }
+                UIGradient.Rotation = 90
+                UIGradient.Parent = Bg
+                Fill.Name = "Fill"
+                Fill.Parent = Bg
+                Fill.BackgroundColor3 = themes[theme]["Slider"]
+                Fill.BorderSizePixel = 0
+                Fill.Position = UDim2.new(0, 0, 0, 0)
+                Fill.Size = UDim2.new(((default - min) / (max - min)), 0, 1, 0)
+                Fill.AutoButtonColor = false
+                Fill.Font = Enum.Font.SourceSans
+                Fill.Text = ""
+                Fill.TextColor3 = Color3.fromRGB(0, 0, 0)
+                Fill.TextSize = 14.000
+                UIGradient_2.Color = ColorSequence.new{
+                    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
+                    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(175, 175, 175))
+                }
+                UIGradient_2.Rotation = 90
+                UIGradient_2.Parent = Fill
+                local function updateSlider(percentage)
+                    local clamped = math.clamp(percentage, 0, 100)
+                    local scale = clamped / 100
+                    Fill.Size = UDim2.new(scale, 0, 1, 0)
+                    value = math.floor(min + (max - min) * scale)
+                    Text.Text = text .. " " .. value .. indicator
+                    callback(value)
+                end
+                slider.set = function(percentage)
+                    updateSlider(percentage)
+                end
+                slider.get = function()
+                    return value
+                end
+                slider.set_text = function(new_text)
+                    text = new_text
+                    Text.Text = new_text .. " " .. value .. indicator
+                end
+                local conn
+                conn = services.run.RenderStepped:Connect(function()
+                    if dragging then
+                        local mouse = game.Players.LocalPlayer:GetMouse()
+                        local abs_pos = Bg.AbsolutePosition
+                        local abs_size = Bg.AbsoluteSize
+                        local relative_x = (mouse.X - abs_pos.X) / abs_size.X * 100
+                        updateSlider(relative_x)
+                    end
+                end)
+                Bg.InputBegan:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                        dragging = true
+                    end
+                end)
+                Bg.InputEnded:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                        dragging = false
+                    end
+                end)
+                Fill.InputBegan:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                        dragging = true
+                    end
+                end)
+                Fill.InputEnded:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                        dragging = false
+                    end
+                end)
+                slider.delete = function()
+                    if conn then
+                        conn:Disconnect()
+                    end
+                    Slider:Destroy()
+                    sector.increase_scrollbar_size()
+                end
+                local initial_percentage = ((default - min) / (max - min)) * 100
+                updateSlider(initial_percentage)
+                sector.increase_scrollbar_size()
+                return slider
+            end
+            sector.slider_float = function(text, indicator, min, max, default, callback)
+                local slider = {}
+                local value = default
+                local dragging = false
+                local Slider = Instance.new("Frame")
+                local Text = Instance.new("TextLabel")
+                local Bg = Instance.new("TextButton")
+                local UIGradient = Instance.new("UIGradient")
+                local Fill = Instance.new("TextButton")
+                local UIGradient_2 = Instance.new("UIGradient")
+                Slider.Name = "Slider"
+                Slider.Parent = SectorContent
+                Slider.BackgroundTransparency = 1
+                Slider.Size = UDim2.new(0, 249, 0, 21)
+                Text.Name = "Text"
+                Text.Parent = Slider
+                Text.BackgroundTransparency = 1
+                Text.Position = UDim2.new(0, 5, 0, 0) -- Выше, как у toggle
+                Text.Size = UDim2.new(0, 226, 0, 14)
+                Text.Font = Enum.Font.SourceSans
+                Text.TextColor3 = themes[theme]["Text"]
+                Text.TextSize = 14.000
+                Text.TextStrokeTransparency = 0.800
+                Text.TextXAlignment = Enum.TextXAlignment.Left
+                Text.Text = text .. " " .. default .. indicator
+                Bg.Name = "Bg"
+                Bg.Parent = Slider
+                Bg.BackgroundColor3 = themes[theme]["SliderBg"]
+                Bg.BorderColor3 = themes[theme]["ElementOutline"]
+                Bg.BorderSizePixel = 1
                 Bg.Position = UDim2.new(0, 0, 0.7, 0)
                 Bg.Size = UDim2.new(0, 238, 0, 8)
                 Bg.AutoButtonColor = false
@@ -846,7 +1193,7 @@ lib.create_window = function(theme, menu_key)
                     local scale = clamped / 100
                     Fill.Size = UDim2.new(scale, 0, 1, 0)
                     value = min + (max - min) * scale
-                    local rounded = math.floor(value * 100 + 0.5) / 100
+                    local rounded = math.round(value * 100) / 100
                     Text.Text = text .. " " .. rounded .. indicator
                     callback(value)
                 end
@@ -858,7 +1205,7 @@ lib.create_window = function(theme, menu_key)
                 end
                 slider.set_text = function(new_text)
                     text = new_text
-                    local rounded = math.floor(value * 100 + 0.5) / 100
+                    local rounded = math.round(value * 100) / 100
                     Text.Text = new_text .. " " .. rounded .. indicator
                 end
                 local conn
