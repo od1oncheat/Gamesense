@@ -244,8 +244,8 @@ Sector.Name = name
 Sector.Parent = Content
 Sector.BackgroundColor3 = themes[theme]["Sector"]
 Sector.BorderColor3 = Color3.fromRGB(34, 34, 34)
-Sector.Position = UDim2.new(pos_x, 0, 0.03, 0)
-Sector.Size = UDim2.new(0.5, 0, 0.94, 0)
+Sector.Position = UDim2.new(pos_x, 0, 0.025, 0)
+Sector.Size = UDim2.new(0.5, 0, 0.95, 0)
 Sector.Visible = false
 Title.Name = "Title"
 Title.Parent = Sector
@@ -269,8 +269,8 @@ SectorContent.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 SectorContent.BackgroundTransparency = 1.000
 SectorContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
 SectorContent.BorderSizePixel = 0
-SectorContent.Position = UDim2.new(0.028933093, 0, 0.05, 0)
-SectorContent.Size = UDim2.new(0, 259, 0, 500)
+SectorContent.Position = UDim2.new(0.028933093, 0, 0.04, 0)
+SectorContent.Size = UDim2.new(0, 259, 0, 515)
 SectorContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 SectorContent.ScrollBarThickness = 3
 UIListLayout.Parent = SectorContent
@@ -401,8 +401,8 @@ local UIPadding = Instance.new("UIPadding")
 TextBox.Parent = SectorContent
 TextBox.BackgroundColor3 = themes[theme]["ElementBg"]
 TextBox.BorderColor3 = themes[theme]["ElementOutline"]
-TextBox.Position = UDim2.new(0, 0, 0, 0)
-TextBox.Size = UDim2.new(0, 249, 0, 25)
+TextBox.Position = UDim2.new(0.092, 0, 0, 0)
+TextBox.Size = UDim2.new(0, 226, 0, 21)
 TextBox.ClearTextOnFocus = false
 TextBox.Font = Enum.Font.Gotham
 TextBox.PlaceholderColor3 = Color3.fromRGB(72, 72, 72)
@@ -449,8 +449,8 @@ Button.Name = "Button"
 Button.Parent = SectorContent
 Button.BackgroundColor3 = themes[theme]["ElementBg"]
 Button.BorderColor3 = themes[theme]["ElementOutline"]
-Button.Position = UDim2.new(0, 0, 0, 0)
-Button.Size = UDim2.new(0, 249, 0, 25)
+Button.Position = UDim2.new(0.092, 0, 0, 0)
+Button.Size = UDim2.new(0, 226, 0, 21)
 Button.AutoButtonColor = false
 Button.Font = Enum.Font.Gotham
 Button.TextColor3 = themes[theme]["Text"]
@@ -482,8 +482,8 @@ Dropdown.Name = "Dropdown"
 Dropdown.Parent = SectorContent
 Dropdown.BackgroundColor3 = themes[theme]["ElementBg"]
 Dropdown.BorderColor3 = themes[theme]["ElementOutline"]
-Dropdown.Position = UDim2.new(0, 0, 0, 0)
-Dropdown.Size = UDim2.new(0, 249, 0, 25)
+Dropdown.Position = UDim2.new(0.092, 0, 0, 0)
+Dropdown.Size = UDim2.new(0, 226, 0, 21)
 Dropdown.AutoButtonColor = false
 Dropdown.Font = Enum.Font.Gotham
 Dropdown.Text = text
@@ -510,7 +510,7 @@ DropdownContent.Active = true
 DropdownContent.BackgroundColor3 = themes[theme]["ElementBg"]
 DropdownContent.BorderColor3 = themes[theme]["ElementOutline"]
 DropdownContent.Position = UDim2.new(0, 0, 1, 2)
-DropdownContent.Size = UDim2.new(0, 249, 0, 116)
+DropdownContent.Size = UDim2.new(0, 226, 0, 116)
 DropdownContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 DropdownContent.ScrollBarThickness = 3
 DropdownContent.ScrollBarImageColor3 = Color3.fromRGB(50, 50, 50)
@@ -555,7 +555,7 @@ Button.Name = name
 Button.Parent = DropdownContent
 Button.BackgroundColor3 = themes[theme]["ElementBg"]
 Button.BorderColor3 = themes[theme]["ElementOutline"]
-Button.Size = UDim2.new(0, 238, 0, 21)
+Button.Size = UDim2.new(0, 215, 0, 21)
 Button.Font = Enum.Font.Gotham
 Button.TextColor3 = themes[theme]["Text"]
 Button.TextSize = 14.000
@@ -678,7 +678,7 @@ ColorPicker.Parent = Sector
 ColorPicker.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
 ColorPicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
 ColorPicker.BorderSizePixel = 2
-ColorPicker.Size = UDim2.new(0, 300, 0, 60)
+ColorPicker.Size = UDim2.new(0, 300, 0, 40)
 ColorPicker.Visible = false
 Saturation.Name = "Saturation"
 Saturation.Parent = ColorPicker
@@ -686,14 +686,13 @@ Saturation.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Saturation.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Saturation.BorderSizePixel = 0
 Saturation.Position = UDim2.new(0.288, 0, 0.13, 0)
-Saturation.Size = UDim2.new(0, 76, 0, 40)
+Saturation.Size = UDim2.new(0, 152, 0, 30)
 Saturation.Font = Enum.Font.Gotham
 Saturation.Text = ""
 Saturation.TextColor3 = Color3.fromRGB(0, 0, 0)
 Saturation.TextSize = 14.000
 Saturation.AutoButtonColor = false
-UIGradient = Instance.new("UIGradient")
-UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(0.33, Color3.fromRGB(61, 130, 162)), ColorSequenceKeypoint.new(0.66, Color3.fromRGB(156, 59, 145)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(155, 161, 48))}
+UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))}
 UIGradient.Rotation = 90
 UIGradient.Parent = Saturation
 SaturationDrag.Name = "SaturationDrag"
@@ -707,7 +706,7 @@ Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Hue.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Hue.BorderSizePixel = 0
 Hue.Position = UDim2.new(0.112, 0, 0.13, 0)
-Hue.Size = UDim2.new(0, 13, 0, 40)
+Hue.Size = UDim2.new(0, 13, 0, 30)
 Hue.Image = "rbxassetid://129669031573073"
 Hue.AutoButtonColor = false
 SaturationDrag_2.Name = "SaturationDrag_2"
@@ -723,7 +722,7 @@ element.Visible = false
 end
 end
 local abs_pos = Colorpicker.AbsolutePosition
-ColorPicker.Position = UDim2.new(0, abs_pos.X - Sector.AbsolutePosition.X - 120, 0, abs_pos.Y - Sector.AbsolutePosition.Y + Colorpicker.Size.Y.Offset + 16)
+ColorPicker.Position = UDim2.new(0, abs_pos.X - Sector.AbsolutePosition.X - 240, 0, abs_pos.Y - Sector.AbsolutePosition.Y + Colorpicker.Size.Y.Offset + 16)
 ColorPicker.Visible = not ColorPicker.Visible
 end)
 colorpicker.set = function(hue, sat, val)
@@ -732,7 +731,11 @@ SaturationDrag_2.Position = UDim2.new(0, 0, 1 - hue, 0)
 hue_value = hue
 sat_value = sat
 value_value = val
-Saturation.BackgroundColor3 = Color3.fromHSV(hue_value, sat_value, value_value)
+UIGradient.Color = ColorSequence.new{
+ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
+ColorSequenceKeypoint.new(0.50, Color3.fromHSV(hue_value, 1, 1)),
+ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))
+}
 Colorpicker.BackgroundColor3 = Color3.fromHSV(hue_value, sat_value, value_value)
 cpcallback(Colorpicker.BackgroundColor3)
 end
@@ -871,12 +874,12 @@ ValueLabel.TextColor3 = themes[theme]["Text"]
 ValueLabel.TextSize = 12
 ValueLabel.TextXAlignment = Enum.TextXAlignment.Center
 ValueLabel.AnchorPoint = Vector2.new(0.5, 0)
-slider.set = function(percentage)
-services.tween:Create(Fill, TweenInfo.new(0.15, Enum.EasingStyle.Quad), {Size = UDim2.new(percentage, 0, 1, 0)}):Play()
-value = (percentage / 100) * (max - min) + min
+slider.set = function(fraction)
+services.tween:Create(Fill, TweenInfo.new(0.15, Enum.EasingStyle.Quad), {Size = UDim2.new(fraction, 0, 1, 0)}):Play()
+value = fraction * (max - min) + min
 callback(value)
 ValueLabel.Text = tostring(math.round(value * 100) / 100)..indicator
-ValueLabel.Position = UDim2.new(percentage, 0, 0.85, 0)
+ValueLabel.Position = UDim2.new(fraction, 0, 0.85, 0)
 end
 slider.get = function()
 return value
@@ -911,10 +914,11 @@ local mouse_pos = services.uis:GetMouseLocation()
 local abs = Bg.AbsolutePosition.X
 local abs_size = Bg.AbsoluteSize.X
 local size = math.clamp((mouse_pos.X - abs) / abs_size, 0, 1)
-slider.set(size * 100)
+slider.set(size)
 end
 end)
-slider.set((default - min) / (max - min) * 100)
+local initial_fraction = (default - min) / (max - min)
+slider.set(initial_fraction)
 sector.increase_scrollbar_size()
 return slider
 end
