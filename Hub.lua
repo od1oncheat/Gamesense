@@ -105,17 +105,17 @@ Main.BackgroundColor3 = themes[theme]["Window"]
 Main.BorderColor3 = Color3.fromRGB(45, 45, 45)
 Main.BorderSizePixel = 4
 Main.Position = UDim2.new(0.38166827, 0, 0.249408439, 0)
-Main.Size = UDim2.new(0, 720, 0, 605)
+Main.Size = UDim2.new(0, 720, 0, 700)
 Tabs.Name = "Tabs"
 Tabs.Parent = Main
 Tabs.BackgroundColor3 = themes[theme]["Tabs"]
 Tabs.BorderColor3 = Color3.fromRGB(21, 21, 21)
 Tabs.Position = UDim2.new(0, 1, 0.00330578513, 0)
-Tabs.Size = UDim2.new(0, 100, 0, 602)
+Tabs.Size = UDim2.new(0, 110, 0, 697)
 UIGridLayout.Parent = Tabs
 UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
-UIGridLayout.CellPadding = UDim2.new(0, 15, 0, 0)
-UIGridLayout.CellSize = UDim2.new(0, 95, 0, 70)
+UIGridLayout.CellPadding = UDim2.new(0, 10, 0, 0)
+UIGridLayout.CellSize = UDim2.new(0, 105, 0, 70)
 UIPadding.Parent = Tabs
 UIPadding.PaddingLeft = UDim.new(0, 5)
 UIPadding.PaddingTop = UDim.new(0, 15)
@@ -134,7 +134,7 @@ Content.BackgroundTransparency = 1.000
 Content.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Content.BorderSizePixel = 0
 Content.Position = UDim2.new(0.15277778, 0, 0.0247933883, 0)
-Content.Size = UDim2.new(0, 590, 0, 579)
+Content.Size = UDim2.new(0, 590, 0, 665)
 UIListLayout.Parent = Content
 UIListLayout.FillDirection = Enum.FillDirection.Horizontal
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
@@ -210,7 +210,7 @@ Tab.BorderColor3 = Color3.fromRGB(20, 20, 20)
 Tab.BackgroundTransparency = 1
 Tab.BorderSizePixel = 2
 Tab.Position = UDim2.new(0, 0, 0.14480409, 0)
-Tab.Size = UDim2.new(0, 95, 0, 70)
+Tab.Size = UDim2.new(0, 105, 0, 70)
 Tab.AutoButtonColor = false
 Tab.Font = Enum.Font.Gotham
 Tab.Text = ""
@@ -270,14 +270,16 @@ SectorContent.BackgroundTransparency = 1.000
 SectorContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
 SectorContent.BorderSizePixel = 0
 SectorContent.Position = UDim2.new(0.028933093, 0, 0.04, 0)
-SectorContent.Size = UDim2.new(0, 259, 0, 505)
+SectorContent.Size = UDim2.new(0, 259, 0, 590)
 SectorContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 SectorContent.ScrollBarThickness = 3
+SectorContent.ClipsDescendants = false
 UIListLayout.Parent = SectorContent
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-UIListLayout.Padding = UDim.new(0,5)
+UIListLayout.Padding = UDim.new(0, 8)
 UIPadding.Parent = SectorContent
 UIPadding.PaddingLeft = UDim.new(0, 5)
+UIPadding.PaddingRight = UDim.new(0, 5)
 local UIGradient = Instance.new("UIGradient")
 UIGradient.Color = ColorSequence.new{
 ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
@@ -514,7 +516,7 @@ Image.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Image.BackgroundTransparency = 1.000
 Image.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Image.BorderSizePixel = 0
-Image.Position = UDim2.new(0.92, 0, 0.2, 0)
+Image.Position = UDim2.new(0, 234, 0, 5)
 Image.Size = UDim2.new(0, 15, 0, 15)
 Image.Image = "rbxassetid://74187648454886"
 Image.ImageColor3 = Color3.fromRGB(115, 115, 115)
@@ -533,6 +535,7 @@ DropdownContent.Visible = false
 DropdownContent.ZIndex = 102
 UIPadding_2.Parent = DropdownContent
 UIPadding_2.PaddingLeft = UDim.new(0, 5)
+UIPadding_2.PaddingRight = UDim.new(0, 5)
 UIPadding_2.PaddingTop = UDim.new(0, 5)
 UIListLayout.Parent = DropdownContent
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
@@ -570,7 +573,7 @@ Button.Name = name
 Button.Parent = DropdownContent
 Button.BackgroundColor3 = themes[theme]["ElementBg"]
 Button.BorderColor3 = themes[theme]["ElementOutline"]
-Button.Size = UDim2.new(0, 238, 0, 25)
+Button.Size = UDim2.new(0, 239, 0, 25)
 Button.Font = Enum.Font.Gotham
 Button.TextColor3 = themes[theme]["Text"]
 Button.TextSize = 14.000
@@ -590,12 +593,17 @@ end)
 if name == default then
 dropdown.set(name)
 end
-DropdownContent.CanvasSize += UDim2.new(0, 0, 0, Button.AbsoluteSize.Y + 6)
+DropdownContent.CanvasSize = UDim2.new(0, 0, 0, DropdownContent.CanvasSize.Y.Offset + Button.AbsoluteSize.Y + 6)
 end
 dropdown.remove = function(name)
-DropdownContent.CanvasSize -= UDim2.new(0, 0, 0, DropdownContent:FindFirstChild(name).AbsoluteSize.Y + 6)
-DropdownContent:FindFirstChild(name):Destroy()
+local btn = DropdownContent:FindFirstChild(name)
+if btn then
+DropdownContent.CanvasSize = UDim2.new(0, 0, 0, DropdownContent.CanvasSize.Y.Offset - btn.AbsoluteSize.Y - 6)
+btn:Destroy()
+end
+if dropdown.selected == name then
 dropdown.selected = ""
+end
 end
 dropdown.delete = function()
 Dropdown:Destroy()
@@ -620,7 +628,7 @@ Toggle.BackgroundTransparency = 1.000
 Toggle.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Toggle.BorderSizePixel = 0
 Toggle.Position = UDim2.new(0, 0, 0, 0)
-Toggle.Size = UDim2.new(0, 249, 0, 18)
+Toggle.Size = UDim2.new(0, 249, 0, 25)
 Toggle.Font = Enum.Font.Gotham
 Toggle.Text = ""
 Toggle.TextColor3 = Color3.fromRGB(172, 172, 172)
@@ -632,7 +640,7 @@ Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Text.BackgroundTransparency = 1.000
 Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Text.BorderSizePixel = 0
-Text.Position = UDim2.new(0.0923694745, 0, 0, 0)
+Text.Position = UDim2.new(0, 23, 0, 0)
 Text.Size = UDim2.new(0, 226, 0, 18)
 Text.Font = Enum.Font.Gotham
 Text.TextColor3 = themes[theme]["Text"]
@@ -840,7 +848,7 @@ Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Text.BackgroundTransparency = 1.000
 Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Text.BorderSizePixel = 0
-Text.Position = UDim2.new(0.0923694745, 0, 0, 0)
+Text.Position = UDim2.new(0, 23, 0, 0)
 Text.Size = UDim2.new(0, 226, 0, 18)
 Text.Font = Enum.Font.Gotham
 Text.TextColor3 = themes[theme]["Text"]
@@ -852,7 +860,7 @@ Bg.Name = "Bg"
 Bg.Parent = Slider
 Bg.BackgroundColor3 = themes[theme]["SliderBg"]
 Bg.BorderColor3 = themes[theme]["ElementOutline"]
-Bg.Position = UDim2.new(0.1, 0, 0.72, 0)
+Bg.Position = UDim2.new(0, 23, 0, 18)
 Bg.Size = UDim2.new(0, 226, 0, 8)
 Bg.AutoButtonColor = false
 Bg.Font = Enum.Font.Gotham
@@ -885,6 +893,7 @@ UIGradient_2.Parent = Fill
 ValueLabel.Name = "ValueLabel"
 ValueLabel.Parent = Slider
 ValueLabel.BackgroundTransparency = 1
+ValueLabel.Size = UDim2.new(0, 60, 0, 15)
 ValueLabel.Font = Enum.Font.Gotham
 ValueLabel.TextColor3 = themes[theme]["Text"]
 ValueLabel.TextSize = 12
@@ -895,7 +904,7 @@ services.tween:Create(Fill, TweenInfo.new(0.15, Enum.EasingStyle.Quad), {Size = 
 value = fraction * (max - min) + min
 callback(value)
 ValueLabel.Text = tostring(math.round(value * 100) / 100)..indicator
-ValueLabel.Position = UDim2.new(fraction, 0, 0.85, 0)
+ValueLabel.Position = UDim2.new(0, 23 + (fraction * 226) - 30, 0, 3)
 end
 slider.get = function()
 return value
