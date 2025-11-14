@@ -115,9 +115,9 @@ Tabs.Size = UDim2.new(0, 100, 0, 602)
 UIGridLayout.Parent = Tabs
 UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UIGridLayout.CellPadding = UDim2.new(0, 15, 0, 0)
-UIGridLayout.CellSize = UDim2.new(0, 100, 0, 70)
+UIGridLayout.CellSize = UDim2.new(0, 95, 0, 70)
 UIPadding.Parent = Tabs
-UIPadding.PaddingLeft = UDim.new(0, 0)
+UIPadding.PaddingLeft = UDim.new(0, 5)
 UIPadding.PaddingTop = UDim.new(0, 15)
 TopGradient.Name = "TopGradient"
 TopGradient.Parent = Main
@@ -210,7 +210,7 @@ Tab.BorderColor3 = Color3.fromRGB(20, 20, 20)
 Tab.BackgroundTransparency = 1
 Tab.BorderSizePixel = 2
 Tab.Position = UDim2.new(0, 0, 0.14480409, 0)
-Tab.Size = UDim2.new(0, 100, 0, 70)
+Tab.Size = UDim2.new(0, 95, 0, 70)
 Tab.AutoButtonColor = false
 Tab.Font = Enum.Font.Gotham
 Tab.Text = ""
@@ -222,7 +222,7 @@ Open.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Open.BackgroundTransparency = 1.000
 Open.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Open.BorderSizePixel = 0
-Open.Position = UDim2.new(0.285, 0, 0.19285714, 0)
+Open.Position = UDim2.new(0.26, 0, 0.19285714, 0)
 Open.Size = UDim2.new(0, 43, 0, 43)
 Open.Image = image
 Open.ImageColor3 = Color3.fromRGB(90,90,90)
@@ -244,8 +244,8 @@ Sector.Name = name
 Sector.Parent = Content
 Sector.BackgroundColor3 = themes[theme]["Sector"]
 Sector.BorderColor3 = Color3.fromRGB(34, 34, 34)
-Sector.Position = UDim2.new(pos_x, 0, 0.0125, 0)
-Sector.Size = UDim2.new(0.5, 0, 0.975, 0)
+Sector.Position = UDim2.new(pos_x, 0, 0.02, 0)
+Sector.Size = UDim2.new(0.5, 0, 0.96, 0)
 Sector.Visible = false
 Title.Name = "Title"
 Title.Parent = Sector
@@ -270,12 +270,12 @@ SectorContent.BackgroundTransparency = 1.000
 SectorContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
 SectorContent.BorderSizePixel = 0
 SectorContent.Position = UDim2.new(0.028933093, 0, 0.05, 0)
-SectorContent.Size = UDim2.new(0, 259, 0, 520)
+SectorContent.Size = UDim2.new(0, 259, 0, 510)
 SectorContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 SectorContent.ScrollBarThickness = 3
 UIListLayout.Parent = SectorContent
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-UIListLayout.Padding = UDim.new(0,6)
+UIListLayout.Padding = UDim.new(0,5)
 UIPadding.Parent = SectorContent
 UIPadding.PaddingLeft = UDim.new(0, 5)
 local UIGradient = Instance.new("UIGradient")
@@ -398,11 +398,12 @@ sector.textbox = function(placeholder,default, callback)
 local textbox = {}
 local TextBox = Instance.new("TextBox")
 local UIPadding = Instance.new("UIPadding")
+local ValueLabel = Instance.new("TextLabel")
 TextBox.Parent = SectorContent
 TextBox.BackgroundColor3 = themes[theme]["ElementBg"]
 TextBox.BorderColor3 = themes[theme]["ElementOutline"]
 TextBox.Position = UDim2.new(0, 0, 0, 0)
-TextBox.Size = UDim2.new(0, 249, 0, 21)
+TextBox.Size = UDim2.new(0, 226, 0, 21)
 TextBox.ClearTextOnFocus = false
 TextBox.Font = Enum.Font.Gotham
 TextBox.PlaceholderColor3 = Color3.fromRGB(72, 72, 72)
@@ -414,8 +415,19 @@ TextBox.TextStrokeTransparency = 0.800
 TextBox.TextXAlignment = Enum.TextXAlignment.Left
 UIPadding.Parent = TextBox
 UIPadding.PaddingLeft = UDim.new(0, 5)
+ValueLabel.Name = "ValueLabel"
+ValueLabel.Parent = TextBox
+ValueLabel.BackgroundTransparency = 1
+ValueLabel.Font = Enum.Font.Gotham
+ValueLabel.Text = default
+ValueLabel.TextColor3 = themes[theme]["Text"]
+ValueLabel.TextSize = 12
+ValueLabel.Position = UDim2.new(0.9, 0, 0.5, 0)
+ValueLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
 textbox.set = function(text)
 TextBox.Text = text
+ValueLabel.Text = text
 end
 textbox.get = function()
 return TextBox.Text
@@ -425,6 +437,19 @@ TextBox:Destroy()
 end
 TextBox:GetPropertyChangedSignal("Text"):Connect(function()
 callback(TextBox.Text)
+ValueLabel.Text = TextBox.Text
+local tweenInfo = TweenInfo.new(0.1, Enum.EasingStyle.Quad)
+services.tween:Create(TextBox, tweenInfo, {BackgroundColor3 = Color3.fromRGB(30, 30, 30)}):Play()
+wait(0.1)
+services.tween:Create(TextBox, tweenInfo, {BackgroundColor3 = themes[theme]["ElementBg"]}):Play()
+end)
+TextBox.Focused:Connect(function()
+local tweenInfo = TweenInfo.new(0.15, Enum.EasingStyle.Quad)
+services.tween:Create(TextBox, tweenInfo, {BackgroundColor3 = Color3.fromRGB(30, 30, 30)}):Play()
+end)
+TextBox.FocusLost:Connect(function()
+local tweenInfo = TweenInfo.new(0.15, Enum.EasingStyle.Quad)
+services.tween:Create(TextBox, tweenInfo, {BackgroundColor3 = themes[theme]["ElementBg"]}):Play()
 end)
 callback(default)
 sector.increase_scrollbar_size()
@@ -438,7 +463,7 @@ Button.Parent = SectorContent
 Button.BackgroundColor3 = themes[theme]["ElementBg"]
 Button.BorderColor3 = themes[theme]["ElementOutline"]
 Button.Position = UDim2.new(0, 0, 0, 0)
-Button.Size = UDim2.new(0, 249, 0, 21)
+Button.Size = UDim2.new(0, 226, 0, 21)
 Button.AutoButtonColor = false
 Button.Font = Enum.Font.Gotham
 Button.TextColor3 = themes[theme]["Text"]
@@ -471,7 +496,7 @@ Dropdown.Parent = SectorContent
 Dropdown.BackgroundColor3 = themes[theme]["ElementBg"]
 Dropdown.BorderColor3 = themes[theme]["ElementOutline"]
 Dropdown.Position = UDim2.new(0, 0, 0, 0)
-Dropdown.Size = UDim2.new(0, 249, 0, 21)
+Dropdown.Size = UDim2.new(0, 226, 0, 21)
 Dropdown.AutoButtonColor = false
 Dropdown.Font = Enum.Font.Gotham
 Dropdown.Text = text
@@ -487,7 +512,7 @@ Image.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Image.BackgroundTransparency = 1.000
 Image.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Image.BorderSizePixel = 0
-Image.Position = UDim2.new(0.85, 0, 0.142857149, 0)
+Image.Position = UDim2.new(0.92, 0, 0.142857149, 0)
 Image.Size = UDim2.new(0, 15, 0, 15)
 Image.Image = "rbxassetid://74187648454886"
 Image.ImageColor3 = Color3.fromRGB(115, 115, 115)
@@ -497,8 +522,8 @@ DropdownContent.Parent = Dropdown
 DropdownContent.Active = true
 DropdownContent.BackgroundColor3 = themes[theme]["ElementBg"]
 DropdownContent.BorderColor3 = themes[theme]["ElementOutline"]
-DropdownContent.Position = UDim2.new(0, 0, 1, 0)
-DropdownContent.Size = UDim2.new(0, 249, 0, 116)
+DropdownContent.Position = UDim2.new(0, 0, 1, 2)
+DropdownContent.Size = UDim2.new(0, 226, 0, 116)
 DropdownContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 DropdownContent.ScrollBarThickness = 3
 DropdownContent.ScrollBarImageColor3 = Color3.fromRGB(50, 50, 50)
@@ -543,7 +568,7 @@ Button.Name = name
 Button.Parent = DropdownContent
 Button.BackgroundColor3 = themes[theme]["ElementBg"]
 Button.BorderColor3 = themes[theme]["ElementOutline"]
-Button.Size = UDim2.new(0, 238, 0, 21)
+Button.Size = UDim2.new(0, 215, 0, 21)
 Button.Font = Enum.Font.Gotham
 Button.TextColor3 = themes[theme]["Text"]
 Button.TextSize = 14.000
@@ -593,7 +618,7 @@ Toggle.BackgroundTransparency = 1.000
 Toggle.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Toggle.BorderSizePixel = 0
 Toggle.Position = UDim2.new(0, 0, 0, 0)
-Toggle.Size = UDim2.new(0, 249, 0, 21)
+Toggle.Size = UDim2.new(0, 249, 0, 18)
 Toggle.Font = Enum.Font.Gotham
 Toggle.Text = ""
 Toggle.TextColor3 = Color3.fromRGB(172, 172, 172)
@@ -606,7 +631,7 @@ Text.BackgroundTransparency = 1.000
 Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Text.BorderSizePixel = 0
 Text.Position = UDim2.new(0.0923694745, 0, 0, 0)
-Text.Size = UDim2.new(0, 226, 0, 21)
+Text.Size = UDim2.new(0, 226, 0, 18)
 Text.Font = Enum.Font.Gotham
 Text.TextColor3 = themes[theme]["Text"]
 Text.TextSize = 14.000
@@ -627,11 +652,8 @@ UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.from
 UIGradient.Rotation = 90
 UIGradient.Parent = Bg
 toggle.set = function(value)
-if value then
-Bg.BackgroundColor3 = themes[theme]["Toggle"]
-else
-Bg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
-end
+local targetColor = value and themes[theme]["Toggle"] or themes[theme]["ToggleUnchecked"]
+services.tween:Create(Bg, TweenInfo.new(0.15, Enum.EasingStyle.Quad), {BackgroundColor3 = targetColor}):Play()
 callback(value)
 end
 toggle.set_text = function(_text)
@@ -791,6 +813,7 @@ local Bg = Instance.new("TextButton")
 local UIGradient = Instance.new("UIGradient")
 local Fill = Instance.new("TextButton")
 local UIGradient_2 = Instance.new("UIGradient")
+local ValueLabel = Instance.new("TextLabel")
 Slider.Name = "Slider"
 Slider.Parent = SectorContent
 Slider.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -798,7 +821,7 @@ Slider.BackgroundTransparency = 1.000
 Slider.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Slider.BorderSizePixel = 0
 Slider.Position = UDim2.new(0, 0, 0, 0)
-Slider.Size = UDim2.new(0, 249, 0, 28)
+Slider.Size = UDim2.new(0, 249, 0, 25)
 Slider.Font = Enum.Font.Gotham
 Slider.Text = ""
 Slider.TextColor3 = Color3.fromRGB(172, 172, 172)
@@ -811,17 +834,18 @@ Text.BackgroundTransparency = 1.000
 Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Text.BorderSizePixel = 0
 Text.Position = UDim2.new(0.0923694745, 0, 0, 0)
-Text.Size = UDim2.new(0, 226, 0, 21)
+Text.Size = UDim2.new(0, 226, 0, 18)
 Text.Font = Enum.Font.Gotham
 Text.TextColor3 = themes[theme]["Text"]
 Text.TextSize = 14.000
 Text.TextStrokeTransparency = 0.800
 Text.TextXAlignment = Enum.TextXAlignment.Left
+Text.Text = text
 Bg.Name = "Bg"
 Bg.Parent = Slider
 Bg.BackgroundColor3 = themes[theme]["SliderBg"]
 Bg.BorderColor3 = themes[theme]["ElementOutline"]
-Bg.Position = UDim2.new(0.1, 0, 0.75, 0)
+Bg.Position = UDim2.new(0.1, 0, 0.72, 0)
 Bg.Size = UDim2.new(0, 226, 0, 8)
 Bg.AutoButtonColor = false
 Bg.Font = Enum.Font.Gotham
@@ -851,17 +875,26 @@ ColorSequenceKeypoint.new(1.00, Color3.fromRGB(175, 175, 175))
 }
 UIGradient_2.Rotation = 90
 UIGradient_2.Parent = Fill
+ValueLabel.Name = "ValueLabel"
+ValueLabel.Parent = Slider
+ValueLabel.BackgroundTransparency = 1
+ValueLabel.Font = Enum.Font.Gotham
+ValueLabel.TextColor3 = themes[theme]["Text"]
+ValueLabel.TextSize = 12
+ValueLabel.TextXAlignment = Enum.TextXAlignment.Center
+ValueLabel.AnchorPoint = Vector2.new(0.5, 0)
 slider.set = function(percentage)
-Fill.Size = UDim2.new(percentage, 0, 1, 0)
+services.tween:Create(Fill, TweenInfo.new(0.15, Enum.EasingStyle.Quad), {Size = UDim2.new(percentage, 0, 1, 0)}):Play()
 value = (percentage / 100) * (max - min) + min
 callback(value)
-Text.Text = text.." "..tostring(math.round(value * 100) / 100)..indicator
+ValueLabel.Text = tostring(math.round(value * 100) / 100)..indicator
+ValueLabel.Position = UDim2.new(percentage, 0, 0.85, 0)
 end
 slider.get = function()
 return value
 end
 slider.set_text = function(_text)
-Text.Text = _text.." "..tostring(math.round(value * 100) / 100)..indicator
+Text.Text = _text
 text = _text
 end
 Bg.InputBegan:Connect(function(input)
@@ -890,7 +923,7 @@ local mouse_pos = services.uis:GetMouseLocation()
 local abs = Bg.AbsolutePosition.X
 local abs_size = Bg.AbsoluteSize.X
 local size = math.clamp((mouse_pos.X - abs) / abs_size, 0, 1)
-slider.set(size)
+slider.set(size * 100)
 end
 end)
 slider.set((default - min) / (max - min) * 100)
