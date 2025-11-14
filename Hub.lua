@@ -18,8 +18,7 @@ local themes = {
 }
 local services = {
 	["uis"] = game:GetService("UserInputService"),
-	["run"] = game:GetService("RunService"),
-	["tween"] = game:GetService("TweenService")
+	["run"] = game:GetService("RunService")
 }
 local function gethui()
 	return game.Players.LocalPlayer.PlayerGui
@@ -44,7 +43,7 @@ lib.create_window = function(theme, menu_key)
 	local TopGradient = Instance.new("Frame")
 	local UIGradient = Instance.new("UIGradient")
 	local Content = Instance.new("Frame")
-	local ContentListLayout = Instance.new("UIListLayout")
+	local UIListLayoutContent = Instance.new("UIListLayout")
 	-- dragging
 	window.update_window = function(input)
 		local delta = input.Position - window.drag_start
@@ -83,6 +82,8 @@ lib.create_window = function(theme, menu_key)
 		if input == window.drag_input and window.dragging then
 			window.update_window(input)
 		end
+		math.randomseed(os.time())
+		Mute.Name = tostring(math.random(0,9999999))
 	end)
 	services.uis.InputBegan:Connect(function(input)
 		if input.KeyCode == menu_key then
@@ -129,42 +130,18 @@ lib.create_window = function(theme, menu_key)
 	Content.BorderSizePixel = 0
 	Content.Position = UDim2.new(0.165000007, 0, 0.0247933883, 0)
 	Content.Size = UDim2.new(0, 553, 0, 579)
-	ContentListLayout.Parent = Content
-	ContentListLayout.FillDirection = Enum.FillDirection.Horizontal
-	ContentListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-	ContentListLayout.Padding = UDim.new(0, 10)
+	UIListLayoutContent.Parent = Content
+	UIListLayoutContent.FillDirection = Enum.FillDirection.Vertical
+	UIListLayoutContent.SortOrder = Enum.SortOrder.LayoutOrder
+	UIListLayoutContent.Padding = UDim.new(0, 10)
 	window.tab_contents = {}
 	window.selected_tab = ""
-	local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut)
 	window.show_tab = function(name)
-		if window.selected_tab == name then return end
-		local old_name = window.selected_tab
-		window.selected_tab = name
-		if old_name ~= "" then
-			for _, content in pairs(window.tab_contents) do
-				if content[1] == old_name then
-					local old_frame = content[2]
-					local tweenOut = services.tween:Create(old_frame, tweenInfo, {BackgroundTransparency = 1})
-					tweenOut:Play()
-					tweenOut.Completed:Connect(function()
-						old_frame.Visible = false
-					end)
-					break
-				end
-			end
-		end
 		for _, content in pairs(window.tab_contents) do
 			if content[1] == name then
-				local new_frame = content[2]
-				new_frame.Visible = true
-				if old_name == "" then
-					new_frame.BackgroundTransparency = 0
-				else
-					new_frame.BackgroundTransparency = 1
-					local tweenIn = services.tween:Create(new_frame, tweenInfo, {BackgroundTransparency = 0})
-					tweenIn:Play()
-				end
-				break
+				content[2].Visible = true
+			else
+				content[2].Visible = false
 			end
 		end
 	end
@@ -223,15 +200,14 @@ lib.create_window = function(theme, menu_key)
 			local Sector = Instance.new("Frame")
 			local Title = Instance.new("TextLabel")
 			local SectorContent = Instance.new("ScrollingFrame")
-			local listLayout = Instance.new("UIListLayout")
+			local UIListLayout = Instance.new("UIListLayout")
 			local UIPadding = Instance.new("UIPadding")
 			Sector.Name = name
 			Sector.Parent = Content
 			Sector.BackgroundColor3 = themes[theme]["Sector"]
 			Sector.BorderColor3 = Color3.fromRGB(34, 34, 34)
 			Sector.Position = UDim2.new(0, 0, 0, 0)
-			Sector.Size = UDim2.new(1, 0, 1, 0)
-			Sector.BackgroundTransparency = 0
+			Sector.Size = UDim2.new(1, 0, 0, 0)
 			Sector.Visible = false
 			Title.Name = "Title"
 			Title.Parent = Sector
@@ -259,9 +235,9 @@ lib.create_window = function(theme, menu_key)
 			SectorContent.Size = UDim2.new(1, 0, 1, -25)
 			SectorContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 			SectorContent.ScrollBarThickness = 3
-			listLayout.Parent = SectorContent
-			listLayout.SortOrder = Enum.SortOrder.LayoutOrder
-			listLayout.Padding = UDim.new(0,7)
+			UIListLayout.Parent = SectorContent
+			UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+			UIListLayout.Padding = UDim.new(0,7)
 			UIPadding.Parent = SectorContent
 			UIPadding.PaddingLeft = UDim.new(0, 5)
 			local UIGradient = Instance.new("UIGradient")
@@ -272,7 +248,16 @@ lib.create_window = function(theme, menu_key)
 			UIGradient.Rotation = 90
 			UIGradient.Parent = Sector
 			sector.increase_scrollbar_size = function()
-				SectorContent.CanvasSize = UDim2.new(0, 0, 0, listLayout.AbsoluteContentSize.Y)
+				local totalHeight = 0
+				local numElements = 0
+				for _, element in pairs(SectorContent:GetChildren()) do
+					if element:IsA("GuiObject") and element.AbsoluteSize.Y > 0 then
+						totalHeight = totalHeight + element.AbsoluteSize.Y
+						numElements = numElements + 1
+					end
+				end
+				totalHeight = totalHeight + (numElements - 1) * 7 + 5
+				SectorContent.CanvasSize = UDim2.new(0, 0, 0, totalHeight)
 			end
 			sector.text = function(_text)
 				local text = {}
@@ -436,7 +421,6 @@ lib.create_window = function(theme, menu_key)
 			end
 			sector.dropdown = function(text, options, default, callback)
 				local dropdown = {}
-				local label = text
 				dropdown.selected = default
 				local up_id = "rbxassetid://74187648454886"
 				local down_id = "rbxassetid://97940921082727"
@@ -445,7 +429,7 @@ lib.create_window = function(theme, menu_key)
 				local Image = Instance.new("ImageLabel")
 				local DropdownContent = Instance.new("ScrollingFrame")
 				local UIPadding_2 = Instance.new("UIPadding")
-				local listLayoutDrop = Instance.new("UIListLayout")
+				local UIListLayout = Instance.new("UIListLayout")
 				Dropdown.Name = "Dropdown"
 				Dropdown.Parent = SectorContent
 				Dropdown.BackgroundColor3 = themes[theme]["ElementBg"]
@@ -453,7 +437,7 @@ lib.create_window = function(theme, menu_key)
 				Dropdown.Size = UDim2.new(1, 0, 0, 21)
 				Dropdown.AutoButtonColor = false
 				Dropdown.Font = Enum.Font.SourceSans
-				Dropdown.Text = label .. (default and ": " .. default or "")
+				Dropdown.Text = text
 				Dropdown.TextColor3 = themes[theme]["Text"]
 				Dropdown.TextSize = 14.000
 				Dropdown.TextXAlignment = Enum.TextXAlignment.Left
@@ -486,9 +470,9 @@ lib.create_window = function(theme, menu_key)
 				UIPadding_2.Parent = DropdownContent
 				UIPadding_2.PaddingLeft = UDim.new(0, 5)
 				UIPadding_2.PaddingTop = UDim.new(0, 5)
-				listLayoutDrop.Parent = DropdownContent
-				listLayoutDrop.SortOrder = Enum.SortOrder.LayoutOrder
-				listLayoutDrop.Padding = UDim.new(0, 5)
+				UIListLayout.Parent = DropdownContent
+				UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+				UIListLayout.Padding = UDim.new(0, 5)
 				Dropdown.MouseButton1Down:Connect(function()
 					DropdownContent.Visible = not DropdownContent.Visible
 					Image.Image = DropdownContent.Visible and up_id or down_id
@@ -507,8 +491,10 @@ lib.create_window = function(theme, menu_key)
 					if selectedButton then
 						selectedButton.BorderColor3 = themes[theme]["DropdownSelected"]
 					end
-					Dropdown.Text = label .. ": " .. name
 					callback(name)
+				end
+				dropdown.set_text = function(_text)
+					Dropdown.Text = _text
 				end
 				dropdown.get = function()
 					return dropdown.selected
@@ -541,15 +527,16 @@ lib.create_window = function(theme, menu_key)
 					if name == default then
 						dropdown.set(name)
 					end
+					DropdownContent.CanvasSize = DropdownContent.CanvasSize + UDim2.new(0, 0, 0, Button.AbsoluteSize.Y + 6)
 				end
 				dropdown.remove = function(name)
 					local btn = DropdownContent:FindFirstChild(name)
 					if btn then
+						DropdownContent.CanvasSize = DropdownContent.CanvasSize - UDim2.new(0, 0, 0, btn.AbsoluteSize.Y + 6)
 						btn:Destroy()
 					end
 					if dropdown.selected == name then
 						dropdown.selected = ""
-						Dropdown.Text = label
 					end
 				end
 				dropdown.delete = function()
@@ -558,13 +545,11 @@ lib.create_window = function(theme, menu_key)
 				for _, option in pairs(options) do
 					dropdown.add(option)
 				end
-				DropdownContent.CanvasSize = UDim2.new(0, 0, 0, listLayoutDrop.AbsoluteContentSize.Y)
 				sector.increase_scrollbar_size()
 				return dropdown
 			end
 			sector.multidropdown = function(text, options, defaults, callback)
 				local dropdown = {}
-				local label = text
 				dropdown.selected = defaults or {}
 				local up_id = "rbxassetid://74187648454886"
 				local down_id = "rbxassetid://97940921082727"
@@ -573,7 +558,7 @@ lib.create_window = function(theme, menu_key)
 				local Image = Instance.new("ImageLabel")
 				local DropdownContent = Instance.new("ScrollingFrame")
 				local UIPadding_2 = Instance.new("UIPadding")
-				local listLayoutMulti = Instance.new("UIListLayout")
+				local UIListLayout = Instance.new("UIListLayout")
 				Dropdown.Name = "Multidropdown"
 				Dropdown.Parent = SectorContent
 				Dropdown.BackgroundColor3 = themes[theme]["ElementBg"]
@@ -582,7 +567,7 @@ lib.create_window = function(theme, menu_key)
 				Dropdown.AutoButtonColor = false
 				Dropdown.Font = Enum.Font.SourceSans
 				local selected_count = #dropdown.selected
-				Dropdown.Text = label .. ": " .. selected_count .. " selected"
+				Dropdown.Text = text .. ": " .. selected_count .. " selected"
 				Dropdown.TextColor3 = themes[theme]["Text"]
 				Dropdown.TextSize = 14.000
 				Dropdown.TextXAlignment = Enum.TextXAlignment.Left
@@ -615,9 +600,9 @@ lib.create_window = function(theme, menu_key)
 				UIPadding_2.Parent = DropdownContent
 				UIPadding_2.PaddingLeft = UDim.new(0, 5)
 				UIPadding_2.PaddingTop = UDim.new(0, 5)
-				listLayoutMulti.Parent = DropdownContent
-				listLayoutMulti.SortOrder = Enum.SortOrder.LayoutOrder
-				listLayoutMulti.Padding = UDim.new(0, 5)
+				UIListLayout.Parent = DropdownContent
+				UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+				UIListLayout.Padding = UDim.new(0, 5)
 				Dropdown.MouseButton1Down:Connect(function()
 					DropdownContent.Visible = not DropdownContent.Visible
 					Image.Image = DropdownContent.Visible and up_id or down_id
@@ -634,7 +619,7 @@ lib.create_window = function(theme, menu_key)
 						btn.BorderColor3 = table.find(dropdown.selected, name) and themes[theme]["DropdownSelected"] or themes[theme]["ElementOutline"]
 					end
 					local count = #dropdown.selected
-					Dropdown.Text = label .. ": " .. count .. " selected"
+					Dropdown.Text = text .. ": " .. count .. " selected"
 					callback(dropdown.selected)
 				end
 				dropdown.add = function(name)
@@ -663,17 +648,19 @@ lib.create_window = function(theme, menu_key)
 					if table.find(defaults, name) then
 						dropdown.toggle(name)
 					end
+					DropdownContent.CanvasSize = DropdownContent.CanvasSize + UDim2.new(0, 0, 0, Button.AbsoluteSize.Y + 6)
 				end
 				dropdown.remove = function(name)
 					local btn = DropdownContent:FindFirstChild(name)
 					if btn then
+						DropdownContent.CanvasSize = DropdownContent.CanvasSize - UDim2.new(0, 0, 0, btn.AbsoluteSize.Y + 6)
 						btn:Destroy()
 					end
 					local index = table.find(dropdown.selected, name)
 					if index then
 						table.remove(dropdown.selected, index)
 						local count = #dropdown.selected
-						Dropdown.Text = label .. ": " .. count .. " selected"
+						Dropdown.Text = text .. ": " .. count .. " selected"
 						callback(dropdown.selected)
 					end
 				end
@@ -686,17 +673,15 @@ lib.create_window = function(theme, menu_key)
 				for _, option in pairs(options) do
 					dropdown.add(option)
 				end
-				DropdownContent.CanvasSize = UDim2.new(0, 0, 0, listLayoutMulti.AbsoluteContentSize.Y)
 				sector.increase_scrollbar_size()
 				return dropdown
 			end
 			sector.keybind = function(text, default_key, callback)
 				local keybind = {}
-				local label = text
 				local current_key = default_key or Enum.KeyCode.Unknown
 				local capturing = false
 				local Keybind = Instance.new("TextButton")
-				local Text = Instance.new("TextLabel")
+				local TextLabel = Instance.new("TextLabel")
 				local UIPadding = Instance.new("UIPadding")
 				Keybind.Name = "Keybind"
 				Keybind.Parent = SectorContent
@@ -709,38 +694,38 @@ lib.create_window = function(theme, menu_key)
 				Keybind.TextColor3 = themes[theme]["Text"]
 				Keybind.TextSize = 14.000
 				Keybind.TextXAlignment = Enum.TextXAlignment.Left
-				Text.Name = "Text"
-				Text.Parent = Keybind
-				Text.BackgroundTransparency = 1
-				Text.Size = UDim2.new(1, 0, 1, 0)
-				Text.Font = Enum.Font.SourceSans
-				Text.Text = label .. ": " .. (current_key.Name or "None")
-				Text.TextColor3 = themes[theme]["Text"]
-				Text.TextSize = 14.000
-				Text.TextXAlignment = Enum.TextXAlignment.Left
+				TextLabel.Name = "Text"
+				TextLabel.Parent = Keybind
+				TextLabel.BackgroundTransparency = 1
+				TextLabel.Size = UDim2.new(1, 0, 1, 0)
+				TextLabel.Font = Enum.Font.SourceSans
+				TextLabel.Text = text .. ": " .. (current_key.Name or "None")
+				TextLabel.TextColor3 = themes[theme]["Text"]
+				TextLabel.TextSize = 14.000
+				TextLabel.TextXAlignment = Enum.TextXAlignment.Left
 				UIPadding.Parent = Keybind
 				UIPadding.PaddingLeft = UDim.new(0, 5)
 				Keybind.MouseButton1Down:Connect(function()
 					capturing = true
-					Text.Text = label .. ": ... "
+					TextLabel.Text = text .. ": ... "
 				end)
 				local connection
 				connection = services.uis.InputBegan:Connect(function(input)
 					if capturing and input.KeyCode ~= Enum.KeyCode.Unknown then
 						capturing = false
 						current_key = input.KeyCode
-						Text.Text = label .. ": " .. current_key.Name
+						TextLabel.Text = text .. ": " .. current_key.Name
 						callback(current_key)
 						connection:Disconnect()
 					elseif capturing and input.KeyCode == Enum.KeyCode.Escape then
 						capturing = false
-						Text.Text = label .. ": " .. (current_key.Name or "None")
+						TextLabel.Text = text .. ": " .. (current_key.Name or "None")
 						connection:Disconnect()
 					end
 				end)
 				keybind.set = function(key)
 					current_key = key
-					Text.Text = label .. ": " .. key.Name
+					TextLabel.Text = text .. ": " .. key.Name
 					callback(key)
 				end
 				keybind.get = function()
@@ -759,7 +744,7 @@ lib.create_window = function(theme, menu_key)
 				local toggle = {}
 				local value = default
 				local Toggle = Instance.new("TextButton")
-				local Text = Instance.new("TextLabel")
+				local TextLabel = Instance.new("TextLabel")
 				local Bg = Instance.new("TextButton")
 				local UIGradient = Instance.new("UIGradient")
 				Toggle.Name = text
@@ -774,20 +759,20 @@ lib.create_window = function(theme, menu_key)
 				Toggle.TextColor3 = Color3.fromRGB(172, 172, 172)
 				Toggle.TextSize = 14.000
 				Toggle.TextXAlignment = Enum.TextXAlignment.Left
-				Text.Name = "Text"
-				Text.Parent = Toggle
-				Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				Text.BackgroundTransparency = 1.000
-				Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				Text.BorderSizePixel = 0
-				Text.Position = UDim2.new(0, 0, 0, 0)
-				Text.Size = UDim2.new(1, -30, 1, 0)
-				Text.Font = Enum.Font.SourceSans
-				Text.TextColor3 = themes[theme]["Text"]
-				Text.TextSize = 14.000
-				Text.TextStrokeTransparency = 0.800
-				Text.TextXAlignment = Enum.TextXAlignment.Left
-				Text.Text = text
+				TextLabel.Name = "Text"
+				TextLabel.Parent = Toggle
+				TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				TextLabel.BackgroundTransparency = 1.000
+				TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				TextLabel.BorderSizePixel = 0
+				TextLabel.Position = UDim2.new(0, 0, 0, 0)
+				TextLabel.Size = UDim2.new(1, -30, 1, 0)
+				TextLabel.Font = Enum.Font.SourceSans
+				TextLabel.TextColor3 = themes[theme]["Text"]
+				TextLabel.TextSize = 14.000
+				TextLabel.TextStrokeTransparency = 0.800
+				TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+				TextLabel.Text = text
 				Bg.Name = "Bg"
 				Bg.Parent = Toggle
 				Bg.BorderColor3 = themes[theme]["ElementOutline"]
@@ -810,17 +795,17 @@ lib.create_window = function(theme, menu_key)
 					callback(value)
 				end
 				toggle.set_text = function(_text)
-					Text.Text = _text
+					TextLabel.Text = _text
 				end
 				toggle.add_color = function(_default, cpcallback)
 					local colorpicker = {}
 					local choosing_hue = false
 					local choosing_saturation = false
-					local sat_conn, hue_conn
+					local saturation
 					local Colorpicker = Instance.new("TextButton")
 					Colorpicker.Name = "Colorpicker"
 					Colorpicker.Parent = Toggle
-					Colorpicker.BackgroundColor3 = _default
+					Colorpicker.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 					Colorpicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
 					Colorpicker.Position = UDim2.new(1, -30, 0.325, 0)
 					Colorpicker.Size = UDim2.new(0, 11, 0, 11)
@@ -835,8 +820,7 @@ lib.create_window = function(theme, menu_key)
 					local value_value = default_value
 					local ColorPicker = Instance.new("Frame")
 					local Saturation = Instance.new("TextButton")
-					local satGradient = Instance.new("UIGradient")
-					local valGradient = Instance.new("UIGradient")
+					local UIGradient = Instance.new("UIGradient")
 					local SaturationDrag = Instance.new("Frame")
 					local Hue = Instance.new("ImageButton")
 					local SaturationDrag_2 = Instance.new("Frame")
@@ -849,7 +833,7 @@ lib.create_window = function(theme, menu_key)
 					ColorPicker.Visible = false
 					Saturation.Name = "Saturation"
 					Saturation.Parent = ColorPicker
-					Saturation.BackgroundColor3 = Color3.fromHSV(hue_value, 1, 1)
+					Saturation.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 					Saturation.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					Saturation.BorderSizePixel = 0
 					Saturation.Position = UDim2.new(0.288, 0, 0.13, 0)
@@ -859,25 +843,14 @@ lib.create_window = function(theme, menu_key)
 					Saturation.TextColor3 = Color3.fromRGB(0, 0, 0)
 					Saturation.TextSize = 14.000
 					Saturation.AutoButtonColor = false
-					satGradient.Color = ColorSequence.new{
-						ColorSequenceKeypoint.new(0, Color3.fromHSV(hue_value, 0, 1)),
-						ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, 1, 1))
-					}
-					satGradient.Rotation = 0
-					satGradient.Parent = Saturation
-					valGradient.Color = ColorSequence.new{
-						ColorSequenceKeypoint.new(0, Color3.new(0,0,0)),
-						ColorSequenceKeypoint.new(1, Color3.new(1,1,1))
-					}
-					valGradient.Rotation = -90
-					valGradient.Parent = Saturation
+					UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))}
+					UIGradient.Rotation = 90
+					UIGradient.Parent = Saturation
 					SaturationDrag.Name = "SaturationDrag"
 					SaturationDrag.Parent = Saturation
 					SaturationDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 					SaturationDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					SaturationDrag.BorderSizePixel = 0
-					SaturationDrag.Size = UDim2.new(0, 4, 0, 4)
-					SaturationDrag.Position = UDim2.new(sat_value, -2, 1 - value_value, -2)
+					SaturationDrag.Size = UDim2.new(0, 3, 0, 3)
 					Hue.Name = "Hue"
 					Hue.Parent = ColorPicker
 					Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -893,22 +866,6 @@ lib.create_window = function(theme, menu_key)
 					SaturationDrag_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					SaturationDrag_2.BorderSizePixel = 1
 					SaturationDrag_2.Size = UDim2.new(1, 0, 0, 3)
-					SaturationDrag_2.Position = UDim2.new(0, 0, 1 - hue_value, 0)
-					local function updateColor()
-						local mouse = services.uis:GetMouseLocation()
-						if choosing_saturation then
-							local abs_pos = Saturation.AbsolutePosition
-							local abs_size = Saturation.AbsoluteSize
-							local rel_x = math.clamp((mouse.X - abs_pos.X) / abs_size.X, 0, 1)
-							local rel_y = math.clamp((mouse.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-							colorpicker.set(hue_value, rel_x, 1 - rel_y)
-						elseif choosing_hue then
-							local abs_pos = Hue.AbsolutePosition
-							local abs_size = Hue.AbsoluteSize
-							local rel_y = math.clamp((mouse.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-							colorpicker.set(1 - rel_y, sat_value, value_value)
-						end
-					end
 					Colorpicker.MouseButton1Down:Connect(function()
 						for _, element in pairs(Sector:GetChildren()) do
 							if element.Name == "ColorPicker" and element ~= ColorPicker then
@@ -916,55 +873,57 @@ lib.create_window = function(theme, menu_key)
 							end
 						end
 						local abs_pos = Colorpicker.AbsolutePosition
-						ColorPicker.Position = UDim2.new(0, abs_pos.X - Sector.AbsolutePosition.X - 120, 0, abs_pos.Y - Sector.AbsolutePosition.Y + Colorpicker.AbsoluteSize.Y + 5)
+						ColorPicker.Position = UDim2.new(0, abs_pos.X - Sector.AbsolutePosition.X - 120, 0, abs_pos.Y - Sector.AbsolutePosition.Y + Colorpicker.Size.Y.Offset + 16)
 						ColorPicker.Visible = not ColorPicker.Visible
 					end)
-					colorpicker.set = function(h, s, v)
-						hue_value = h
-						sat_value = s
-						value_value = v
-						SaturationDrag.Position = UDim2.new(s, -2, 1 - v, -2)
-						SaturationDrag_2.Position = UDim2.new(0, 0, 1 - h, 0)
-						Saturation.BackgroundColor3 = Color3.fromHSV(h, 1, 1)
-						satGradient.Color = ColorSequence.new{
-							ColorSequenceKeypoint.new(0, Color3.fromHSV(h, 0, 1)),
-							ColorSequenceKeypoint.new(1, Color3.fromHSV(h, 1, 1))
-						}
-						local color = Color3.fromHSV(h, s, v)
-						Colorpicker.BackgroundColor3 = color
-						cpcallback(color)
+					colorpicker.set = function(hue, sat, val)
+						SaturationDrag.Position = UDim2.new(sat - 0.03, 0, 1 - val, 0)
+						SaturationDrag_2.Position = UDim2.new(0, 0, 1 - hue, 0)
+						hue_value = hue
+						sat_value = sat
+						value_value = val
+						Saturation.BackgroundColor3 = Color3.fromHSV(hue_value, sat_value, value_value)
+						Colorpicker.BackgroundColor3 = Color3.fromHSV(hue_value, sat_value, value_value)
+						cpcallback(Colorpicker.BackgroundColor3)
 					end
 					Saturation.InputBegan:Connect(function(input)
 						if input.UserInputType == Enum.UserInputType.MouseButton1 then
 							choosing_saturation = true
-							sat_conn = services.run.RenderStepped:Connect(updateColor)
 						end
 					end)
 					Saturation.InputEnded:Connect(function(input)
 						if input.UserInputType == Enum.UserInputType.MouseButton1 then
 							choosing_saturation = false
-							if sat_conn then
-								sat_conn:Disconnect()
-								sat_conn = nil
-							end
 						end
 					end)
 					Hue.InputBegan:Connect(function(input)
 						if input.UserInputType == Enum.UserInputType.MouseButton1 then
 							choosing_hue = true
-							hue_conn = services.run.RenderStepped:Connect(updateColor)
 						end
 					end)
 					Hue.InputEnded:Connect(function(input)
 						if input.UserInputType == Enum.UserInputType.MouseButton1 then
 							choosing_hue = false
-							if hue_conn then
-								hue_conn:Disconnect()
-								hue_conn = nil
-							end
 						end
 					end)
-					colorpicker.set(default_hue, default_saturation, default_value)
+					Main.InputChanged:Connect(function(input)
+						if choosing_saturation and input.UserInputType == Enum.UserInputType.MouseMovement then
+							local mouse_pos = Vector2.new(game.Players.LocalPlayer:GetMouse().X, game.Players.LocalPlayer:GetMouse().Y)
+							local abs_pos = Saturation.AbsolutePosition
+							local abs_size = Saturation.AbsoluteSize
+							local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
+							local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+							colorpicker.set(hue_value, x, 1 - y)
+						end
+						if choosing_hue and input.UserInputType == Enum.UserInputType.MouseMovement then
+							local mouse_pos = Vector2.new(game.Players.LocalPlayer:GetMouse().X, game.Players.LocalPlayer:GetMouse().Y)
+							local abs_pos = Hue.AbsolutePosition
+							local abs_size = Hue.AbsoluteSize
+							local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+							colorpicker.set(1 - y, sat_value, value_value)
+						end
+					end)
+					colorpicker.set(hue_value, sat_value, value_value)
 					return colorpicker
 				end
 				toggle.get = function()
@@ -985,9 +944,9 @@ lib.create_window = function(theme, menu_key)
 			sector.slider = function(text, indicator, min, max, default, callback)
 				local slider = {}
 				local dragging = false
-				local value = default
+				local value
 				local Slider = Instance.new("TextButton")
-				local Text = Instance.new("TextLabel")
+				local TextLabel = Instance.new("TextLabel")
 				local Bg = Instance.new("TextButton")
 				local UIGradient = Instance.new("UIGradient")
 				local Fill = Instance.new("TextButton")
@@ -1004,19 +963,19 @@ lib.create_window = function(theme, menu_key)
 				Slider.TextColor3 = Color3.fromRGB(172, 172, 172)
 				Slider.TextSize = 14.000
 				Slider.TextXAlignment = Enum.TextXAlignment.Left
-				Text.Name = "Text"
-				Text.Parent = Slider
-				Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				Text.BackgroundTransparency = 1.000
-				Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				Text.BorderSizePixel = 0
-				Text.Position = UDim2.new(0, 0, 0, 0)
-				Text.Size = UDim2.new(1, 0, 0.6, 0)
-				Text.Font = Enum.Font.SourceSans
-				Text.TextColor3 = themes[theme]["Text"]
-				Text.TextSize = 14.000
-				Text.TextStrokeTransparency = 0.800
-				Text.TextXAlignment = Enum.TextXAlignment.Left
+				TextLabel.Name = "Text"
+				TextLabel.Parent = Slider
+				TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				TextLabel.BackgroundTransparency = 1.000
+				TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				TextLabel.BorderSizePixel = 0
+				TextLabel.Position = UDim2.new(0, 0, 0, 0)
+				TextLabel.Size = UDim2.new(1, 0, 0.6, 0)
+				TextLabel.Font = Enum.Font.SourceSans
+				TextLabel.TextColor3 = themes[theme]["Text"]
+				TextLabel.TextSize = 14.000
+				TextLabel.TextStrokeTransparency = 0.800
+				TextLabel.TextXAlignment = Enum.TextXAlignment.Left
 				Bg.Name = "Bg"
 				Bg.Parent = Slider
 				Bg.BackgroundColor3 = themes[theme]["SliderBg"]
@@ -1051,51 +1010,49 @@ lib.create_window = function(theme, menu_key)
 				}
 				UIGradient_2.Rotation = 90
 				UIGradient_2.Parent = Fill
-				slider.set = function(val)
-					value = val
-					local percentage = ((val - min) / (max - min))
+				slider.set = function(percentage)
 					Fill.Size = UDim2.new(percentage, 0, 1, 0)
-					Text.Text = text .. " " .. string.format("%.2f", val) .. indicator
-					callback(val)
+					value = (percentage) * (max - min) + min
+					callback(value)
+					TextLabel.Text = text.." "..tostring(math.round(value * 100) / 100)..indicator
 				end
 				slider.get = function()
 					return value
 				end
 				slider.set_text = function(_text)
+					TextLabel.Text = _text.." "..tostring(math.round(value * 100) / 100)..indicator
 					text = _text
-					Text.Text = text .. " " .. string.format("%.2f", value) .. indicator
 				end
-				local function onInputBegan(input)
+				Bg.InputBegan:Connect(function(input)
 					if input.UserInputType == Enum.UserInputType.MouseButton1 then
 						dragging = true
 					end
-				end
-				local function onInputEnded(input)
+				end)
+				Bg.InputEnded:Connect(function(input)
 					if input.UserInputType == Enum.UserInputType.MouseButton1 then
 						dragging = false
 					end
-				end
-				Bg.InputBegan:Connect(onInputBegan)
-				Bg.InputEnded:Connect(onInputEnded)
-				Fill.InputBegan:Connect(onInputBegan)
-				Fill.InputEnded:Connect(onInputEnded)
-				local drag_conn = services.run.RenderStepped:Connect(function()
-					if dragging then
-						local mouse_pos = services.uis:GetMouseLocation()
-						local abs_pos = Bg.AbsolutePosition
-						local abs_size = Bg.AbsoluteSize
-						local rel_x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
-						local new_val = min + rel_x * (max - min)
-						slider.set(new_val)
+				end)
+				Fill.InputBegan:Connect(function(input)
+					if input.UserInputType == Enum.UserInputType.MouseButton1 then
+						dragging = true
 					end
 				end)
-				slider.delete = function()
-					if drag_conn then
-						drag_conn:Disconnect()
+				Fill.InputEnded:Connect(function(input)
+					if input.UserInputType == Enum.UserInputType.MouseButton1 then
+						dragging = false
 					end
-					Slider:Destroy()
-				end
-				slider.set(default)
+				end)
+				services.run.RenderStepped:Connect(function()
+					if dragging then
+						local mouse_pos = services.uis:GetMouseLocation()
+						local abs = Bg.AbsolutePosition.X
+						local abs_size = Bg.AbsoluteSize.X
+						local size = math.clamp((mouse_pos.X - abs) / abs_size, 0, 1)
+						slider.set(size)
+					end
+				end)
+				slider.set((default - min) / (max - min))
 				sector.increase_scrollbar_size()
 				return slider
 			end
