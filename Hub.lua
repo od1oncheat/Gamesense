@@ -126,7 +126,7 @@ lib.create_window = function(theme, menu_key)
     Content.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Content.BorderSizePixel = 0
     Content.Position = UDim2.new(0.175438598, 0, 0.0247933883, 0)
-    Content.Size = UDim2.new(0, 563, 0, 579) -- Увеличена ширина для вплотную с кнопками
+    Content.Size = UDim2.new(0, 563, 0, 579)
 
     UIListLayout.Parent = Content
     UIListLayout.FillDirection = Enum.FillDirection.Horizontal
@@ -286,13 +286,13 @@ lib.create_window = function(theme, menu_key)
             SectorContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
             SectorContent.BorderSizePixel = 0
             SectorContent.Position = UDim2.new(0.028933093, 0, 0.025906736, 0)
-            SectorContent.Size = UDim2.new(0, 269, 0, 558) -- Увеличена ширина
+            SectorContent.Size = UDim2.new(0, 269, 0, 558)
             SectorContent.CanvasSize = UDim2.new(0, 0, 0, 0)
             SectorContent.ScrollBarThickness = 3
 
             UIListLayout.Parent = SectorContent
             UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-            UIListLayout.Padding = UDim.new(0, 3) -- Уменьшены отступы между элементами
+            UIListLayout.Padding = UDim.new(0, 3)
 
             UIPadding.Parent = SectorContent
             UIPadding.PaddingLeft = UDim.new(0, 5)
@@ -309,11 +309,15 @@ lib.create_window = function(theme, menu_key)
                 local totalHeight = 0
                 for _, element in pairs(SectorContent:GetChildren()) do
                     if element:IsA("GuiObject") and element.Name ~= "UIListLayout" and element.Name ~= "UIPadding" then
-                        totalHeight = totalHeight + element.AbsoluteSize.Y + 3 -- Уменьшены отступы
+                        totalHeight = totalHeight + element.AbsoluteSize.Y + 3
                     end
                 end
                 SectorContent.CanvasSize = UDim2.new(0, 0, 0, totalHeight)
             end
+
+            -- Универсальный размер для всех элементов (как у чекбокса)
+            local elementWidth = 259
+            local elementHeight = 21
 
             sector.text = function(_text)
                 local text = {}
@@ -324,7 +328,7 @@ lib.create_window = function(theme, menu_key)
                 Text.BackgroundTransparency = 1.000
                 Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
                 Text.BorderSizePixel = 0
-                Text.Size = UDim2.new(0, 259, 0, 13) -- Увеличена ширина
+                Text.Size = UDim2.new(0, elementWidth, 0, 13)
                 Text.Font = Enum.Font.SourceSans
                 Text.Text = _text
                 Text.TextColor3 = themes[theme]["Text"]
@@ -354,7 +358,7 @@ lib.create_window = function(theme, menu_key)
                 Text.BackgroundTransparency = 1.000
                 Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
                 Text.BorderSizePixel = 0
-                Text.Size = UDim2.new(0, 259, 0, 13)
+                Text.Size = UDim2.new(0, elementWidth, 0, 13)
                 Text.Font = Enum.Font.SourceSans
                 Text.Text = _text
                 Text.TextColor3 = Color3.fromRGB(142, 127, 74)
@@ -384,7 +388,7 @@ lib.create_window = function(theme, menu_key)
                 Text.BackgroundTransparency = 1.000
                 Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
                 Text.BorderSizePixel = 0
-                Text.Size = UDim2.new(0, 259, 0, 13)
+                Text.Size = UDim2.new(0, elementWidth, 0, 13)
                 Text.Font = Enum.Font.SourceSans
                 Text.Text = _text
                 Text.TextColor3 = Color3.fromRGB(142, 74, 65)
@@ -414,7 +418,7 @@ lib.create_window = function(theme, menu_key)
                 Text.BackgroundTransparency = 1.000
                 Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
                 Text.BorderSizePixel = 0
-                Text.Size = UDim2.new(0, 259, 0, 13)
+                Text.Size = UDim2.new(0, elementWidth, 0, 13)
                 Text.Font = Enum.Font.SourceSans
                 Text.Text = _text
                 Text.TextColor3 = Color3.fromRGB(63, 110, 152)
@@ -443,7 +447,7 @@ lib.create_window = function(theme, menu_key)
                 TextBox.BackgroundColor3 = themes[theme]["ElementBg"]
                 TextBox.BorderColor3 = themes[theme]["ElementOutline"]
                 TextBox.BorderSizePixel = 1
-                TextBox.Size = UDim2.new(0, 259, 0, 21) -- Увеличена ширина
+                TextBox.Size = UDim2.new(0, elementWidth, 0, elementHeight)
                 TextBox.ClearTextOnFocus = false
                 TextBox.Font = Enum.Font.SourceSans
                 TextBox.PlaceholderColor3 = Color3.fromRGB(72, 72, 72)
@@ -487,7 +491,7 @@ lib.create_window = function(theme, menu_key)
                 Button.BackgroundColor3 = themes[theme]["ElementBg"]
                 Button.BorderColor3 = themes[theme]["ElementOutline"]
                 Button.BorderSizePixel = 1
-                Button.Size = UDim2.new(0, 259, 0, 21) -- Увеличена ширина
+                Button.Size = UDim2.new(0, elementWidth, 0, elementHeight)
                 Button.AutoButtonColor = false
                 Button.Font = Enum.Font.SourceSans
                 Button.TextColor3 = themes[theme]["Text"]
@@ -539,7 +543,7 @@ lib.create_window = function(theme, menu_key)
                 Dropdown.BackgroundColor3 = themes[theme]["ElementBg"]
                 Dropdown.BorderColor3 = themes[theme]["ElementOutline"]
                 Dropdown.BorderSizePixel = 1
-                Dropdown.Size = UDim2.new(0, 259, 0, 21) -- Увеличена ширина
+                Dropdown.Size = UDim2.new(0, elementWidth, 0, elementHeight)
                 Dropdown.AutoButtonColor = false
                 Dropdown.Font = Enum.Font.SourceSans
                 Dropdown.Text = text .. ": " .. default
@@ -570,7 +574,7 @@ lib.create_window = function(theme, menu_key)
                 DropdownContent.BorderColor3 = themes[theme]["ElementOutline"]
                 DropdownContent.BorderSizePixel = 1
                 DropdownContent.Position = UDim2.new(0, 0, 1, 0)
-                DropdownContent.Size = UDim2.new(0, 259, 0, 0) -- Увеличена ширина
+                DropdownContent.Size = UDim2.new(0, elementWidth, 0, 0)
                 DropdownContent.CanvasSize = UDim2.new(0, 0, 0, 0)
                 DropdownContent.ScrollBarThickness = 3
                 DropdownContent.ScrollBarImageColor3 = Color3.fromRGB(50, 50, 50)
@@ -583,7 +587,7 @@ lib.create_window = function(theme, menu_key)
 
                 UIListLayout.Parent = DropdownContent
                 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-                UIListLayout.Padding = UDim.new(0, 3) -- Уменьшены отступы
+                UIListLayout.Padding = UDim.new(0, 3)
 
                 Dropdown.MouseButton1Down:Connect(function()
                     DropdownContent.Visible = not DropdownContent.Visible
@@ -598,7 +602,7 @@ lib.create_window = function(theme, menu_key)
                                 totalHeight = totalHeight + button.AbsoluteSize.Y + 3
                             end
                         end
-                        DropdownContent.Size = UDim2.new(0, 259, 0, math.min(totalHeight, 150)) -- Ограничиваем максимальную высоту
+                        DropdownContent.Size = UDim2.new(0, elementWidth, 0, math.min(totalHeight, 150))
                         DropdownContent.CanvasSize = UDim2.new(0, 0, 0, totalHeight)
                     end
                 end)
@@ -640,7 +644,7 @@ lib.create_window = function(theme, menu_key)
                     Button.BackgroundColor3 = themes[theme]["ElementBg"]
                     Button.BorderColor3 = themes[theme]["ElementOutline"]
                     Button.BorderSizePixel = 1
-                    Button.Size = UDim2.new(1, -10, 0, 21)
+                    Button.Size = UDim2.new(1, -10, 0, elementHeight)
                     Button.Font = Enum.Font.SourceSans
                     Button.TextColor3 = themes[theme]["Text"]
                     Button.TextSize = 14.000
@@ -703,7 +707,7 @@ lib.create_window = function(theme, menu_key)
                 Checkbox.BackgroundTransparency = 1.000
                 Checkbox.BorderColor3 = Color3.fromRGB(0, 0, 0)
                 Checkbox.BorderSizePixel = 0
-                Checkbox.Size = UDim2.new(0, 259, 0, 21) -- Увеличена ширина
+                Checkbox.Size = UDim2.new(0, elementWidth, 0, elementHeight)
                 Checkbox.Font = Enum.Font.SourceSans
                 Checkbox.Text = ""
                 Checkbox.TextColor3 = Color3.fromRGB(172, 172, 172)
@@ -718,7 +722,7 @@ lib.create_window = function(theme, menu_key)
                 Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
                 Text.BorderSizePixel = 0
                 Text.Position = UDim2.new(0, 0, 0, 0)
-                Text.Size = UDim2.new(0, 236, 0, 21) -- Увеличена ширина
+                Text.Size = UDim2.new(0, elementWidth - 30, 0, elementHeight)
                 Text.Font = Enum.Font.SourceSans
                 Text.TextColor3 = themes[theme]["Text"]
                 Text.TextSize = 14.000
@@ -791,7 +795,7 @@ lib.create_window = function(theme, menu_key)
                 Checkpicker.BackgroundTransparency = 1.000
                 Checkpicker.BorderColor3 = Color3.fromRGB(0, 0, 0)
                 Checkpicker.BorderSizePixel = 0
-                Checkpicker.Size = UDim2.new(0, 259, 0, 21) -- Увеличена ширина
+                Checkpicker.Size = UDim2.new(0, elementWidth, 0, elementHeight)
                 Checkpicker.Font = Enum.Font.SourceSans
                 Checkpicker.Text = ""
                 Checkpicker.TextColor3 = Color3.fromRGB(172, 172, 172)
@@ -806,7 +810,7 @@ lib.create_window = function(theme, menu_key)
                 Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
                 Text.BorderSizePixel = 0
                 Text.Position = UDim2.new(0, 0, 0, 0)
-                Text.Size = UDim2.new(0, 190, 0, 21) -- Увеличена ширина
+                Text.Size = UDim2.new(0, elementWidth - 70, 0, elementHeight)
                 Text.Font = Enum.Font.SourceSans
                 Text.TextColor3 = themes[theme]["Text"]
                 Text.TextSize = 14.000
@@ -850,8 +854,10 @@ lib.create_window = function(theme, menu_key)
                 local value_value = default_value
 
                 local ColorPicker = Instance.new("Frame")
-                local Saturation = Instance.new("TextButton")
-                local ValueGradient = Instance.new("UIGradient")
+                local Saturation = Instance.new("Frame")
+                local SaturationGradient = Instance.new("UIGradient")
+                local WhiteGradient = Instance.new("UIGradient")
+                local BlackGradient = Instance.new("UIGradient")
                 local SaturationDrag = Instance.new("Frame")
                 local Hue = Instance.new("ImageButton")
                 local HueDrag = Instance.new("Frame")
@@ -861,32 +867,35 @@ lib.create_window = function(theme, menu_key)
                 ColorPicker.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
                 ColorPicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
                 ColorPicker.BorderSizePixel = 2
-                ColorPicker.Size = UDim2.new(0, 180, 0, 63) -- Увеличена ширина в 1.5 раза и высота в 3 раза
+                ColorPicker.Size = UDim2.new(0, 180, 0, 120) -- Увеличена высота в 3 раза
                 ColorPicker.Visible = false
                 ColorPicker.Active = true
                 ColorPicker.Draggable = false
 
                 Saturation.Name = "Saturation"
                 Saturation.Parent = ColorPicker
-                Saturation.BackgroundColor3 = Color3.fromHSV(hue_value, 1, 1)
+                Saturation.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 Saturation.BorderColor3 = Color3.fromRGB(0, 0, 0)
                 Saturation.BorderSizePixel = 0
-                Saturation.Position = UDim2.new(0.3, 0, 0.1, 0)
-                Saturation.Size = UDim2.new(0, 100, 0, 50) -- Увеличена область насыщенности
-                Saturation.Font = Enum.Font.SourceSans
-                Saturation.Text = ""
-                Saturation.TextColor3 = Color3.fromRGB(0, 0, 0)
-                Saturation.TextSize = 14.000
-                Saturation.AutoButtonColor = false
+                Saturation.Position = UDim2.new(0.2, 0, 0.1, 0)
+                Saturation.Size = UDim2.new(0, 120, 0, 80) -- Увеличена область насыщенности
+                Saturation.ZIndex = 2
 
-                -- Исправленный градиент для насыщенности (белый -> выбранный цвет -> черный)
-                ValueGradient.Color = ColorSequence.new{
+                -- Основной градиент насыщенности (горизонтальный: белый -> выбранный цвет)
+                SaturationGradient.Color = ColorSequence.new{
                     ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
-                    ColorSequenceKeypoint.new(0.50, Color3.fromHSV(hue_value, 1, 1)),
+                    ColorSequenceKeypoint.new(1.00, Color3.fromHSV(hue_value, 1, 1))
+                }
+                SaturationGradient.Rotation = 0
+                SaturationGradient.Parent = Saturation
+
+                -- Вертикальный градиент поверх (прозрачный -> черный)
+                BlackGradient.Color = ColorSequence.new{
+                    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
                     ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))
                 }
-                ValueGradient.Rotation = 0
-                ValueGradient.Parent = Saturation
+                BlackGradient.Rotation = 90
+                BlackGradient.Parent = Saturation
 
                 SaturationDrag.Name = "SaturationDrag"
                 SaturationDrag.Parent = Saturation
@@ -895,16 +904,18 @@ lib.create_window = function(theme, menu_key)
                 SaturationDrag.BorderSizePixel = 1
                 SaturationDrag.Size = UDim2.new(0, 4, 0, 4)
                 SaturationDrag.Position = UDim2.new(sat_value, -2, 1 - value_value, -2)
+                SaturationDrag.ZIndex = 3
 
                 Hue.Name = "Hue"
                 Hue.Parent = ColorPicker
                 Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 Hue.BorderColor3 = Color3.fromRGB(0, 0, 0)
                 Hue.BorderSizePixel = 0
-                Hue.Position = UDim2.new(0.08, 0, 0.1, 0)
-                Hue.Size = UDim2.new(0, 15, 0, 50) -- Увеличена высота
+                Hue.Position = UDim2.new(0.05, 0, 0.1, 0)
+                Hue.Size = UDim2.new(0, 15, 0, 80) -- Увеличена высота
                 Hue.Image = "rbxassetid://12966903157" -- Rainbow gradient image
                 Hue.AutoButtonColor = false
+                Hue.ZIndex = 2
 
                 HueDrag.Name = "HueDrag"
                 HueDrag.Parent = Hue
@@ -913,14 +924,14 @@ lib.create_window = function(theme, menu_key)
                 HueDrag.BorderSizePixel = 1
                 HueDrag.Size = UDim2.new(1, 0, 0, 2)
                 HueDrag.Position = UDim2.new(0, 0, 1 - hue_value, 0)
+                HueDrag.ZIndex = 3
 
                 local function updateColor()
                     local color = Color3.fromHSV(hue_value, sat_value, value_value)
                     -- Обновляем градиент насыщенности
-                    ValueGradient.Color = ColorSequence.new{
+                    SaturationGradient.Color = ColorSequence.new{
                         ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
-                        ColorSequenceKeypoint.new(0.50, Color3.fromHSV(hue_value, 1, 1)),
-                        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))
+                        ColorSequenceKeypoint.new(1.00, Color3.fromHSV(hue_value, 1, 1))
                     }
                     Colorpicker.BackgroundColor3 = color
                     color_callback(color)
@@ -982,7 +993,7 @@ lib.create_window = function(theme, menu_key)
                         end
                     end
                     local abs_pos = Colorpicker.AbsolutePosition
-                    ColorPicker.Position = UDim2.new(0, abs_pos.X - Sector.AbsolutePosition.X - 180, 0, abs_pos.Y - Sector.AbsolutePosition.Y + 15)
+                    ColorPicker.Position = UDim2.new(0, abs_pos.X - Sector.AbsolutePosition.X - 180, 0, abs_pos.Y - Sector.AbsolutePosition.Y + 5) -- Ближе к чекбоксу
                     ColorPicker.Visible = not ColorPicker.Visible
                     if draggingConnection then
                         draggingConnection:Disconnect()
@@ -1047,13 +1058,13 @@ lib.create_window = function(theme, menu_key)
                 Slider.Name = "Slider"
                 Slider.Parent = SectorContent
                 Slider.BackgroundTransparency = 1
-                Slider.Size = UDim2.new(0, 259, 0, 30) -- Увеличена ширина
+                Slider.Size = UDim2.new(0, elementWidth, 0, 30)
 
                 Text.Name = "Text"
                 Text.Parent = Slider
                 Text.BackgroundTransparency = 1
                 Text.Position = UDim2.new(0, 0, 0, 0)
-                Text.Size = UDim2.new(0, 236, 0, 14) -- Увеличена ширина
+                Text.Size = UDim2.new(0, elementWidth - 30, 0, 14)
                 Text.Font = Enum.Font.SourceSans
                 Text.TextColor3 = themes[theme]["Text"]
                 Text.TextSize = 14.000
@@ -1066,7 +1077,7 @@ lib.create_window = function(theme, menu_key)
                 Bg.BackgroundColor3 = themes[theme]["SliderBg"]
                 Bg.BorderColor3 = themes[theme]["ElementOutline"]
                 Bg.Position = UDim2.new(0, 0, 0.6, 0)
-                Bg.Size = UDim2.new(0, 248, 0, 8) -- Увеличена ширина
+                Bg.Size = UDim2.new(0, elementWidth - 10, 0, 8)
                 Bg.AutoButtonColor = false
                 Bg.Font = Enum.Font.SourceSans
                 Bg.Text = ""
