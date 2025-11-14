@@ -105,17 +105,17 @@ Main.BackgroundColor3 = themes[theme]["Window"]
 Main.BorderColor3 = Color3.fromRGB(45, 45, 45)
 Main.BorderSizePixel = 4
 Main.Position = UDim2.new(0.38166827, 0, 0.249408439, 0)
-Main.Size = UDim2.new(0, 750, 0, 650) -- Увеличена высота
+Main.Size = UDim2.new(0, 800, 0, 780) -- Увеличена ширина и высота (1.2x)
 Tabs.Name = "Tabs"
 Tabs.Parent = Main
 Tabs.BackgroundColor3 = themes[theme]["Tabs"]
 Tabs.BorderColor3 = Color3.fromRGB(21, 21, 21)
 Tabs.Position = UDim2.new(0, 1, 0.00330578513, 0)
-Tabs.Size = UDim2.new(0, 110, 0, 647) -- Увеличена ширина
+Tabs.Size = UDim2.new(0, 110, 0, 777) -- Увеличена высота
 UIGridLayout.Parent = Tabs
 UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UIGridLayout.CellPadding = UDim2.new(0, 15, 0, 0)
-UIGridLayout.CellSize = UDim2.new(0, 105, 0, 75) -- Увеличен размер кнопок
+UIGridLayout.CellSize = UDim2.new(0, 105, 0, 75)
 UIPadding.Parent = Tabs
 UIPadding.PaddingLeft = UDim.new(0, 5)
 UIPadding.PaddingTop = UDim.new(0, 15)
@@ -124,7 +124,7 @@ TopGradient.Parent = Main
 TopGradient.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 TopGradient.BorderColor3 = Color3.fromRGB(0, 0, 0)
 TopGradient.BorderSizePixel = 0
-TopGradient.Size = UDim2.new(0, 750, 0, 2)
+TopGradient.Size = UDim2.new(0, 800, 0, 2)
 UIGradient.Color = themes[theme]["Gradient"]
 UIGradient.Parent = TopGradient
 Content.Name = "Content"
@@ -133,8 +133,8 @@ Content.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Content.BackgroundTransparency = 1.000
 Content.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Content.BorderSizePixel = 0
-Content.Position = UDim2.new(0.16, 0, 0.0247933883, 0) -- Отрегулирована позиция
-Content.Size = UDim2.new(0, 620, 0, 624) -- Увеличена ширина
+Content.Position = UDim2.new(0.16, 0, 0.0247933883, 0)
+Content.Size = UDim2.new(0, 660, 0, 754) -- Увеличена ширина и высота
 UIListLayout.Parent = Content
 UIListLayout.FillDirection = Enum.FillDirection.Horizontal
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
@@ -210,7 +210,7 @@ Tab.BorderColor3 = Color3.fromRGB(20, 20, 20)
 Tab.BackgroundTransparency = 1
 Tab.BorderSizePixel = 2
 Tab.Position = UDim2.new(0, 0, 0.14480409, 0)
-Tab.Size = UDim2.new(0, 105, 0, 75) -- Увеличен размер
+Tab.Size = UDim2.new(0, 105, 0, 75)
 Tab.AutoButtonColor = false
 Tab.Font = Enum.Font.Gotham
 Tab.Text = ""
@@ -223,7 +223,7 @@ Open.BackgroundTransparency = 1.000
 Open.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Open.BorderSizePixel = 0
 Open.Position = UDim2.new(0.26, 0, 0.19285714, 0)
-Open.Size = UDim2.new(0, 48, 0, 48) -- Увеличен размер иконки
+Open.Size = UDim2.new(0, 48, 0, 48)
 Open.Image = image
 Open.ImageColor3 = Color3.fromRGB(90,90,90)
 Open.MouseButton1Down:Connect(function()
@@ -245,7 +245,7 @@ Sector.Parent = Content
 Sector.BackgroundColor3 = themes[theme]["Sector"]
 Sector.BorderColor3 = Color3.fromRGB(34, 34, 34)
 Sector.Position = UDim2.new(pos_x, 0, 0.035, 0)
-Sector.Size = UDim2.new(0.5, -15, 0.93, 0) -- Уменьшена ширина для отступов
+Sector.Size = UDim2.new(0.5, -15, 0.93, 0)
 Sector.Visible = false
 Title.Name = "Title"
 Title.Parent = Sector
@@ -270,15 +270,15 @@ SectorContent.BackgroundTransparency = 1.000
 SectorContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
 SectorContent.BorderSizePixel = 0
 SectorContent.Position = UDim2.new(0.028933093, 0, 0.04, 0)
-SectorContent.Size = UDim2.new(0, 279, 0, 545) -- Увеличена ширина
+SectorContent.Size = UDim2.new(0, 299, 0, 625) -- Увеличена ширина и высота
 SectorContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 SectorContent.ScrollBarThickness = 3
 UIListLayout.Parent = SectorContent
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-UIListLayout.Padding = UDim.new(0,8) -- Увеличен отступ между элементами
+UIListLayout.Padding = UDim.new(0,8)
 UIPadding.Parent = SectorContent
-UIPadding.PaddingLeft = UDim.new(0, 8) -- Увеличен отступ слева
-UIPadding.PaddingRight = UDim.new(0, 8) -- Добавлен отступ справа
+UIPadding.PaddingLeft = UDim.new(0, 8)
+UIPadding.PaddingRight = UDim.new(0, 8)
 local UIGradient = Instance.new("UIGradient")
 UIGradient.Color = ColorSequence.new{
 ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
@@ -307,7 +307,7 @@ Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Text.BackgroundTransparency = 1.000
 Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Text.BorderSizePixel = 0
-Text.Size = UDim2.new(0, 263, 0, 13) -- Увеличена ширина
+Text.Size = UDim2.new(0, 283, 0, 13) -- Увеличена ширина
 Text.Font = Enum.Font.Gotham
 Text.Text = _text
 Text.TextColor3 = themes[theme]["Text"]
@@ -335,7 +335,7 @@ Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Text.BackgroundTransparency = 1.000
 Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Text.BorderSizePixel = 0
-Text.Size = UDim2.new(0, 263, 0, 13)
+Text.Size = UDim2.new(0, 283, 0, 13)
 Text.Font = Enum.Font.Gotham
 Text.Text = _text
 Text.TextColor3 = Color3.fromRGB(142, 127, 74)
@@ -363,7 +363,7 @@ Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Text.BackgroundTransparency = 1.000
 Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Text.BorderSizePixel = 0
-Text.Size = UDim2.new(0, 263, 0, 13)
+Text.Size = UDim2.new(0, 283, 0, 13)
 Text.Font = Enum.Font.Gotham
 Text.Text = _text
 Text.TextColor3 = Color3.fromRGB(142, 74, 65)
@@ -391,7 +391,7 @@ Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Text.BackgroundTransparency = 1.000
 Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Text.BorderSizePixel = 0
-Text.Size = UDim2.new(0, 263, 0, 13)
+Text.Size = UDim2.new(0, 283, 0, 13)
 Text.Font = Enum.Font.Gotham
 Text.Text = _text
 Text.TextColor3 = Color3.fromRGB(63, 110, 152)
@@ -415,7 +415,7 @@ TextBox.Parent = SectorContent
 TextBox.BackgroundColor3 = themes[theme]["ElementBg"]
 TextBox.BorderColor3 = themes[theme]["ElementOutline"]
 TextBox.Position = UDim2.new(0, 0, 0, 0)
-TextBox.Size = UDim2.new(0, 263, 0, 28) -- Увеличена ширина и высота
+TextBox.Size = UDim2.new(0, 283, 0, 22) -- Уменьшена высота
 TextBox.ClearTextOnFocus = false
 TextBox.Font = Enum.Font.Gotham
 TextBox.PlaceholderColor3 = Color3.fromRGB(72, 72, 72)
@@ -464,7 +464,7 @@ Button.Parent = SectorContent
 Button.BackgroundColor3 = themes[theme]["ElementBg"]
 Button.BorderColor3 = themes[theme]["ElementOutline"]
 Button.Position = UDim2.new(0, 0, 0, 0)
-Button.Size = UDim2.new(0, 263, 0, 28) -- Увеличена ширина и высота
+Button.Size = UDim2.new(0, 283, 0, 22) -- Уменьшена высота
 Button.AutoButtonColor = false
 Button.Font = Enum.Font.Gotham
 Button.TextColor3 = themes[theme]["Text"]
@@ -499,7 +499,7 @@ Dropdown.Parent = SectorContent
 Dropdown.BackgroundColor3 = themes[theme]["ElementBg"]
 Dropdown.BorderColor3 = themes[theme]["ElementOutline"]
 Dropdown.Position = UDim2.new(0, 0, 0, 0)
-Dropdown.Size = UDim2.new(0, 263, 0, 28) -- Увеличена ширина и высота
+Dropdown.Size = UDim2.new(0, 283, 0, 22) -- Уменьшена высота
 Dropdown.AutoButtonColor = false
 Dropdown.Font = Enum.Font.Gotham
 Dropdown.Text = text
@@ -526,7 +526,7 @@ DropdownContent.Active = true
 DropdownContent.BackgroundColor3 = themes[theme]["ElementBg"]
 DropdownContent.BorderColor3 = themes[theme]["ElementOutline"]
 DropdownContent.Position = UDim2.new(0, 0, 1, 0)
-DropdownContent.Size = UDim2.new(0, 263, 0, 116)
+DropdownContent.Size = UDim2.new(1, 0, 0, 116) -- Теперь ширина равна ширине комбобокса
 DropdownContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 DropdownContent.ScrollBarThickness = 3
 DropdownContent.ScrollBarImageColor3 = Color3.fromRGB(50, 50, 50)
@@ -571,7 +571,7 @@ Button.Name = name
 Button.Parent = DropdownContent
 Button.BackgroundColor3 = themes[theme]["ElementBg"]
 Button.BorderColor3 = themes[theme]["ElementOutline"]
-Button.Size = UDim2.new(0, 252, 0, 25)
+Button.Size = UDim2.new(1, -10, 0, 22) -- Ширина равна ширине контента
 Button.Font = Enum.Font.Gotham
 Button.TextColor3 = themes[theme]["Text"]
 Button.TextSize = 14.000
@@ -607,6 +607,162 @@ end
 sector.increase_scrollbar_size()
 return dropdown
 end
+-- Новый элемент: мультикомбобокс
+sector.multidropdown = function(text, options, default, callback)
+local multidropdown = {}
+multidropdown.selected = default or {}
+local MultiDropdown = Instance.new("TextButton")
+local UIPadding = Instance.new("UIPadding")
+local Image = Instance.new("ImageLabel")
+local MultiDropdownContent = Instance.new("ScrollingFrame")
+local UIPadding_2 = Instance.new("UIPadding")
+local UIListLayout = Instance.new("UIListLayout")
+MultiDropdown.Name = "MultiDropdown"
+MultiDropdown.Parent = SectorContent
+MultiDropdown.BackgroundColor3 = themes[theme]["ElementBg"]
+MultiDropdown.BorderColor3 = themes[theme]["ElementOutline"]
+MultiDropdown.Position = UDim2.new(0, 0, 0, 0)
+MultiDropdown.Size = UDim2.new(0, 283, 0, 22) -- Уменьшена высота
+MultiDropdown.AutoButtonColor = false
+MultiDropdown.Font = Enum.Font.Gotham
+MultiDropdown.Text = text
+MultiDropdown.TextColor3 = themes[theme]["Text"]
+MultiDropdown.TextSize = 14.000
+MultiDropdown.TextXAlignment = Enum.TextXAlignment.Left
+MultiDropdown.ZIndex = 100
+UIPadding.Parent = MultiDropdown
+UIPadding.PaddingLeft = UDim.new(0, 23)
+Image.Name = "Image"
+Image.Parent = MultiDropdown
+Image.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Image.BackgroundTransparency = 1.000
+Image.BorderColor3 = Color3.fromRGB(0, 0, 0)
+Image.BorderSizePixel = 0
+Image.Position = UDim2.new(0.92, 0, 0.2, 0)
+Image.Size = UDim2.new(0, 15, 0, 15)
+Image.Image = "rbxassetid://74187648454886"
+Image.ImageColor3 = Color3.fromRGB(115, 115, 115)
+Image.ZIndex = 101
+MultiDropdownContent.Name = "MultiDropdownContent"
+MultiDropdownContent.Parent = MultiDropdown
+MultiDropdownContent.Active = true
+MultiDropdownContent.BackgroundColor3 = themes[theme]["ElementBg"]
+MultiDropdownContent.BorderColor3 = themes[theme]["ElementOutline"]
+MultiDropdownContent.Position = UDim2.new(0, 0, 1, 0)
+MultiDropdownContent.Size = UDim2.new(1, 0, 0, 116) -- Ширина равна ширине комбобокса
+MultiDropdownContent.CanvasSize = UDim2.new(0, 0, 0, 0)
+MultiDropdownContent.ScrollBarThickness = 3
+MultiDropdownContent.ScrollBarImageColor3 = Color3.fromRGB(50, 50, 50)
+MultiDropdownContent.Visible = false
+MultiDropdownContent.ZIndex = 102
+UIPadding_2.Parent = MultiDropdownContent
+UIPadding_2.PaddingLeft = UDim.new(0, 5)
+UIPadding_2.PaddingTop = UDim.new(0, 5)
+UIListLayout.Parent = MultiDropdownContent
+UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+UIListLayout.Padding = UDim.new(0, 5)
+MultiDropdown.MouseButton1Down:Connect(function()
+MultiDropdownContent.Visible = not MultiDropdownContent.Visible
+Image.Image = MultiDropdownContent.Visible and "rbxassetid://74187648454886" or "rbxassetid://97940921082727"
+end)
+createHoverEffects(MultiDropdown)
+multidropdown.is_selected = function(name)
+for _, selected in pairs(multidropdown.selected) do
+if selected == name then
+return true
+end
+end
+return false
+end
+multidropdown.toggle = function(name)
+local isSelected = multidropdown.is_selected(name)
+if isSelected then
+-- Удаляем из выбранных
+for i, selected in pairs(multidropdown.selected) do
+if selected == name then
+table.remove(multidropdown.selected, i)
+break
+end
+end
+else
+-- Добавляем в выбранные
+table.insert(multidropdown.selected, name)
+end
+-- Обновляем отображение кнопки
+local selectedButton = MultiDropdownContent:FindFirstChild(name)
+if selectedButton then
+selectedButton.BorderColor3 = multidropdown.is_selected(name) and themes[theme]["DropdownSelected"] or themes[theme]["ElementOutline"]
+end
+-- Обновляем текст комбобокса
+local displayText = text
+if #multidropdown.selected > 0 then
+displayText = text .. " (" .. table.concat(multidropdown.selected, ", ") .. ")"
+end
+MultiDropdown.Text = displayText
+callback(multidropdown.selected)
+end
+multidropdown.set_text = function(_text)
+MultiDropdown.Text = _text
+end
+multidropdown.get = function()
+return multidropdown.selected
+end
+multidropdown.clear = function()
+multidropdown.selected = {}
+MultiDropdown.Text = text
+for _, button in pairs(MultiDropdownContent:GetChildren()) do
+if button:IsA("TextButton") then
+button.BorderColor3 = themes[theme]["ElementOutline"]
+end
+end
+callback({})
+end
+multidropdown.add = function(name)
+local Button = Instance.new("TextButton")
+Button.Name = name
+Button.Parent = MultiDropdownContent
+Button.BackgroundColor3 = themes[theme]["ElementBg"]
+Button.BorderColor3 = themes[theme]["ElementOutline"]
+Button.Size = UDim2.new(1, -10, 0, 22) -- Ширина равна ширине контента
+Button.Font = Enum.Font.Gotham
+Button.TextColor3 = themes[theme]["Text"]
+Button.TextSize = 14.000
+Button.Text = name
+Button.AutoButtonColor = false
+Button.ZIndex = 103
+local UIGradient = Instance.new("UIGradient")
+UIGradient.Color = ColorSequence.new{
+ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
+ColorSequenceKeypoint.new(1.00, Color3.fromRGB(175, 175, 175))
+}
+UIGradient.Rotation = 90
+UIGradient.Parent = Button
+Button.MouseButton1Down:Connect(function()
+multidropdown.toggle(name)
+end)
+-- Устанавливаем начальное состояние
+if multidropdown.is_selected(name) then
+Button.BorderColor3 = themes[theme]["DropdownSelected"]
+end
+MultiDropdownContent.CanvasSize += UDim2.new(0, 0, 0, Button.AbsoluteSize.Y + 6)
+end
+multidropdown.remove = function(name)
+MultiDropdownContent.CanvasSize -= UDim2.new(0, 0, 0, MultiDropdownContent:FindFirstChild(name).AbsoluteSize.Y + 6)
+MultiDropdownContent:FindFirstChild(name):Destroy()
+-- Удаляем из выбранных если был выбран
+if multidropdown.is_selected(name) then
+multidropdown.toggle(name)
+end
+end
+multidropdown.delete = function()
+MultiDropdown:Destroy()
+end
+for idx, option in pairs(options) do
+multidropdown.add(option)
+end
+sector.increase_scrollbar_size()
+return multidropdown
+end
 sector.toggle = function(text,default,callback)
 local toggle = {}
 local value = default
@@ -621,7 +777,7 @@ Toggle.BackgroundTransparency = 1.000
 Toggle.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Toggle.BorderSizePixel = 0
 Toggle.Position = UDim2.new(0, 0, 0, 0)
-Toggle.Size = UDim2.new(0, 263, 0, 18) -- Увеличена ширина
+Toggle.Size = UDim2.new(0, 283, 0, 18) -- Увеличена ширина
 Toggle.Font = Enum.Font.Gotham
 Toggle.Text = ""
 Toggle.TextColor3 = Color3.fromRGB(172, 172, 172)
@@ -634,7 +790,7 @@ Text.BackgroundTransparency = 1.000
 Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Text.BorderSizePixel = 0
 Text.Position = UDim2.new(0.0923694745, 0, 0, 0)
-Text.Size = UDim2.new(0, 240, 0, 18) -- Увеличена ширина
+Text.Size = UDim2.new(0, 260, 0, 18) -- Увеличена ширина
 Text.Font = Enum.Font.Gotham
 Text.TextColor3 = themes[theme]["Text"]
 Text.TextSize = 14.000
@@ -829,7 +985,7 @@ Slider.BackgroundTransparency = 1.000
 Slider.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Slider.BorderSizePixel = 0
 Slider.Position = UDim2.new(0, 0, 0, 0)
-Slider.Size = UDim2.new(0, 263, 0, 25) -- Увеличена ширина
+Slider.Size = UDim2.new(0, 283, 0, 25) -- Увеличена ширина
 Slider.Font = Enum.Font.Gotham
 Slider.Text = ""
 Slider.TextColor3 = Color3.fromRGB(172, 172, 172)
@@ -842,7 +998,7 @@ Text.BackgroundTransparency = 1.000
 Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Text.BorderSizePixel = 0
 Text.Position = UDim2.new(0.0923694745, 0, 0, 0)
-Text.Size = UDim2.new(0, 240, 0, 18) -- Увеличена ширина
+Text.Size = UDim2.new(0, 260, 0, 18) -- Увеличена ширина
 Text.Font = Enum.Font.Gotham
 Text.TextColor3 = themes[theme]["Text"]
 Text.TextSize = 14.000
@@ -854,7 +1010,7 @@ Bg.Parent = Slider
 Bg.BackgroundColor3 = themes[theme]["SliderBg"]
 Bg.BorderColor3 = themes[theme]["ElementOutline"]
 Bg.Position = UDim2.new(0.1, 0, 0.72, 0)
-Bg.Size = UDim2.new(0, 240, 0, 8) -- Увеличена ширина
+Bg.Size = UDim2.new(0, 260, 0, 8) -- Увеличена ширина
 Bg.AutoButtonColor = false
 Bg.Font = Enum.Font.Gotham
 Bg.Text = ""
@@ -891,7 +1047,7 @@ ValueLabel.TextColor3 = themes[theme]["Text"]
 ValueLabel.TextSize = 12
 ValueLabel.TextXAlignment = Enum.TextXAlignment.Center
 ValueLabel.AnchorPoint = Vector2.new(0.5, 0)
-ValueLabel.Size = UDim2.new(0, 60, 0, 12) -- Фиксированный размер для текста
+ValueLabel.Size = UDim2.new(0, 60, 0, 12)
 slider.set = function(fraction)
 services.tween:Create(Fill, TweenInfo.new(0.15, Enum.EasingStyle.Quad), {Size = UDim2.new(fraction, 0, 1, 0)}):Play()
 value = fraction * (max - min) + min
