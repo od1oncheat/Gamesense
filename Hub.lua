@@ -114,9 +114,9 @@ Tabs.Size = UDim2.new(0, 100, 0, 602)
 UIGridLayout.Parent = Tabs
 UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UIGridLayout.CellPadding = UDim2.new(0, 15, 0, 0)
-UIGridLayout.CellSize = UDim2.new(0, 95, 0, 70)
+UIGridLayout.CellSize = UDim2.new(0, 85, 0, 70)
 UIPadding.Parent = Tabs
-UIPadding.PaddingLeft = UDim.new(0, 14)
+UIPadding.PaddingLeft = UDim.new(0, 5)
 UIPadding.PaddingTop = UDim.new(0, 15)
 TopGradient.Name = "TopGradient"
 TopGradient.Parent = Main
@@ -168,7 +168,7 @@ end
 end
 end
 end
-window.create_tab = function(image, side)
+window.create_tab = function(image)
 local tab = {}
 local Tab = Instance.new("TextButton")
 local Open = Instance.new("ImageButton")
@@ -200,8 +200,9 @@ window.selected_tab = Tab.Name
 window.tab_colors(Tab)
 window.show_tab(Tab.Name)
 end)
-tab.create_sector = function(name, column)
+tab.create_sector = function(name, side)
 local sector = {}
+side = side or "left"
 local Sector = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
 local SectorContent = Instance.new("ScrollingFrame")
@@ -211,9 +212,13 @@ Sector.Name = name
 Sector.Parent = Content
 Sector.BackgroundColor3 = themes[theme]["Sector"]
 Sector.BorderColor3 = Color3.fromRGB(34, 34, 34)
-local pos_x = column == "right" and 0.499 or -0.001
-Sector.Position = UDim2.new(pos_x, 0, -0.0011133909, 0)
+if side == "left" then
+Sector.Position = UDim2.new(0, 0, 0, 0)
 Sector.Size = UDim2.new(0.5, 0, 1, 0)
+else
+Sector.Position = UDim2.new(0.5, 0, 0, 0)
+Sector.Size = UDim2.new(0.5, 0, 1, 0)
+end
 Sector.Visible = false
 Title.Name = "Title"
 Title.Parent = Sector
@@ -454,7 +459,7 @@ Image.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Image.BackgroundTransparency = 1.000
 Image.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Image.BorderSizePixel = 0
-Image.Position = UDim2.new(0.85, 0, 0.142857149, 0)
+Image.Position = UDim2.new(0.90, 0, 0.142857149, 0)
 Image.Size = UDim2.new(0, 15, 0, 15)
 Image.Image = "rbxassetid://74187648454886"
 Image.ImageColor3 = Color3.fromRGB(115, 115, 115)
@@ -476,7 +481,7 @@ UIPadding_2.PaddingLeft = UDim.new(0, 5)
 UIPadding_2.PaddingTop = UDim.new(0, 5)
 UIListLayout.Parent = DropdownContent
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-UIListLayout.Padding = UDim.new(0, 5)
+UIListLayout.Padding = UDim.new(0, 3)
 Dropdown.MouseButton1Down:Connect(function()
 DropdownContent.Visible = not DropdownContent.Visible
 Image.Image = DropdownContent.Visible and "rbxassetid://74187648454886" or "rbxassetid://97940921082727"
@@ -529,10 +534,10 @@ end)
 if name == default then
 dropdown.set(name)
 end
-DropdownContent.CanvasSize += UDim2.new(0, 0, 0, Button.AbsoluteSize.Y + 6)
+DropdownContent.CanvasSize += UDim2.new(0, 0, 0, Button.AbsoluteSize.Y + 4)
 end
 dropdown.remove = function(name)
-DropdownContent.CanvasSize -= UDim2.new(0, 0, 0, DropdownContent:FindFirstChild(name).AbsoluteSize.Y + 6)
+DropdownContent.CanvasSize -= UDim2.new(0, 0, 0, DropdownContent:FindFirstChild(name).AbsoluteSize.Y + 4)
 DropdownContent:FindFirstChild(name):Destroy()
 dropdown.selected = ""
 end
@@ -783,13 +788,12 @@ Text.TextColor3 = themes[theme]["Text"]
 Text.TextSize = 14.000
 Text.TextStrokeTransparency = 0.800
 Text.TextXAlignment = Enum.TextXAlignment.Left
-Text.Text = text .. " " .. tostring(math.round(default * 100) / 100) .. indicator
 Bg.Name = "Bg"
 Bg.Parent = Slider
 Bg.BackgroundColor3 = themes[theme]["SliderBg"]
 Bg.BorderColor3 = themes[theme]["ElementOutline"]
-Bg.Position = UDim2.new(0.92, 0, 0.6, 0)
-Bg.Size = UDim2.new(0, 20, 0, 8)
+Bg.Position = UDim2.new(0, 5, 0.714, 0)
+Bg.Size = UDim2.new(0, 238, 0, 8)
 Bg.AutoButtonColor = false
 Bg.Font = Enum.Font.SourceSans
 Bg.Text = ""
@@ -805,7 +809,7 @@ Fill.Name = "Fill"
 Fill.Parent = Bg
 Fill.BackgroundColor3 = themes[theme]["Slider"]
 Fill.BorderColor3 = themes[theme]["ElementOutline"]
-Fill.Position = UDim2.new(0, 0, 0, 0)
+Fill.Position = UDim2.new(-0.0168067235, 5, -0.0250015259, 0)
 Fill.Size = UDim2.new(0.5, 0, 1, 0)
 Fill.AutoButtonColor = false
 Fill.Font = Enum.Font.SourceSans
@@ -857,10 +861,10 @@ local mouse_pos = services.uis:GetMouseLocation()
 local abs = Bg.AbsolutePosition.X
 local abs_size = Bg.AbsoluteSize.X
 local size = math.clamp((mouse_pos.X - abs) / abs_size, 0, 1)
-slider.set(size * 100)
+slider.set(size)
 end
 end)
-slider.set((default - min) / (max - min))
+slider.set((default - min) / (max - min) * 100)
 return slider
 end
 table.insert(window.tab_contents,{
