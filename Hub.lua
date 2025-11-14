@@ -297,8 +297,11 @@ end
 sector.text = function(_text)
 local text = {}
 local Text = Instance.new("TextLabel")
+local UIPad = Instance.new("UIPadding")
 Text.Name = _text
 Text.Parent = SectorContent
+UIPad.Parent = Text
+UIPad.PaddingLeft = UDim.new(0, 23)
 Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Text.BackgroundTransparency = 1.000
 Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -322,8 +325,11 @@ end
 sector.warning = function(_text)
 local text = {}
 local Text = Instance.new("TextLabel")
+local UIPad = Instance.new("UIPadding")
 Text.Name = _text
 Text.Parent = SectorContent
+UIPad.Parent = Text
+UIPad.PaddingLeft = UDim.new(0, 23)
 Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Text.BackgroundTransparency = 1.000
 Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -347,8 +353,11 @@ end
 sector.error = function(_text)
 local text = {}
 local Text = Instance.new("TextLabel")
+local UIPad = Instance.new("UIPadding")
 Text.Name = _text
 Text.Parent = SectorContent
+UIPad.Parent = Text
+UIPad.PaddingLeft = UDim.new(0, 23)
 Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Text.BackgroundTransparency = 1.000
 Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -372,8 +381,11 @@ end
 sector.info = function(_text)
 local text = {}
 local Text = Instance.new("TextLabel")
+local UIPad = Instance.new("UIPadding")
 Text.Name = _text
 Text.Parent = SectorContent
+UIPad.Parent = Text
+UIPad.PaddingLeft = UDim.new(0, 23)
 Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Text.BackgroundTransparency = 1.000
 Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -413,7 +425,7 @@ TextBox.TextSize = 14.000
 TextBox.TextStrokeTransparency = 0.800
 TextBox.TextXAlignment = Enum.TextXAlignment.Left
 UIPadding.Parent = TextBox
-UIPadding.PaddingLeft = UDim.new(0, 5)
+UIPadding.PaddingLeft = UDim.new(0, 23)
 textbox.set = function(text)
 TextBox.Text = text
 end
@@ -445,6 +457,7 @@ end
 sector.button = function(text,callback)
 local button = {}
 local Button = Instance.new("TextButton")
+local UIPadding = Instance.new("UIPadding")
 Button.Name = "Button"
 Button.Parent = SectorContent
 Button.BackgroundColor3 = themes[theme]["ElementBg"]
@@ -456,6 +469,8 @@ Button.Font = Enum.Font.Gotham
 Button.TextColor3 = themes[theme]["Text"]
 Button.TextSize = 14.000
 Button.Text = text
+UIPadding.Parent = Button
+UIPadding.PaddingLeft = UDim.new(0, 23)
 Button.MouseButton1Down:Connect(function()
 callback()
 end)
@@ -492,7 +507,7 @@ Dropdown.TextSize = 14.000
 Dropdown.TextXAlignment = Enum.TextXAlignment.Left
 Dropdown.ZIndex = 100
 UIPadding.Parent = Dropdown
-UIPadding.PaddingLeft = UDim.new(0, 5)
+UIPadding.PaddingLeft = UDim.new(0, 23)
 Image.Name = "Image"
 Image.Parent = Dropdown
 Image.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -517,7 +532,7 @@ DropdownContent.ScrollBarImageColor3 = Color3.fromRGB(50, 50, 50)
 DropdownContent.Visible = false
 DropdownContent.ZIndex = 102
 UIPadding_2.Parent = DropdownContent
-UIPading_2.PaddingLeft = UDim.new(0, 5)
+UIPadding_2.PaddingLeft = UDim.new(0, 5)
 UIPadding_2.PaddingTop = UDim.new(0, 5)
 UIListLayout.Parent = DropdownContent
 UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
