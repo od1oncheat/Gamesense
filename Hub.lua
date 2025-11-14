@@ -3,19 +3,15 @@ local themes = {
     ["gamesense"] = {
         ["Window"] = Color3.fromRGB(16, 16, 16),
         ["Tabs"] = Color3.fromRGB(12, 12, 12),
-        ["Gradient"] = ColorSequence.new{
-            ColorSequenceKeypoint.new(0.00, Color3.fromRGB(61, 130, 162)),
-            ColorSequenceKeypoint.new(0.50, Color3.fromRGB(156, 59, 145)),
-            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(155, 161, 48))
-        },
+        ["Gradient"] = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(61, 130, 162)), ColorSequenceKeypoint.new(0.50, Color3.fromRGB(156, 59, 145)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(155, 161, 48))},
         ["Sector"] = Color3.fromRGB(23, 23, 23),
         ["Text"] = Color3.fromRGB(161, 161, 161),
         ["TabSelected"] = Color3.fromRGB(17, 17, 17),
         ["ElementBg"] = Color3.fromRGB(27, 27, 27),
-        ["ElementOutline"] = Color3.fromRGB(40, 40, 40),
+        ["ElementOutline"] = Color3.fromRGB(40,40,40),
         ["DropdownSelected"] = Color3.fromRGB(135, 176, 27),
         ["Toggle"] = Color3.fromRGB(135, 176, 27),
-        ["ToggleUnchecked"] = Color3.fromRGB(30, 30, 30),
+        ["ToggleUnchecked"] = Color3.fromRGB(30,30,30),
         ["Slider"] = Color3.fromRGB(135, 176, 27),
         ["SliderBg"] = Color3.fromRGB(27, 27, 27)
     }
@@ -44,7 +40,7 @@ lib.create_window = function(theme, menu_key)
     local Main = Instance.new("Frame")
     local Tabs = Instance.new("Frame")
     local UIGridLayout = Instance.new("UIGridLayout")
-    local UIPadding = Instance.new("UIPadding")
+    local UIPadding = Instance.new("UIPading")
     local TopGradient = Instance.new("Frame")
     local UIGradient = Instance.new("UIGradient")
     local Content = Instance.new("Frame")
@@ -89,8 +85,8 @@ lib.create_window = function(theme, menu_key)
         end
     end)
     math.randomseed(os.time())
-    Mute.Name = tostring(math.random(0, 9999999))
-end)
+    Mute.Name = tostring(math.random(0,9999999))
+end
 services.uis.InputBegan:Connect(function(input)
     if input.KeyCode == menu_key then
         Mute.Enabled = not Mute.Enabled
@@ -153,6 +149,9 @@ window.show_tab = function(name)
             content[2].Visible = false
         end
     end
+    -- Force layout update to fix panel visibility issue
+    Content:Layout()
+    wait(0.01) -- Small delay to ensure layout applies
 end
 window.tab_active = function(tab)
     tab.BackgroundTransparency = 0
@@ -160,7 +159,7 @@ window.tab_active = function(tab)
 end
 window.tab_inactive = function(tab)
     tab.BackgroundTransparency = 1
-    tab.Open.ImageColor3 = Color3.fromRGB(90, 90, 90)
+    tab.Open.ImageColor3 = Color3.fromRGB(90,90,90)
 end
 window.tab_colors = function(ignore)
     for _, tab in pairs(Tabs:GetChildren()) do
@@ -184,7 +183,7 @@ window.create_tab = function(image)
     Tab.BackgroundTransparency = 1
     Tab.BorderSizePixel = 2
     Tab.Position = UDim2.new(0, 0, 0.14480409, 0)
-    Tab.Size = UDim2.new(0, 108, 0, 70)  -- Увеличил размер кнопок разделов как в старом скрипте
+    Tab.Size = UDim2.new(0, 108, 0, 70) -- Bigger as in old script
     Tab.AutoButtonColor = false
     Tab.Font = Enum.Font.SourceSans
     Tab.Text = ""
@@ -199,7 +198,7 @@ window.create_tab = function(image)
     Open.Position = UDim2.new(0.162790701, 0, 0.18571429, 0)
     Open.Size = UDim2.new(0, 43, 0, 43)
     Open.Image = image
-    Open.ImageColor3 = Color3.fromRGB(90, 90, 90)
+    Open.ImageColor3 = Color3.fromRGB(90,90,90)
     Open.MouseButton1Down:Connect(function()
         window.selected_tab = Tab.Name
         window.tab_colors(Tab)
@@ -247,13 +246,13 @@ window.create_tab = function(image)
         SectorContent.ScrollBarThickness = 3
         UIListLayout.Parent = SectorContent
         UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-        UIListLayout.Padding = UDim.new(0, 7)
+        UIListLayout.Padding = UDim.new(0,7)
         UIPadding.Parent = SectorContent
         UIPadding.PaddingLeft = UDim.new(0, 5)
         local UIGradient = Instance.new("UIGradient")
         UIGradient.Color = ColorSequence.new{
             ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
-            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(200, 200, 200))
+            ColorSequenceKeypoint.new(1.00, Color3.fromRGB(200,200,200))
         }
         UIGradient.Rotation = 90
         UIGradient.Parent = Sector
@@ -366,7 +365,7 @@ window.create_tab = function(image)
             sector.increase_scrollbar_size()
             return text
         end
-        sector.textbox = function(placeholder, default, callback)
+        sector.textbox = function(placeholder,default, callback)
             local textbox = {}
             local TextBox = Instance.new("TextBox")
             local UIPadding = Instance.new("UIPadding")
@@ -402,7 +401,7 @@ window.create_tab = function(image)
             sector.increase_scrollbar_size()
             return textbox
         end
-        sector.button = function(text, callback)
+        sector.button = function(text,callback)
             local button = {}
             local Button = Instance.new("TextButton")
             Button.Name = "Button"
@@ -533,14 +532,11 @@ window.create_tab = function(image)
                 if name == default then
                     dropdown.set(name)
                 end
-                DropdownContent.CanvasSize = DropdownContent.CanvasSize + UDim2.new(0, 0, 0, Button.AbsoluteSize.Y + 6)
+                DropdownContent.CanvasSize += UDim2.new(0, 0, 0, Button.AbsoluteSize.Y + 6)
             end
             dropdown.remove = function(name)
-                local btn = DropdownContent:FindFirstChild(name)
-                if btn then
-                    DropdownContent.CanvasSize = DropdownContent.CanvasSize - UDim2.new(0, 0, 0, btn.AbsoluteSize.Y + 6)
-                    btn:Destroy()
-                end
+                DropdownContent.CanvasSize -= UDim2.new(0, 0, 0, DropdownContent:FindFirstChild(name).AbsoluteSize.Y + 6)
+                DropdownContent:FindFirstChild(name):Destroy()
                 dropdown.selected = ""
             end
             dropdown.delete = function()
@@ -552,7 +548,7 @@ window.create_tab = function(image)
             sector.increase_scrollbar_size()
             return dropdown
         end
-        sector.toggle = function(text, default, callback)
+        sector.toggle = function(text,default,callback)
             local toggle = {}
             local value = default
             local Toggle = Instance.new("TextButton")
@@ -596,10 +592,7 @@ window.create_tab = function(image)
             Bg.TextColor3 = Color3.fromRGB(0, 0, 0)
             Bg.TextSize = 14.000
             Bg.AutoButtonColor = false
-            UIGradient.Color = ColorSequence.new{
-                ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
-                ColorSequenceKeypoint.new(1.00, Color3.fromRGB(175, 175, 175))
-            }
+            UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(175, 175, 175))}
             UIGradient.Rotation = 90
             UIGradient.Parent = Bg
             toggle.set = function(value)
@@ -617,6 +610,7 @@ window.create_tab = function(image)
                 local colorpicker = {}
                 local choosing_hue = false
                 local choosing_saturation = false
+                local saturation
                 local Colorpicker = Instance.new("TextButton")
                 Colorpicker.Name = "Colorpicker"
                 Colorpicker.Parent = Toggle
@@ -644,38 +638,35 @@ window.create_tab = function(image)
                 ColorPicker.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
                 ColorPicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
                 ColorPicker.BorderSizePixel = 2
-                ColorPicker.Size = UDim2.new(0, 150, 0, 120)  -- Увеличил размер колорпикера
+                ColorPicker.Size = UDim2.new(0, 180, 0, 120) -- Bigger colorpicker
                 ColorPicker.Visible = false
                 Saturation.Name = "Saturation"
                 Saturation.Parent = ColorPicker
                 Saturation.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 Saturation.BorderColor3 = Color3.fromRGB(0, 0, 0)
                 Saturation.BorderSizePixel = 0
-                Saturation.Position = UDim2.new(0.3, 0, 0.13, 0)  -- Чуть правее для баланса
-                Saturation.Size = UDim2.new(0, 90, 0, 90)  -- Увеличил размер выбора цвета
+                Saturation.Position = UDim2.new(0.35, 0, 0.1, 0) -- Adjusted position
+                Saturation.Size = UDim2.new(0, 100, 0, 100) -- Bigger saturation
                 Saturation.Font = Enum.Font.SourceSans
                 Saturation.Text = ""
                 Saturation.TextColor3 = Color3.fromRGB(0, 0, 0)
                 Saturation.TextSize = 14.000
                 Saturation.AutoButtonColor = false
-                UIGradient.Color = ColorSequence.new{
-                    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
-                    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))
-                }
+                UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))}
                 UIGradient.Rotation = 90
                 UIGradient.Parent = Saturation
                 SaturationDrag.Name = "SaturationDrag"
                 SaturationDrag.Parent = Saturation
                 SaturationDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 SaturationDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                SaturationDrag.Size = UDim2.new(0, 4, 0, 4)  -- Увеличил размер драга
+                SaturationDrag.Size = UDim2.new(0, 4, 0, 4) -- Slightly bigger drag
                 Hue.Name = "Hue"
                 Hue.Parent = ColorPicker
                 Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 Hue.BorderColor3 = Color3.fromRGB(0, 0, 0)
                 Hue.BorderSizePixel = 0
-                Hue.Position = UDim2.new(0.15, 0, 0.13, 0)  -- Левее
-                Hue.Size = UDim2.new(0, 15, 0, 90)  -- Высотой как панель, увеличил
+                Hue.Position = UDim2.new(0.08, 0, 0.1, 0) -- More left
+                Hue.Size = UDim2.new(0, 20, 0, 100) -- Taller hue, matching saturation height
                 Hue.Image = "rbxassetid://129669031573073"
                 Hue.AutoButtonColor = false
                 SaturationDrag_2.Name = "SaturationDrag_2"
@@ -683,7 +674,7 @@ window.create_tab = function(image)
                 SaturationDrag_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
                 SaturationDrag_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
                 SaturationDrag_2.BorderSizePixel = 1
-                SaturationDrag_2.Size = UDim2.new(1, 0, 0, 4)  -- Увеличил размер драга
+                SaturationDrag_2.Size = UDim2.new(1, 0, 0, 4) -- Adjusted
                 Colorpicker.MouseButton1Down:Connect(function()
                     for _, element in pairs(Sector:GetChildren()) do
                         if element.Name == "ColorPicker" and element ~= ColorPicker then
@@ -691,7 +682,7 @@ window.create_tab = function(image)
                         end
                     end
                     local abs_pos = Colorpicker.AbsolutePosition
-                    ColorPicker.Position = UDim2.new(0, abs_pos.X - Sector.AbsolutePosition.X - 140, 0, abs_pos.Y - Sector.AbsolutePosition.Y + Colorpicker.Size.Y.Offset + 16)
+                    ColorPicker.Position = UDim2.new(0, abs_pos.X - Sector.AbsolutePosition.X - 170, 0, abs_pos.Y - Sector.AbsolutePosition.Y + Colorpicker.Size.Y.Offset + 16)
                     ColorPicker.Visible = not ColorPicker.Visible
                 end)
                 colorpicker.set = function(hue, sat, val)
@@ -700,14 +691,7 @@ window.create_tab = function(image)
                     hue_value = hue
                     sat_value = sat
                     value_value = val
-                    Saturation.BackgroundColor3 = Color3.fromHSV(hue_value, 1, 1)  -- Исправил градиент для сатурации
-                    local overlay = Instance.new("Frame")
-                    overlay.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-                    overlay.BackgroundTransparency = 1 - val
-                    overlay.Size = UDim2.new(1, 0, 1, 0)
-                    overlay.ZIndex = Saturation.ZIndex - 1
-                    overlay.Parent = Saturation
-                    Saturation.BackgroundColor3 = Color3.fromHSV(hue_value, sat_value, 1)
+                    Saturation.BackgroundColor3 = Color3.fromHSV(hue_value, sat_value, value_value)
                     Colorpicker.BackgroundColor3 = Color3.fromHSV(hue_value, sat_value, value_value)
                     cpcallback(Colorpicker.BackgroundColor3)
                 end
@@ -731,17 +715,17 @@ window.create_tab = function(image)
                         choosing_hue = false
                     end
                 end)
-                services.run.RenderStepped:Connect(function()
-                    if choosing_saturation then
-                        local mouse_pos = services.uis:GetMouseLocation()
+                Main.InputChanged:Connect(function(input)
+                    if choosing_saturation and input.UserInputType == Enum.UserInputType.MouseMovement then
+                        local mouse_pos = Vector2.new(game.Players.LocalPlayer:GetMouse().X, game.Players.LocalPlayer:GetMouse().Y)
                         local abs_pos = Saturation.AbsolutePosition
                         local abs_size = Saturation.AbsoluteSize
                         local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
                         local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
                         colorpicker.set(hue_value, x, 1 - y)
                     end
-                    if choosing_hue then
-                        local mouse_pos = services.uis:GetMouseLocation()
+                    if choosing_hue and input.UserInputType == Enum.UserInputType.MouseMovement then
+                        local mouse_pos = Vector2.new(game.Players.LocalPlayer:GetMouse().X, game.Players.LocalPlayer:GetMouse().Y)
                         local abs_pos = Hue.AbsolutePosition
                         local abs_size = Hue.AbsoluteSize
                         local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
@@ -769,9 +753,9 @@ window.create_tab = function(image)
         sector.slider = function(text, indicator, min, max, default, callback)
             local slider = {}
             local dragging = false
-            local value = default
+            local value
             local Slider = Instance.new("TextButton")
-            local TextLabel = Instance.new("TextLabel")  -- Переименовал для ясности
+            local Text = Instance.new("TextLabel")
             local Bg = Instance.new("TextButton")
             local UIGradient = Instance.new("UIGradient")
             local Fill = Instance.new("TextButton")
@@ -789,25 +773,24 @@ window.create_tab = function(image)
             Slider.TextColor3 = Color3.fromRGB(172, 172, 172)
             Slider.TextSize = 14.000
             Slider.TextXAlignment = Enum.TextXAlignment.Left
-            TextLabel.Name = "Text"
-            TextLabel.Parent = Slider
-            TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-            TextLabel.BackgroundTransparency = 1.000
-            TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-            TextLabel.BorderSizePixel = 0
-            TextLabel.Position = UDim2.new(0, 0, -0.0476190485, 0)  -- Выровнял по X с началом слайдера
-            TextLabel.Size = UDim2.new(0, 226, 0, 7)
-            TextLabel.Font = Enum.Font.SourceSans
-            TextLabel.TextColor3 = themes[theme]["Text"]
-            TextLabel.TextSize = 14.000
-            TextLabel.TextStrokeTransparency = 0.800
-            TextLabel.TextXAlignment = Enum.TextXAlignment.Left
-            TextLabel.Text = text .. " " .. tostring(math.round(default * 100) / 100) .. indicator
+            Text.Name = "Text"
+            Text.Parent = Slider
+            Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+            Text.BackgroundTransparency = 1.000
+            Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
+            Text.BorderSizePixel = 0
+            Text.Position = UDim2.new(0, 5, -0.0476190485, 0) -- Aligned X with slider start
+            Text.Size = UDim2.new(0, 226, 0, 7)
+            Text.Font = Enum.Font.SourceSans
+            Text.TextColor3 = themes[theme]["Text"]
+            Text.TextSize = 14.000
+            Text.TextStrokeTransparency = 0.800
+            Text.TextXAlignment = Enum.TextXAlignment.Left
             Bg.Name = "Bg"
             Bg.Parent = Slider
             Bg.BackgroundColor3 = themes[theme]["SliderBg"]
             Bg.BorderColor3 = themes[theme]["ElementOutline"]
-            Bg.Position = UDim2.new(0, 5, 0.599998832, 0)  -- Начало слайдера выровнено с текстом
+            Bg.Position = UDim2.new(0, 5, 0.599998832, 0)
             Bg.Size = UDim2.new(0, 238, 0, 8)
             Bg.AutoButtonColor = false
             Bg.Font = Enum.Font.SourceSans
@@ -824,8 +807,8 @@ window.create_tab = function(image)
             Fill.Parent = Bg
             Fill.BackgroundColor3 = themes[theme]["Slider"]
             Fill.BorderColor3 = themes[theme]["ElementOutline"]
-            Fill.Position = UDim2.new(0, 0, 0, 0)  -- Исправил позицию для правильного расчета
-            Fill.Size = UDim2.new(0, 0, 1, 0)  -- Начальный размер 0
+            Fill.Position = UDim2.new(0, 0, 0, 0) -- Fixed position to start from beginning
+            Fill.Size = UDim2.new(0, 0, 1, 0) -- Initial size 0
             Fill.AutoButtonColor = false
             Fill.Font = Enum.Font.SourceSans
             Fill.Text = ""
@@ -837,33 +820,34 @@ window.create_tab = function(image)
             }
             UIGradient_2.Rotation = 90
             UIGradient_2.Parent = Fill
-            slider.set = function(perc)
-                local clamped_perc = math.clamp(perc / 100, 0, 1)
-                Fill.Size = UDim2.new(0, clamped_perc * Bg.AbsoluteSize.X, 1, 0)
-                value = min + clamped_perc * (max - min)
+            slider.set = function(percentage)
+                local clamped_percentage = math.clamp(percentage, 0, 100)
+                Fill.Size = UDim2.new(0, (Bg.AbsoluteSize.X / 100) * clamped_percentage, 1, 0)
+                value = (clamped_percentage / 100) * (max - min) + min
                 callback(value)
-                TextLabel.Text = text .. " " .. tostring(math.round(value * 100) / 100) .. indicator
+                Text.Text = text.." "..tostring(math.round(value * 100) / 100)..indicator
             end
             slider.get = function()
                 return value
             end
             slider.set_text = function(_text)
+                Text.Text = _text.." "..tostring(math.round(value * 100) / 100)..indicator
                 text = _text
-                TextLabel.Text = text .. " " .. tostring(math.round(value * 100) / 100) .. indicator
             end
-            local function update_slider()
+            local connection
+            connection = services.run.RenderStepped:Connect(function()
                 if dragging then
                     local mouse_pos = services.uis:GetMouseLocation()
-                    local abs_pos = Bg.AbsolutePosition
-                    local abs_size = Bg.AbsoluteSize
-                    local relative_x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
-                    slider.set(relative_x * 100)
+                    local abs = Bg.AbsolutePosition.X
+                    local abs_size = Bg.AbsoluteSize.X
+                    local relative_x = mouse_pos.X - abs
+                    local percentage = math.clamp((relative_x / abs_size) * 100, 0, 100)
+                    slider.set(percentage)
                 end
-            end
+            end)
             Bg.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
                     dragging = true
-                    update_slider()
                 end
             end)
             Bg.InputEnded:Connect(function(input)
@@ -874,7 +858,6 @@ window.create_tab = function(image)
             Fill.InputBegan:Connect(function(input)
                 if input.UserInputType == Enum.UserInputType.MouseButton1 then
                     dragging = true
-                    update_slider()
                 end
             end)
             Fill.InputEnded:Connect(function(input)
@@ -882,13 +865,18 @@ window.create_tab = function(image)
                     dragging = false
                 end
             end)
-            services.run.RenderStepped:Connect(update_slider)
-            local initial_perc = ((default - min) / (max - min)) * 100
-            slider.set(initial_perc)
+            -- Cleanup connection on delete
+            slider.delete = function()
+                if connection then
+                    connection:Disconnect()
+                end
+                Slider:Destroy()
+            end
+            slider.set((default - min) / (max - min) * 100)
             sector.increase_scrollbar_size()
             return slider
         end
-        table.insert(window.tab_contents, {Tab.Name, Sector})
+        table.insert(window.tab_contents,{ Tab.Name, Sector })
         if #window.tab_contents == 1 then
             window.selected_tab = Tab.Name
             window.tab_colors(Tab)
