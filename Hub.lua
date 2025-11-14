@@ -179,8 +179,8 @@ lib.create_window = function(theme, menu_key)
         Tab.BorderColor3 = Color3.fromRGB(20, 20, 20)
         Tab.BackgroundTransparency = 1
         Tab.BorderSizePixel = 2
-        Tab.Size = UDim2.new(0, 120, 0, 70) -- Bigger in X
-        Tab.Position = UDim2.new(0, -10, 0, 0) -- Shift left
+        Tab.Size = UDim2.new(0, 120, 0, 70)
+        Tab.Position = UDim2.new(0, -10, 0, 0)
         Tab.AutoButtonColor = false
         Tab.Font = Enum.Font.SourceSans
         Tab.Text = ""
@@ -214,8 +214,9 @@ lib.create_window = function(theme, menu_key)
             Sector.Parent = Content
             Sector.BackgroundColor3 = themes[theme]["Sector"]
             Sector.BorderColor3 = Color3.fromRGB(34, 34, 34)
-            Sector.Position = UDim2.new(0.02, 0, 0, 0) -- Slightly right
-            Sector.Size = UDim2.new(0.48, 0, 1, 0)
+            Sector.BorderSizePixel = 1
+            Sector.Position = UDim2.new(0, 5, 0, 0)
+            Sector.Size = UDim2.new(0.5, -5, 1, 0)
             Sector.Visible = false
             Title.Name = "Title"
             Title.Parent = Sector
@@ -375,7 +376,6 @@ lib.create_window = function(theme, menu_key)
                 TextBox.Parent = SectorContent
                 TextBox.BackgroundColor3 = themes[theme]["ElementBg"]
                 TextBox.BorderColor3 = themes[theme]["ElementOutline"]
-                TextBox.BorderSizePixel = 1
                 TextBox.Size = UDim2.new(0, 249, 0, 21)
                 TextBox.ClearTextOnFocus = false
                 TextBox.Font = Enum.Font.SourceSans
@@ -575,8 +575,9 @@ lib.create_window = function(theme, menu_key)
                 local value = default
                 local Toggle = Instance.new("TextButton")
                 local Text = Instance.new("TextLabel")
-                local Bg = Instance.new("Frame")
-                local Knob = Instance.new("Frame")
+                local Bg = Instance.new("TextButton")
+                local Circle = Instance.new("TextButton")
+                local UIGradient = Instance.new("UIGradient")
                 Toggle.Name = text
                 Toggle.Parent = SectorContent
                 Toggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -608,26 +609,33 @@ lib.create_window = function(theme, menu_key)
                 Bg.Parent = Toggle
                 Bg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
                 Bg.BorderColor3 = themes[theme]["ElementOutline"]
-                Bg.BorderSizePixel = 1
-                Bg.Position = UDim2.new(1, -25, 0.5, -5)
-                Bg.Size = UDim2.new(0, 18, 0, 10)
-                Bg.ZIndex = 10
-                Knob.Name = "Knob"
-                Knob.Parent = Bg
-                Knob.BackgroundColor3 = themes[theme]["Toggle"]
-                Knob.BorderSizePixel = 0
-                Knob.Position = UDim2.new(0, 0, 0, 0)
-                Knob.Size = UDim2.new(0, 8, 1, 0)
+                Bg.BorderSizePixel = 0
+                Bg.Position = UDim2.new(1, -35, 0.5, -5)
+                Bg.Size = UDim2.new(0, 20, 0, 10)
+                Bg.Font = Enum.Font.SourceSans
+                Bg.Text = ""
+                Bg.TextColor3 = Color3.fromRGB(0, 0, 0)
+                Bg.TextSize = 14.000
+                Bg.AutoButtonColor = false
+                UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(175, 175, 175))}
+                UIGradient.Rotation = 90
+                UIGradient.Parent = Bg
+                Circle.Name = "Circle"
+                Circle.Parent = Bg
+                Circle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                Circle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                Circle.BorderSizePixel = 0
+                Circle.Position = UDim2.new(0, 1, 0.5, -2.5)
+                Circle.Size = UDim2.new(0, 8, 0, 5)
+                Circle.AutoButtonColor = false
                 toggle.set = function(state)
                     value = state
                     if value then
                         Bg.BackgroundColor3 = themes[theme]["Toggle"]
-                        Knob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                        Knob.Position = UDim2.new(1, -8, 0, 0)
+                        Circle.Position = UDim2.new(1, -9, 0.5, -2.5)
                     else
                         Bg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
-                        Knob.BackgroundColor3 = themes[theme]["Toggle"]
-                        Knob.Position = UDim2.new(0, 0, 0, 0)
+                        Circle.Position = UDim2.new(0, 1, 0.5, -2.5)
                     end
                     callback(value)
                 end
@@ -790,14 +798,15 @@ lib.create_window = function(theme, menu_key)
                 sector.increase_scrollbar_size()
                 return toggle
             end
-            sector.checkpicker = function(text, default, default_color, callback, color_callback)
+            sector.checkpicker = function(text, default, color_default, callback, color_callback)
                 local checkpicker = {}
                 local value = default
                 local Toggle = Instance.new("TextButton")
                 local Text = Instance.new("TextLabel")
-                local ColorPreview = Instance.new("Frame")
-                local Bg = Instance.new("Frame")
-                local Knob = Instance.new("Frame")
+                local Bg = Instance.new("TextButton")
+                local Circle = Instance.new("TextButton")
+                local UIGradient = Instance.new("UIGradient")
+                local Colorpicker = Instance.new("TextButton")
                 Toggle.Name = text
                 Toggle.Parent = SectorContent
                 Toggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -825,37 +834,173 @@ lib.create_window = function(theme, menu_key)
                 Text.TextStrokeTransparency = 0.800
                 Text.TextXAlignment = Enum.TextXAlignment.Left
                 Text.Text = text
-                ColorPreview.Name = "ColorPreview"
-                ColorPreview.Parent = Toggle
-                ColorPreview.BackgroundColor3 = default_color
-                ColorPreview.BorderColor3 = Color3.fromRGB(40, 40, 40)
-                ColorPreview.BorderSizePixel = 1
-                ColorPreview.Position = UDim2.new(0.85, 0, 0.25, 0)
-                ColorPreview.Size = UDim2.new(0, 22, 0, 11) -- Longer in X, same Y as toggle
                 Bg.Name = "Bg"
                 Bg.Parent = Toggle
                 Bg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
                 Bg.BorderColor3 = themes[theme]["ElementOutline"]
-                Bg.BorderSizePixel = 1
-                Bg.Position = UDim2.new(1, -15, 0.5, -5)
-                Bg.Size = UDim2.new(0, 8, 0, 10)
-                Bg.ZIndex = 10
-                Knob.Name = "Knob"
-                Knob.Parent = Bg
-                Knob.BackgroundColor3 = themes[theme]["Toggle"]
-                Knob.BorderSizePixel = 0
-                Knob.Position = UDim2.new(0, 0, 0, 0)
-                Knob.Size = UDim2.new(0, 4, 1, 0)
+                Bg.BorderSizePixel = 0
+                Bg.Position = UDim2.new(1, -35, 0.5, -5)
+                Bg.Size = UDim2.new(0, 20, 0, 10)
+                Bg.Font = Enum.Font.SourceSans
+                Bg.Text = ""
+                Bg.TextColor3 = Color3.fromRGB(0, 0, 0)
+                Bg.TextSize = 14.000
+                Bg.AutoButtonColor = false
+                UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(175, 175, 175))}
+                UIGradient.Rotation = 90
+                UIGradient.Parent = Bg
+                Circle.Name = "Circle"
+                Circle.Parent = Bg
+                Circle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                Circle.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                Circle.BorderSizePixel = 0
+                Circle.Position = UDim2.new(0, 1, 0.5, -2.5)
+                Circle.Size = UDim2.new(0, 8, 0, 5)
+                Circle.AutoButtonColor = false
+                Colorpicker.Name = "Colorpicker"
+                Colorpicker.Parent = Toggle
+                Colorpicker.BackgroundColor3 = color_default
+                Colorpicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
+                Colorpicker.Position = UDim2.new(1, -55, 0.5, -5)
+                Colorpicker.Size = UDim2.new(0, 20, 0, 10)
+                Colorpicker.AutoButtonColor = false
+                Colorpicker.Font = Enum.Font.SourceSans
+                Colorpicker.Text = ""
+                Colorpicker.TextColor3 = Color3.fromRGB(0, 0, 0)
+                Colorpicker.TextSize = 14.000
+                local default_hue, default_saturation, default_value = color_default:ToHSV()
+                local hue_value = default_hue
+                local sat_value = default_saturation
+                local value_value = default_value
+                local ColorPicker = Instance.new("Frame")
+                local Saturation = Instance.new("TextButton")
+                local ValueGradient = Instance.new("UIGradient")
+                local SaturationDrag = Instance.new("Frame")
+                local Hue = Instance.new("ImageButton")
+                local HueDrag = Instance.new("Frame")
+                ColorPicker.Name = "ColorPicker"
+                ColorPicker.Parent = Sector
+                ColorPicker.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+                ColorPicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
+                ColorPicker.BorderSizePixel = 2
+                ColorPicker.Size = UDim2.new(0, 120, 0, 80)
+                ColorPicker.Visible = false
+                ColorPicker.Active = true
+                ColorPicker.Draggable = false
+                Saturation.Name = "Saturation"
+                Saturation.Parent = ColorPicker
+                Saturation.BackgroundColor3 = Color3.fromHSV(hue_value, 1, 1)
+                Saturation.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                Saturation.BorderSizePixel = 0
+                Saturation.Position = UDim2.new(0.3, 0, 0.1, 0)
+                Saturation.Size = UDim2.new(0, 60, 0, 60)
+                Saturation.Font = Enum.Font.SourceSans
+                Saturation.Text = ""
+                Saturation.TextColor3 = Color3.fromRGB(0, 0, 0)
+                Saturation.TextSize = 14.000
+                Saturation.AutoButtonColor = false
+                ValueGradient.Color = ColorSequence.new{
+                    ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
+                    ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))
+                }
+                ValueGradient.Rotation = 90
+                ValueGradient.Parent = Saturation
+                SaturationDrag.Name = "SaturationDrag"
+                SaturationDrag.Parent = Saturation
+                SaturationDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                SaturationDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                SaturationDrag.BorderSizePixel = 1
+                SaturationDrag.Size = UDim2.new(0, 4, 0, 4)
+                SaturationDrag.Position = UDim2.new(sat_value, -2, 1 - value_value, -2)
+                Hue.Name = "Hue"
+                Hue.Parent = ColorPicker
+                Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                Hue.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                Hue.BorderSizePixel = 0
+                Hue.Position = UDim2.new(0.08, 0, 0.1, 0)
+                Hue.Size = UDim2.new(0, 20, 0, 60)
+                Hue.Image = "rbxassetid://12966903157"
+                Hue.AutoButtonColor = false
+                HueDrag.Name = "HueDrag"
+                HueDrag.Parent = Hue
+                HueDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                HueDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
+                HueDrag.BorderSizePixel = 1
+                HueDrag.Size = UDim2.new(1, 0, 0, 4)
+                HueDrag.Position = UDim2.new(0, 0, 1 - hue_value, 0)
+                local function updateColor()
+                    local color = Color3.fromHSV(hue_value, sat_value, value_value)
+                    Saturation.BackgroundColor3 = Color3.fromHSV(hue_value, 1, 1)
+                    Colorpicker.BackgroundColor3 = color
+                    color_callback(color)
+                end
+                local function set_cp(h, s, v)
+                    hue_value = h or hue_value
+                    sat_value = s or sat_value
+                    value_value = v or value_value
+                    SaturationDrag.Position = UDim2.new(sat_value, -2, 1 - value_value, -2)
+                    HueDrag.Position = UDim2.new(0, 0, 1 - hue_value, 0)
+                    updateColor()
+                end
+                local draggingConnection
+                Saturation.InputBegan:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                        draggingConnection = services.run.RenderStepped:Connect(function()
+                            if not services.uis:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) then
+                                draggingConnection:Disconnect()
+                                return
+                            end
+                            local mouse = game.Players.LocalPlayer:GetMouse()
+                            local mouse_pos = Vector2.new(mouse.X, mouse.Y)
+                            local abs_pos = Saturation.AbsolutePosition
+                            local abs_size = Saturation.AbsoluteSize
+                            local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
+                            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+                            sat_value = x
+                            value_value = 1 - y
+                            set_cp(hue_value, sat_value, value_value)
+                        end)
+                    end
+                end)
+                Hue.InputBegan:Connect(function(input)
+                    if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                        draggingConnection = services.run.RenderStepped:Connect(function()
+                            if not services.uis:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) then
+                                draggingConnection:Disconnect()
+                                return
+                            end
+                            local mouse = game.Players.LocalPlayer:GetMouse()
+                            local mouse_pos = Vector2.new(mouse.X, mouse.Y)
+                            local abs_pos = Hue.AbsolutePosition
+                            local abs_size = Hue.AbsoluteSize
+                            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+                            hue_value = 1 - y
+                            set_cp(hue_value, sat_value, value_value)
+                        end)
+                    end
+                end)
+                Colorpicker.MouseButton1Down:Connect(function()
+                    for _, element in pairs(Sector:GetChildren()) do
+                        if element.Name == "ColorPicker" and element ~= ColorPicker then
+                            element.Visible = false
+                        end
+                    end
+                    local abs_pos = Colorpicker.AbsolutePosition
+                    ColorPicker.Position = UDim2.new(0, abs_pos.X - Sector.AbsolutePosition.X - 120, 0, abs_pos.Y - Sector.AbsolutePosition.Y + 15)
+                    ColorPicker.Visible = not ColorPicker.Visible
+                    if draggingConnection then
+                        draggingConnection:Disconnect()
+                    end
+                end)
+                set_cp(default_hue, default_saturation, default_value)
                 checkpicker.set = function(state)
                     value = state
                     if value then
                         Bg.BackgroundColor3 = themes[theme]["Toggle"]
-                        Knob.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                        Knob.Position = UDim2.new(1, -4, 0, 0)
+                        Circle.Position = UDim2.new(1, -9, 0.5, -2.5)
                     else
                         Bg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
-                        Knob.BackgroundColor3 = themes[theme]["Toggle"]
-                        Knob.Position = UDim2.new(0, 0, 0, 0)
+                        Circle.Position = UDim2.new(0, 1, 0.5, -2.5)
                     end
                     callback(value)
                 end
@@ -865,145 +1010,12 @@ lib.create_window = function(theme, menu_key)
                 checkpicker.get = function()
                     return value
                 end
-                checkpicker.add_color = function(cpcallback)
-                    local colorpicker = {}
-                    local choosing_hue = false
-                    local choosing_saturation = false
-                    local Colorpicker = Instance.new("TextButton")
-                    Colorpicker.Name = "Colorpicker"
-                    Colorpicker.Parent = ColorPreview
-                    Colorpicker.BackgroundColor3 = default_color
-                    Colorpicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
-                    Colorpicker.Position = UDim2.new(0, 0, 0, 0)
-                    Colorpicker.Size = UDim2.new(0, 22, 0, 11)
-                    Colorpicker.AutoButtonColor = false
-                    local default_hue, default_saturation, default_value = default_color:ToHSV()
-                    local hue_value = default_hue
-                    local sat_value = default_saturation
-                    local value_value = default_value
-                    local CP = Instance.new("Frame")
-                    local Sat = Instance.new("TextButton")
-                    local ValGrad = Instance.new("UIGradient")
-                    local SatDrag = Instance.new("Frame")
-                    local H = Instance.new("ImageButton")
-                    local HDrag = Instance.new("Frame")
-                    CP.Name = "ColorPicker"
-                    CP.Parent = Sector
-                    CP.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
-                    CP.BorderColor3 = Color3.fromRGB(40, 40, 40)
-                    CP.BorderSizePixel = 2
-                    CP.Size = UDim2.new(0, 140, 0, 100) -- Smaller
-                    CP.Visible = false
-                    CP.Active = true
-                    CP.Draggable = false
-                    Sat.Name = "Saturation"
-                    Sat.Parent = CP
-                    Sat.BackgroundColor3 = Color3.fromHSV(hue_value, 1, 1)
-                    Sat.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                    Sat.BorderSizePixel = 0
-                    Sat.Position = UDim2.new(0.3, 0, 0.1, 0)
-                    Sat.Size = UDim2.new(0, 80, 0, 80)
-                    Sat.Font = Enum.Font.SourceSans
-                    Sat.Text = ""
-                    Sat.TextColor3 = Color3.fromRGB(0, 0, 0)
-                    Sat.TextSize = 14.000
-                    Sat.AutoButtonColor = false
-                    ValGrad.Color = ColorSequence.new{
-                        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
-                        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(0, 0, 0))
-                    }
-                    ValGrad.Rotation = 90
-                    ValGrad.Parent = Sat
-                    SatDrag.Name = "SaturationDrag"
-                    SatDrag.Parent = Sat
-                    SatDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                    SatDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                    SatDrag.BorderSizePixel = 1
-                    SatDrag.Size = UDim2.new(0, 3, 0, 3)
-                    SatDrag.Position = UDim2.new(sat_value, -1.5, 1 - value_value, -1.5)
-                    H.Name = "Hue"
-                    H.Parent = CP
-                    H.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                    H.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                    H.BorderSizePixel = 0
-                    H.Position = UDim2.new(0.08, 0, 0.1, 0)
-                    H.Size = UDim2.new(0, 15, 0, 80)
-                    H.Image = "rbxassetid://12966903157"
-                    H.AutoButtonColor = false
-                    HDrag.Name = "HueDrag"
-                    HDrag.Parent = H
-                    HDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                    HDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                    HDrag.BorderSizePixel = 1
-                    HDrag.Size = UDim2.new(1, 0, 0, 3)
-                    HDrag.Position = UDim2.new(0, 0, 1 - hue_value, 0)
-                    local function updateColor()
-                        local color = Color3.fromHSV(hue_value, sat_value, value_value)
-                        Sat.BackgroundColor3 = Color3.fromHSV(hue_value, 1, 1)
-                        Colorpicker.BackgroundColor3 = color
-                        ColorPreview.BackgroundColor3 = color
-                        cpcallback(color)
-                    end
-                    colorpicker.set = function(h, s, v)
-                        hue_value = h or hue_value
-                        sat_value = s or sat_value
-                        value_value = v or value_value
-                        SatDrag.Position = UDim2.new(sat_value, -1.5, 1 - value_value, -1.5)
-                        HDrag.Position = UDim2.new(0, 0, 1 - hue_value, 0)
-                        updateColor()
-                    end
-                    local draggingConnection
-                    Sat.InputBegan:Connect(function(input)
-                        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                            draggingConnection = services.run.RenderStepped:Connect(function()
-                                if not services.uis:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) then
-                                    draggingConnection:Disconnect()
-                                    return
-                                end
-                                local mouse = game.Players.LocalPlayer:GetMouse()
-                                local mouse_pos = Vector2.new(mouse.X, mouse.Y)
-                                local abs_pos = Sat.AbsolutePosition
-                                local abs_size = Sat.AbsoluteSize
-                                local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
-                                local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-                                sat_value = x
-                                value_value = 1 - y
-                                colorpicker.set(hue_value, sat_value, value_value)
-                            end)
-                        end
-                    end)
-                    H.InputBegan:Connect(function(input)
-                        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-                            draggingConnection = services.run.RenderStepped:Connect(function()
-                                if not services.uis:IsMouseButtonPressed(Enum.UserInputType.MouseButton1) then
-                                    draggingConnection:Disconnect()
-                                    return
-                                end
-                                local mouse = game.Players.LocalPlayer:GetMouse()
-                                local mouse_pos = Vector2.new(mouse.X, mouse.Y)
-                                local abs_pos = H.AbsolutePosition
-                                local abs_size = H.AbsoluteSize
-                                local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-                                hue_value = 1 - y
-                                colorpicker.set(hue_value, sat_value, value_value)
-                            end)
-                        end
-                    end)
-                    ColorPreview.MouseButton1Down:Connect(function()
-                        for _, element in pairs(Sector:GetChildren()) do
-                            if element.Name == "ColorPicker" and element ~= CP then
-                                element.Visible = false
-                            end
-                        end
-                        local abs_pos = ColorPreview.AbsolutePosition
-                        CP.Position = UDim2.new(0, abs_pos.X - Sector.AbsolutePosition.X - 140, 0, abs_pos.Y - Sector.AbsolutePosition.Y + 15)
-                        CP.Visible = not CP.Visible
-                        if draggingConnection then
-                            draggingConnection:Disconnect()
-                        end
-                    end)
-                    colorpicker.set(default_hue, default_saturation, default_value)
-                    return colorpicker
+                checkpicker.get_color = function()
+                    return Colorpicker.BackgroundColor3
+                end
+                checkpicker.set_color = function(color)
+                    local h, s, v = color:ToHSV()
+                    set_cp(h, s, v)
                 end
                 Toggle.MouseButton1Down:Connect(function()
                     value = not value
@@ -1017,7 +1029,7 @@ lib.create_window = function(theme, menu_key)
                 sector.increase_scrollbar_size()
                 return checkpicker
             end
-            sector.slider = function(text, indicator, min, max, default, callback, is_int)
+            sector.slider = function(text, indicator, min, max, default, callback)
                 local slider = {}
                 local value = default
                 local dragging = false
@@ -1030,11 +1042,11 @@ lib.create_window = function(theme, menu_key)
                 Slider.Name = "Slider"
                 Slider.Parent = SectorContent
                 Slider.BackgroundTransparency = 1
-                Slider.Size = UDim2.new(0, 249, 0, 21)
+                Slider.Size = UDim2.new(0, 249, 0, 30)
                 Text.Name = "Text"
                 Text.Parent = Slider
                 Text.BackgroundTransparency = 1
-                Text.Position = UDim2.new(0, 0, 0, 0) -- Same as toggle text
+                Text.Position = UDim2.new(0, 5, 0, 0)
                 Text.Size = UDim2.new(0, 226, 0, 14)
                 Text.Font = Enum.Font.SourceSans
                 Text.TextColor3 = themes[theme]["Text"]
@@ -1046,8 +1058,7 @@ lib.create_window = function(theme, menu_key)
                 Bg.Parent = Slider
                 Bg.BackgroundColor3 = themes[theme]["SliderBg"]
                 Bg.BorderColor3 = themes[theme]["ElementOutline"]
-                Bg.BorderSizePixel = 1
-                Bg.Position = UDim2.new(0, 0, 0.7, 0)
+                Bg.Position = UDim2.new(0, 0, 0.6, 0)
                 Bg.Size = UDim2.new(0, 238, 0, 8)
                 Bg.AutoButtonColor = false
                 Bg.Font = Enum.Font.SourceSans
@@ -1082,7 +1093,7 @@ lib.create_window = function(theme, menu_key)
                     local scale = clamped / 100
                     Fill.Size = UDim2.new(scale, 0, 1, 0)
                     value = min + (max - min) * scale
-                    local rounded = is_int and math.floor(value + 0.5) or math.floor(value * 100 + 0.5) / 100
+                    local rounded = math.floor(value * 100 + 0.5) / 100
                     Text.Text = text .. " " .. rounded .. indicator
                     callback(value)
                 end
@@ -1094,7 +1105,7 @@ lib.create_window = function(theme, menu_key)
                 end
                 slider.set_text = function(new_text)
                     text = new_text
-                    local rounded = is_int and math.floor(value + 0.5) or math.floor(value * 100 + 0.5) / 100
+                    local rounded = math.floor(value * 100 + 0.5) / 100
                     Text.Text = new_text .. " " .. rounded .. indicator
                 end
                 local conn
