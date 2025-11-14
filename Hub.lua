@@ -140,10 +140,15 @@ lib.create_window = function(theme, menu_key)
     window.selected_tab = ""
     window.show_tab = function(name)
         for _, content in pairs(window.tab_contents) do
-            content[2].Visible = (content[1] == name)
+            if content[1] == name then
+                content[2].Visible = true
+            else
+                content[2].Visible = false
+            end
         end
         task.spawn(function()
-            task.wait()
+            task.wait(0.01)
+            UIListLayout:ApplyLayout()
         end)
     end
     window.tab_active = function(tab)
@@ -376,6 +381,7 @@ lib.create_window = function(theme, menu_key)
                 TextBox.Parent = SectorContent
                 TextBox.BackgroundColor3 = themes[theme]["ElementBg"]
                 TextBox.BorderColor3 = themes[theme]["ElementOutline"]
+                TextBox.BorderSizePixel = 1
                 TextBox.Size = UDim2.new(0, 249, 0, 21)
                 TextBox.ClearTextOnFocus = false
                 TextBox.Font = Enum.Font.SourceSans
@@ -408,7 +414,6 @@ lib.create_window = function(theme, menu_key)
             sector.button = function(text, callback)
                 local button = {}
                 local Button = Instance.new("TextButton")
-                Button.Name = "Button"
                 Button.Parent = SectorContent
                 Button.BackgroundColor3 = themes[theme]["ElementBg"]
                 Button.BorderColor3 = themes[theme]["ElementOutline"]
@@ -441,7 +446,6 @@ lib.create_window = function(theme, menu_key)
                 local DropdownContent = Instance.new("ScrollingFrame")
                 local UIPadding_2 = Instance.new("UIPadding")
                 local UIListLayout = Instance.new("UIListLayout")
-                Dropdown.Name = "Dropdown"
                 Dropdown.Parent = SectorContent
                 Dropdown.BackgroundColor3 = themes[theme]["ElementBg"]
                 Dropdown.BorderColor3 = themes[theme]["ElementOutline"]
@@ -575,9 +579,8 @@ lib.create_window = function(theme, menu_key)
                 local value = default
                 local Toggle = Instance.new("TextButton")
                 local Text = Instance.new("TextLabel")
-                local Bg = Instance.new("TextButton")
-                local Circle = Instance.new("TextButton")
-                local UIGradient = Instance.new("UIGradient")
+                local CheckBox = Instance.new("Frame")
+                local CheckMark = Instance.new("TextLabel")
                 Toggle.Name = text
                 Toggle.Parent = SectorContent
                 Toggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -605,37 +608,31 @@ lib.create_window = function(theme, menu_key)
                 Text.TextStrokeTransparency = 0.800
                 Text.TextXAlignment = Enum.TextXAlignment.Left
                 Text.Text = text
-                Bg.Name = "Bg"
-                Bg.Parent = Toggle
-                Bg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
-                Bg.BorderColor3 = themes[theme]["ElementOutline"]
-                Bg.BorderSizePixel = 0
-                Bg.Position = UDim2.new(1, -35, 0.5, -5)
-                Bg.Size = UDim2.new(0, 20, 0, 10)
-                Bg.Font = Enum.Font.SourceSans
-                Bg.Text = ""
-                Bg.TextColor3 = Color3.fromRGB(0, 0, 0)
-                Bg.TextSize = 14.000
-                Bg.AutoButtonColor = false
-                UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(175, 175, 175))}
-                UIGradient.Rotation = 90
-                UIGradient.Parent = Bg
-                Circle.Name = "Circle"
-                Circle.Parent = Bg
-                Circle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                Circle.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                Circle.BorderSizePixel = 0
-                Circle.Position = UDim2.new(0, 1, 0.5, -2.5)
-                Circle.Size = UDim2.new(0, 8, 0, 5)
-                Circle.AutoButtonColor = false
+                CheckBox.Name = "CheckBox"
+                CheckBox.Parent = Toggle
+                CheckBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                CheckBox.BorderColor3 = themes[theme]["ElementOutline"]
+                CheckBox.BorderSizePixel = 1
+                CheckBox.Position = UDim2.new(1, -15, 0.5, -5)
+                CheckBox.Size = UDim2.new(0, 10, 0, 10)
+                CheckMark.Name = "CheckMark"
+                CheckMark.Parent = CheckBox
+                CheckMark.BackgroundTransparency = 1
+                CheckMark.Position = UDim2.new(0, 0, 0, 0)
+                CheckMark.Size = UDim2.new(1, 0, 1, 0)
+                CheckMark.Font = Enum.Font.SourceSansBold
+                CheckMark.TextColor3 = themes[theme]["Text"]
+                CheckMark.TextSize = 12
+                CheckMark.TextXAlignment = Enum.TextXAlignment.Center
+                CheckMark.TextYAlignment = Enum.TextYAlignment.Center
                 toggle.set = function(state)
                     value = state
                     if value then
-                        Bg.BackgroundColor3 = themes[theme]["Toggle"]
-                        Circle.Position = UDim2.new(1, -9, 0.5, -2.5)
+                        CheckBox.BackgroundColor3 = themes[theme]["Toggle"]
+                        CheckMark.Text = "✓"
                     else
-                        Bg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
-                        Circle.Position = UDim2.new(0, 1, 0.5, -2.5)
+                        CheckBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                        CheckMark.Text = ""
                     end
                     callback(value)
                 end
@@ -790,7 +787,7 @@ lib.create_window = function(theme, menu_key)
                     value = not value
                     toggle.set(value)
                 end)
-                Bg.MouseButton1Down:Connect(function()
+                CheckBox.MouseButton1Down:Connect(function()
                     value = not value
                     toggle.set(value)
                 end)
@@ -803,10 +800,9 @@ lib.create_window = function(theme, menu_key)
                 local value = default
                 local Toggle = Instance.new("TextButton")
                 local Text = Instance.new("TextLabel")
-                local Bg = Instance.new("TextButton")
-                local Circle = Instance.new("TextButton")
-                local UIGradient = Instance.new("UIGradient")
                 local Colorpicker = Instance.new("TextButton")
+                local CheckBox = Instance.new("Frame")
+                local CheckMark = Instance.new("TextLabel")
                 Toggle.Name = text
                 Toggle.Parent = SectorContent
                 Toggle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -834,40 +830,35 @@ lib.create_window = function(theme, menu_key)
                 Text.TextStrokeTransparency = 0.800
                 Text.TextXAlignment = Enum.TextXAlignment.Left
                 Text.Text = text
-                Bg.Name = "Bg"
-                Bg.Parent = Toggle
-                Bg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
-                Bg.BorderColor3 = themes[theme]["ElementOutline"]
-                Bg.BorderSizePixel = 0
-                Bg.Position = UDim2.new(1, -35, 0.5, -5)
-                Bg.Size = UDim2.new(0, 20, 0, 10)
-                Bg.Font = Enum.Font.SourceSans
-                Bg.Text = ""
-                Bg.TextColor3 = Color3.fromRGB(0, 0, 0)
-                Bg.TextSize = 14.000
-                Bg.AutoButtonColor = false
-                UIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(175, 175, 175))}
-                UIGradient.Rotation = 90
-                UIGradient.Parent = Bg
-                Circle.Name = "Circle"
-                Circle.Parent = Bg
-                Circle.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-                Circle.BorderColor3 = Color3.fromRGB(0, 0, 0)
-                Circle.BorderSizePixel = 0
-                Circle.Position = UDim2.new(0, 1, 0.5, -2.5)
-                Circle.Size = UDim2.new(0, 8, 0, 5)
-                Circle.AutoButtonColor = false
                 Colorpicker.Name = "Colorpicker"
                 Colorpicker.Parent = Toggle
                 Colorpicker.BackgroundColor3 = color_default
                 Colorpicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
-                Colorpicker.Position = UDim2.new(1, -55, 0.5, -5)
+                Colorpicker.BorderSizePixel = 1
+                Colorpicker.Position = UDim2.new(1, -40, 0.5, -5)
                 Colorpicker.Size = UDim2.new(0, 20, 0, 10)
                 Colorpicker.AutoButtonColor = false
                 Colorpicker.Font = Enum.Font.SourceSans
                 Colorpicker.Text = ""
                 Colorpicker.TextColor3 = Color3.fromRGB(0, 0, 0)
                 Colorpicker.TextSize = 14.000
+                CheckBox.Name = "CheckBox"
+                CheckBox.Parent = Toggle
+                CheckBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                CheckBox.BorderColor3 = themes[theme]["ElementOutline"]
+                CheckBox.BorderSizePixel = 1
+                CheckBox.Position = UDim2.new(1, -15, 0.5, -5)
+                CheckBox.Size = UDim2.new(0, 10, 0, 10)
+                CheckMark.Name = "CheckMark"
+                CheckMark.Parent = CheckBox
+                CheckMark.BackgroundTransparency = 1
+                CheckMark.Position = UDim2.new(0, 0, 0, 0)
+                CheckMark.Size = UDim2.new(1, 0, 1, 0)
+                CheckMark.Font = Enum.Font.SourceSansBold
+                CheckMark.TextColor3 = themes[theme]["Text"]
+                CheckMark.TextSize = 12
+                CheckMark.TextXAlignment = Enum.TextXAlignment.Center
+                CheckMark.TextYAlignment = Enum.TextYAlignment.Center
                 local default_hue, default_saturation, default_value = color_default:ToHSV()
                 local hue_value = default_hue
                 local sat_value = default_saturation
@@ -996,11 +987,11 @@ lib.create_window = function(theme, menu_key)
                 checkpicker.set = function(state)
                     value = state
                     if value then
-                        Bg.BackgroundColor3 = themes[theme]["Toggle"]
-                        Circle.Position = UDim2.new(1, -9, 0.5, -2.5)
+                        CheckBox.BackgroundColor3 = themes[theme]["Toggle"]
+                        CheckMark.Text = "✓"
                     else
-                        Bg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
-                        Circle.Position = UDim2.new(0, 1, 0.5, -2.5)
+                        CheckBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+                        CheckMark.Text = ""
                     end
                     callback(value)
                 end
@@ -1021,7 +1012,7 @@ lib.create_window = function(theme, menu_key)
                     value = not value
                     checkpicker.set(value)
                 end)
-                Bg.MouseButton1Down:Connect(function()
+                CheckBox.MouseButton1Down:Connect(function()
                     value = not value
                     checkpicker.set(value)
                 end)
@@ -1029,7 +1020,8 @@ lib.create_window = function(theme, menu_key)
                 sector.increase_scrollbar_size()
                 return checkpicker
             end
-            sector.slider = function(text, indicator, min, max, default, callback)
+            sector.slider = function(text, indicator, min, max, default, callback, is_int)
+                is_int = is_int or false
                 local slider = {}
                 local value = default
                 local dragging = false
@@ -1046,7 +1038,7 @@ lib.create_window = function(theme, menu_key)
                 Text.Name = "Text"
                 Text.Parent = Slider
                 Text.BackgroundTransparency = 1
-                Text.Position = UDim2.new(0, 5, 0, 0)
+                Text.Position = UDim2.new(0, 0, 0, 0)
                 Text.Size = UDim2.new(0, 226, 0, 14)
                 Text.Font = Enum.Font.SourceSans
                 Text.TextColor3 = themes[theme]["Text"]
@@ -1093,7 +1085,12 @@ lib.create_window = function(theme, menu_key)
                     local scale = clamped / 100
                     Fill.Size = UDim2.new(scale, 0, 1, 0)
                     value = min + (max - min) * scale
-                    local rounded = math.floor(value * 100 + 0.5) / 100
+                    local rounded
+                    if is_int then
+                        rounded = math.floor(value + 0.5)
+                    else
+                        rounded = math.floor(value * 100 + 0.5) / 100
+                    end
                     Text.Text = text .. " " .. rounded .. indicator
                     callback(value)
                 end
@@ -1105,7 +1102,12 @@ lib.create_window = function(theme, menu_key)
                 end
                 slider.set_text = function(new_text)
                     text = new_text
-                    local rounded = math.floor(value * 100 + 0.5) / 100
+                    local rounded
+                    if is_int then
+                        rounded = math.floor(value + 0.5)
+                    else
+                        rounded = math.floor(value * 100 + 0.5) / 100
+                    end
                     Text.Text = new_text .. " " .. rounded .. indicator
                 end
                 local conn
