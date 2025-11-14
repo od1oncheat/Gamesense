@@ -140,12 +140,11 @@ lib.create_window = function(theme, menu_key)
     window.selected_tab = ""
     window.show_tab = function(name)
         for _, content in pairs(window.tab_contents) do
-            if content[1] == name then
-                content[2].Visible = true
-            else
-                content[2].Visible = false
-            end
+            content[2].Visible = (content[1] == name)
         end
+        task.spawn(function()
+            task.wait()
+        end)
     end
     window.tab_active = function(tab)
         tab.BackgroundTransparency = 0
@@ -186,6 +185,12 @@ lib.create_window = function(theme, menu_key)
         Tab.Text = ""
         Tab.TextColor3 = Color3.fromRGB(0, 0, 0)
         Tab.TextSize = 14.000
+        local switch_func = function()
+            window.selected_tab = Tab.Name
+            window.tab_colors(Tab)
+            window.show_tab(Tab.Name)
+        end
+        Tab.MouseButton1Down:Connect(switch_func)
         Open.Name = "Open"
         Open.Parent = Tab
         Open.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -196,11 +201,7 @@ lib.create_window = function(theme, menu_key)
         Open.Size = UDim2.new(0, 43, 0, 43)
         Open.Image = image
         Open.ImageColor3 = Color3.fromRGB(90,90,90)
-        Open.MouseButton1Down:Connect(function()
-            window.selected_tab = Tab.Name
-            window.tab_colors(Tab)
-            window.show_tab(Tab.Name)
-        end)
+        Open.MouseButton1Down:Connect(switch_func)
         tab.create_sector = function(name)
             local sector = {}
             local Sector = Instance.new("Frame")
