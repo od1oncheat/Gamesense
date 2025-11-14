@@ -39,11 +39,12 @@ lib.create_window = function(theme, menu_key)
 	protect_gui(Mute)
 	local Main = Instance.new("Frame")
 	local Tabs = Instance.new("Frame")
-	local UIListLayout = Instance.new("UIListLayout")
+	local UIGridLayout = Instance.new("UIGridLayout")
+	local UIPadding = Instance.new("UIPadding")
 	local TopGradient = Instance.new("Frame")
 	local UIGradient = Instance.new("UIGradient")
 	local Content = Instance.new("Frame")
-	local UIListLayoutContent = Instance.new("UIListLayout")
+	local UIListLayout = Instance.new("UIListLayout")
 	-- dragging
 	window.update_window = function(input)
 		local delta = input.Position - window.drag_start
@@ -109,11 +110,14 @@ lib.create_window = function(theme, menu_key)
 	Tabs.BackgroundColor3 = themes[theme]["Tabs"]
 	Tabs.BorderColor3 = Color3.fromRGB(21, 21, 21)
 	Tabs.Position = UDim2.new(0, 1, 0.00330578513, 0)
-	Tabs.Size = UDim2.new(0, 120, 0, 602)
-	UIListLayout.Parent = Tabs
-	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-	UIListLayout.FillDirection = Enum.FillDirection.Vertical
-	UIListLayout.Padding = UDim.new(0, 0)
+	Tabs.Size = UDim2.new(0, 100, 0, 602)
+	UIGridLayout.Parent = Tabs
+	UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	UIGridLayout.CellPadding = UDim2.new(0, 15, 0, 15)
+	UIGridLayout.CellSize = UDim2.new(0, 85, 0, 70)
+	UIPadding.Parent = Tabs
+	UIPadding.PaddingLeft = UDim.new(0, 14)
+	UIPadding.PaddingTop = UDim.new(0, 15)
 	TopGradient.Name = "TopGradient"
 	TopGradient.Parent = Main
 	TopGradient.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -130,10 +134,10 @@ lib.create_window = function(theme, menu_key)
 	Content.BorderSizePixel = 0
 	Content.Position = UDim2.new(0.165000007, 0, 0.0247933883, 0)
 	Content.Size = UDim2.new(0, 553, 0, 579)
-	UIListLayoutContent.Parent = Content
-	UIListLayoutContent.FillDirection = Enum.FillDirection.Vertical
-	UIListLayoutContent.SortOrder = Enum.SortOrder.LayoutOrder
-	UIListLayoutContent.Padding = UDim.new(0, 10)
+	UIListLayout.Parent = Content
+	UIListLayout.FillDirection = Enum.FillDirection.Horizontal
+	UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+	UIListLayout.Padding = UDim.new(0, 10)
 	window.tab_contents = {}
 	window.selected_tab = ""
 	window.show_tab = function(name)
@@ -155,7 +159,7 @@ lib.create_window = function(theme, menu_key)
 	end
 	window.tab_colors = function(ignore)
 		for _, tab in pairs(Tabs:GetChildren()) do
-			if not tab:IsA("UIListLayout") then
+			if not tab:IsA("UIGridLayout") and not tab:IsA("UIPadding") and not tab:IsA("UIListLayout") then
 				if tab.Name ~= ignore.Name then
 					window.tab_inactive(tab)
 				else
@@ -174,7 +178,8 @@ lib.create_window = function(theme, menu_key)
 		Tab.BorderColor3 = Color3.fromRGB(20, 20, 20)
 		Tab.BackgroundTransparency = 1
 		Tab.BorderSizePixel = 2
-		Tab.Size = UDim2.new(1, 0, 0, 80)
+		Tab.Position = UDim2.new(0, 0, 0.14480409, 0)
+		Tab.Size = UDim2.new(0, 108, 0, 70)
 		Tab.AutoButtonColor = false
 		Tab.Font = Enum.Font.SourceSans
 		Tab.Text = ""
@@ -186,8 +191,8 @@ lib.create_window = function(theme, menu_key)
 		Open.BackgroundTransparency = 1.000
 		Open.BorderColor3 = Color3.fromRGB(0, 0, 0)
 		Open.BorderSizePixel = 0
-		Open.Position = UDim2.new(0.25, 0, 0.2, 0)
-		Open.Size = UDim2.new(0, 50, 0, 50)
+		Open.Position = UDim2.new(0.162790701, 0, 0.18571429, 0)
+		Open.Size = UDim2.new(0, 43, 0, 43)
 		Open.Image = image
 		Open.ImageColor3 = Color3.fromRGB(90,90,90)
 		Open.MouseButton1Down:Connect(function()
@@ -206,8 +211,8 @@ lib.create_window = function(theme, menu_key)
 			Sector.Parent = Content
 			Sector.BackgroundColor3 = themes[theme]["Sector"]
 			Sector.BorderColor3 = Color3.fromRGB(34, 34, 34)
-			Sector.Position = UDim2.new(0, 0, 0, 0)
-			Sector.Size = UDim2.new(1, 0, 0, 0)
+			Sector.Position = UDim2.new(-0.00108384306, 0, -0.0011133909, 0)
+			Sector.Size = UDim2.new(0.5, 0, 1, 0)
 			Sector.Visible = false
 			Title.Name = "Title"
 			Title.Parent = Sector
@@ -215,8 +220,8 @@ lib.create_window = function(theme, menu_key)
 			Title.BackgroundTransparency = 1.000
 			Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			Title.BorderSizePixel = 0
-			Title.Position = UDim2.new(0, 0, 0, 0)
-			Title.Size = UDim2.new(1, 0, 0, 20)
+			Title.Position = UDim2.new(0.028933093, 0, -0.0120898103, 0)
+			Title.Size = UDim2.new(0, 268, 0, 15)
 			Title.Font = Enum.Font.SourceSans
 			Title.TextColor3 = themes[theme]["Text"]
 			Title.TextSize = 18.000
@@ -231,8 +236,8 @@ lib.create_window = function(theme, menu_key)
 			SectorContent.BackgroundTransparency = 1.000
 			SectorContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			SectorContent.BorderSizePixel = 0
-			SectorContent.Position = UDim2.new(0, 0, 0, 25)
-			SectorContent.Size = UDim2.new(1, 0, 1, -25)
+			SectorContent.Position = UDim2.new(0.028933093, 0, 0.025906736, 0)
+			SectorContent.Size = UDim2.new(0, 259, 0, 558)
 			SectorContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 			SectorContent.ScrollBarThickness = 3
 			UIListLayout.Parent = SectorContent
@@ -249,15 +254,12 @@ lib.create_window = function(theme, menu_key)
 			UIGradient.Parent = Sector
 			sector.increase_scrollbar_size = function()
 				local totalHeight = 0
-				local numElements = 0
 				for _, element in pairs(SectorContent:GetChildren()) do
-					if element:IsA("GuiObject") and element.AbsoluteSize.Y > 0 then
+					if element:IsA("GuiObject") then
 						totalHeight = totalHeight + element.AbsoluteSize.Y
-						numElements = numElements + 1
 					end
 				end
-				totalHeight = totalHeight + (numElements - 1) * 7 + 5
-				SectorContent.CanvasSize = UDim2.new(0, 0, 0, totalHeight)
+				SectorContent.CanvasSize = UDim2.new(0, 0, 0, totalHeight + 5)
 			end
 			sector.text = function(_text)
 				local text = {}
@@ -268,7 +270,7 @@ lib.create_window = function(theme, menu_key)
 				Text.BackgroundTransparency = 1.000
 				Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Text.BorderSizePixel = 0
-				Text.Size = UDim2.new(1, 0, 0, 13)
+				Text.Size = UDim2.new(0, 249, 0, 13)
 				Text.Font = Enum.Font.SourceSans
 				Text.Text = _text
 				Text.TextColor3 = themes[theme]["Text"]
@@ -293,7 +295,7 @@ lib.create_window = function(theme, menu_key)
 				Text.BackgroundTransparency = 1.000
 				Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Text.BorderSizePixel = 0
-				Text.Size = UDim2.new(1, 0, 0, 13)
+				Text.Size = UDim2.new(0, 249, 0, 13)
 				Text.Font = Enum.Font.SourceSans
 				Text.Text = _text
 				Text.TextColor3 = Color3.fromRGB(142, 127, 74)
@@ -318,7 +320,7 @@ lib.create_window = function(theme, menu_key)
 				Text.BackgroundTransparency = 1.000
 				Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Text.BorderSizePixel = 0
-				Text.Size = UDim2.new(1, 0, 0, 13)
+				Text.Size = UDim2.new(0, 249, 0, 13)
 				Text.Font = Enum.Font.SourceSans
 				Text.Text = _text
 				Text.TextColor3 = Color3.fromRGB(142, 74, 65)
@@ -343,7 +345,7 @@ lib.create_window = function(theme, menu_key)
 				Text.BackgroundTransparency = 1.000
 				Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Text.BorderSizePixel = 0
-				Text.Size = UDim2.new(1, 0, 0, 13)
+				Text.Size = UDim2.new(0, 249, 0, 13)
 				Text.Font = Enum.Font.SourceSans
 				Text.Text = _text
 				Text.TextColor3 = Color3.fromRGB(63, 110, 152)
@@ -366,7 +368,8 @@ lib.create_window = function(theme, menu_key)
 				TextBox.Parent = SectorContent
 				TextBox.BackgroundColor3 = themes[theme]["ElementBg"]
 				TextBox.BorderColor3 = themes[theme]["ElementOutline"]
-				TextBox.Size = UDim2.new(1, 0, 0, 21)
+				TextBox.Position = UDim2.new(0, 0, 0.15053764, 0)
+				TextBox.Size = UDim2.new(0, 249, 0, 21)
 				TextBox.ClearTextOnFocus = false
 				TextBox.Font = Enum.Font.SourceSans
 				TextBox.PlaceholderColor3 = Color3.fromRGB(72, 72, 72)
@@ -401,7 +404,8 @@ lib.create_window = function(theme, menu_key)
 				Button.Parent = SectorContent
 				Button.BackgroundColor3 = themes[theme]["ElementBg"]
 				Button.BorderColor3 = themes[theme]["ElementOutline"]
-				Button.Size = UDim2.new(1, 0, 0, 21)
+				Button.Position = UDim2.new(0.0157480314, 0, 0.254480273, 0)
+				Button.Size = UDim2.new(0, 249, 0, 21)
 				Button.AutoButtonColor = false
 				Button.Font = Enum.Font.SourceSans
 				Button.TextColor3 = themes[theme]["Text"]
@@ -422,8 +426,6 @@ lib.create_window = function(theme, menu_key)
 			sector.dropdown = function(text, options, default, callback)
 				local dropdown = {}
 				dropdown.selected = default
-				local up_id = "rbxassetid://74187648454886"
-				local down_id = "rbxassetid://97940921082727"
 				local Dropdown = Instance.new("TextButton")
 				local UIPadding = Instance.new("UIPadding")
 				local Image = Instance.new("ImageLabel")
@@ -434,7 +436,8 @@ lib.create_window = function(theme, menu_key)
 				Dropdown.Parent = SectorContent
 				Dropdown.BackgroundColor3 = themes[theme]["ElementBg"]
 				Dropdown.BorderColor3 = themes[theme]["ElementOutline"]
-				Dropdown.Size = UDim2.new(1, 0, 0, 21)
+				Dropdown.Position = UDim2.new(0.0157480314, 0, 0.254480273, 0)
+				Dropdown.Size = UDim2.new(0, 249, 0, 21)
 				Dropdown.AutoButtonColor = false
 				Dropdown.Font = Enum.Font.SourceSans
 				Dropdown.Text = text
@@ -443,16 +446,16 @@ lib.create_window = function(theme, menu_key)
 				Dropdown.TextXAlignment = Enum.TextXAlignment.Left
 				Dropdown.ZIndex = 100
 				UIPadding.Parent = Dropdown
-				UIPadding.PaddingLeft = UDim.new(0, 5)
+				UIPadding.PaddingLeft = UDim.new(0, 30)
 				Image.Name = "Image"
 				Image.Parent = Dropdown
 				Image.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 				Image.BackgroundTransparency = 1.000
 				Image.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Image.BorderSizePixel = 0
-				Image.Position = UDim2.new(1, -20, 0.14, 0)
+				Image.Position = UDim2.new(-0.100456618, 0, 0.142857149, 0)
 				Image.Size = UDim2.new(0, 15, 0, 15)
-				Image.Image = down_id
+				Image.Image = "rbxassetid://74187648454886"
 				Image.ImageColor3 = Color3.fromRGB(115, 115, 115)
 				Image.ZIndex = 101
 				DropdownContent.Name = "DropdownContent"
@@ -460,8 +463,8 @@ lib.create_window = function(theme, menu_key)
 				DropdownContent.Active = true
 				DropdownContent.BackgroundColor3 = themes[theme]["ElementBg"]
 				DropdownContent.BorderColor3 = themes[theme]["ElementOutline"]
-				DropdownContent.Position = UDim2.new(0, 0, 1, 0)
-				DropdownContent.Size = UDim2.new(1, 0, 0, 116)
+				DropdownContent.Position = UDim2.new(-0.1369863, 0, 1, 0)
+				DropdownContent.Size = UDim2.new(0, 249, 0, 116)
 				DropdownContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 				DropdownContent.ScrollBarThickness = 3
 				DropdownContent.ScrollBarImageColor3 = Color3.fromRGB(50, 50, 50)
@@ -475,7 +478,7 @@ lib.create_window = function(theme, menu_key)
 				UIListLayout.Padding = UDim.new(0, 5)
 				Dropdown.MouseButton1Down:Connect(function()
 					DropdownContent.Visible = not DropdownContent.Visible
-					Image.Image = DropdownContent.Visible and up_id or down_id
+					Image.Image = DropdownContent.Visible and "rbxassetid://74187648454886" or "rbxassetid://97940921082727"
 				end)
 				dropdown.unselect_all = function()
 					for _, button in pairs(DropdownContent:GetChildren()) do
@@ -505,7 +508,7 @@ lib.create_window = function(theme, menu_key)
 					Button.Parent = DropdownContent
 					Button.BackgroundColor3 = themes[theme]["ElementBg"]
 					Button.BorderColor3 = themes[theme]["ElementOutline"]
-					Button.Size = UDim2.new(1, 0, 0, 21)
+					Button.Size = UDim2.new(0, 238, 0, 21)
 					Button.Font = Enum.Font.SourceSans
 					Button.TextColor3 = themes[theme]["Text"]
 					Button.TextSize = 14.000
@@ -521,230 +524,31 @@ lib.create_window = function(theme, menu_key)
 					UIGradient.Parent = Button
 					Button.MouseButton1Down:Connect(function()
 						dropdown.set(name)
-						DropdownContent.Visible = false
-						Image.Image = down_id
 					end)
 					if name == default then
 						dropdown.set(name)
 					end
-					DropdownContent.CanvasSize = DropdownContent.CanvasSize + UDim2.new(0, 0, 0, Button.AbsoluteSize.Y + 6)
+					DropdownContent.CanvasSize += UDim2.new(0, 0, 0, Button.AbsoluteSize.Y + 6)
 				end
 				dropdown.remove = function(name)
-					local btn = DropdownContent:FindFirstChild(name)
-					if btn then
-						DropdownContent.CanvasSize = DropdownContent.CanvasSize - UDim2.new(0, 0, 0, btn.AbsoluteSize.Y + 6)
-						btn:Destroy()
-					end
-					if dropdown.selected == name then
-						dropdown.selected = ""
-					end
+					DropdownContent.CanvasSize -= UDim2.new(0, 0, 0, DropdownContent:FindFirstChild(name).AbsoluteSize.Y + 6)
+					DropdownContent:FindFirstChild(name):Destroy()
+					dropdown.selected = ""
 				end
 				dropdown.delete = function()
 					Dropdown:Destroy()
 				end
-				for _, option in pairs(options) do
+				for idx, option in pairs(options) do
 					dropdown.add(option)
 				end
 				sector.increase_scrollbar_size()
 				return dropdown
-			end
-			sector.multidropdown = function(text, options, defaults, callback)
-				local dropdown = {}
-				dropdown.selected = defaults or {}
-				local up_id = "rbxassetid://74187648454886"
-				local down_id = "rbxassetid://97940921082727"
-				local Dropdown = Instance.new("TextButton")
-				local UIPadding = Instance.new("UIPadding")
-				local Image = Instance.new("ImageLabel")
-				local DropdownContent = Instance.new("ScrollingFrame")
-				local UIPadding_2 = Instance.new("UIPadding")
-				local UIListLayout = Instance.new("UIListLayout")
-				Dropdown.Name = "Multidropdown"
-				Dropdown.Parent = SectorContent
-				Dropdown.BackgroundColor3 = themes[theme]["ElementBg"]
-				Dropdown.BorderColor3 = themes[theme]["ElementOutline"]
-				Dropdown.Size = UDim2.new(1, 0, 0, 21)
-				Dropdown.AutoButtonColor = false
-				Dropdown.Font = Enum.Font.SourceSans
-				local selected_count = #dropdown.selected
-				Dropdown.Text = text .. ": " .. selected_count .. " selected"
-				Dropdown.TextColor3 = themes[theme]["Text"]
-				Dropdown.TextSize = 14.000
-				Dropdown.TextXAlignment = Enum.TextXAlignment.Left
-				Dropdown.ZIndex = 100
-				UIPadding.Parent = Dropdown
-				UIPadding.PaddingLeft = UDim.new(0, 5)
-				Image.Name = "Image"
-				Image.Parent = Dropdown
-				Image.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				Image.BackgroundTransparency = 1.000
-				Image.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				Image.BorderSizePixel = 0
-				Image.Position = UDim2.new(1, -20, 0.14, 0)
-				Image.Size = UDim2.new(0, 15, 0, 15)
-				Image.Image = down_id
-				Image.ImageColor3 = Color3.fromRGB(115, 115, 115)
-				Image.ZIndex = 101
-				DropdownContent.Name = "DropdownContent"
-				DropdownContent.Parent = Dropdown
-				DropdownContent.Active = true
-				DropdownContent.BackgroundColor3 = themes[theme]["ElementBg"]
-				DropdownContent.BorderColor3 = themes[theme]["ElementOutline"]
-				DropdownContent.Position = UDim2.new(0, 0, 1, 0)
-				DropdownContent.Size = UDim2.new(1, 0, 0, 116)
-				DropdownContent.CanvasSize = UDim2.new(0, 0, 0, 0)
-				DropdownContent.ScrollBarThickness = 3
-				DropdownContent.ScrollBarImageColor3 = Color3.fromRGB(50, 50, 50)
-				DropdownContent.Visible = false
-				DropdownContent.ZIndex = 102
-				UIPadding_2.Parent = DropdownContent
-				UIPadding_2.PaddingLeft = UDim.new(0, 5)
-				UIPadding_2.PaddingTop = UDim.new(0, 5)
-				UIListLayout.Parent = DropdownContent
-				UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-				UIListLayout.Padding = UDim.new(0, 5)
-				Dropdown.MouseButton1Down:Connect(function()
-					DropdownContent.Visible = not DropdownContent.Visible
-					Image.Image = DropdownContent.Visible and up_id or down_id
-				end)
-				dropdown.toggle = function(name)
-					local index = table.find(dropdown.selected, name)
-					if index then
-						table.remove(dropdown.selected, index)
-					else
-						table.insert(dropdown.selected, name)
-					end
-					local btn = DropdownContent:FindFirstChild(name)
-					if btn then
-						btn.BorderColor3 = table.find(dropdown.selected, name) and themes[theme]["DropdownSelected"] or themes[theme]["ElementOutline"]
-					end
-					local count = #dropdown.selected
-					Dropdown.Text = text .. ": " .. count .. " selected"
-					callback(dropdown.selected)
-				end
-				dropdown.add = function(name)
-					local Button = Instance.new("TextButton")
-					Button.Name = name
-					Button.Parent = DropdownContent
-					Button.BackgroundColor3 = themes[theme]["ElementBg"]
-					Button.BorderColor3 = themes[theme]["ElementOutline"]
-					Button.Size = UDim2.new(1, 0, 0, 21)
-					Button.Font = Enum.Font.SourceSans
-					Button.TextColor3 = themes[theme]["Text"]
-					Button.TextSize = 14.000
-					Button.Text = name
-					Button.AutoButtonColor = false
-					Button.ZIndex = 103
-					local UIGradient = Instance.new("UIGradient")
-					UIGradient.Color = ColorSequence.new{
-						ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)),
-						ColorSequenceKeypoint.new(1.00, Color3.fromRGB(175, 175, 175))
-					}
-					UIGradient.Rotation = 90
-					UIGradient.Parent = Button
-					Button.MouseButton1Down:Connect(function()
-						dropdown.toggle(name)
-					end)
-					if table.find(defaults, name) then
-						dropdown.toggle(name)
-					end
-					DropdownContent.CanvasSize = DropdownContent.CanvasSize + UDim2.new(0, 0, 0, Button.AbsoluteSize.Y + 6)
-				end
-				dropdown.remove = function(name)
-					local btn = DropdownContent:FindFirstChild(name)
-					if btn then
-						DropdownContent.CanvasSize = DropdownContent.CanvasSize - UDim2.new(0, 0, 0, btn.AbsoluteSize.Y + 6)
-						btn:Destroy()
-					end
-					local index = table.find(dropdown.selected, name)
-					if index then
-						table.remove(dropdown.selected, index)
-						local count = #dropdown.selected
-						Dropdown.Text = text .. ": " .. count .. " selected"
-						callback(dropdown.selected)
-					end
-				end
-				dropdown.delete = function()
-					Dropdown:Destroy()
-				end
-				dropdown.get = function()
-					return dropdown.selected
-				end
-				for _, option in pairs(options) do
-					dropdown.add(option)
-				end
-				sector.increase_scrollbar_size()
-				return dropdown
-			end
-			sector.keybind = function(text, default_key, callback)
-				local keybind = {}
-				local current_key = default_key or Enum.KeyCode.Unknown
-				local capturing = false
-				local Keybind = Instance.new("TextButton")
-				local TextLabel = Instance.new("TextLabel")
-				local UIPadding = Instance.new("UIPadding")
-				Keybind.Name = "Keybind"
-				Keybind.Parent = SectorContent
-				Keybind.BackgroundColor3 = themes[theme]["ElementBg"]
-				Keybind.BorderColor3 = themes[theme]["ElementOutline"]
-				Keybind.Size = UDim2.new(1, 0, 0, 21)
-				Keybind.AutoButtonColor = false
-				Keybind.Font = Enum.Font.SourceSans
-				Keybind.Text = ""
-				Keybind.TextColor3 = themes[theme]["Text"]
-				Keybind.TextSize = 14.000
-				Keybind.TextXAlignment = Enum.TextXAlignment.Left
-				TextLabel.Name = "Text"
-				TextLabel.Parent = Keybind
-				TextLabel.BackgroundTransparency = 1
-				TextLabel.Size = UDim2.new(1, 0, 1, 0)
-				TextLabel.Font = Enum.Font.SourceSans
-				TextLabel.Text = text .. ": " .. (current_key.Name or "None")
-				TextLabel.TextColor3 = themes[theme]["Text"]
-				TextLabel.TextSize = 14.000
-				TextLabel.TextXAlignment = Enum.TextXAlignment.Left
-				UIPadding.Parent = Keybind
-				UIPadding.PaddingLeft = UDim.new(0, 5)
-				Keybind.MouseButton1Down:Connect(function()
-					capturing = true
-					TextLabel.Text = text .. ": ... "
-				end)
-				local connection
-				connection = services.uis.InputBegan:Connect(function(input)
-					if capturing and input.KeyCode ~= Enum.KeyCode.Unknown then
-						capturing = false
-						current_key = input.KeyCode
-						TextLabel.Text = text .. ": " .. current_key.Name
-						callback(current_key)
-						connection:Disconnect()
-					elseif capturing and input.KeyCode == Enum.KeyCode.Escape then
-						capturing = false
-						TextLabel.Text = text .. ": " .. (current_key.Name or "None")
-						connection:Disconnect()
-					end
-				end)
-				keybind.set = function(key)
-					current_key = key
-					TextLabel.Text = text .. ": " .. key.Name
-					callback(key)
-				end
-				keybind.get = function()
-					return current_key
-				end
-				keybind.delete = function()
-					Keybind:Destroy()
-				end
-				if default_key then
-					keybind.set(default_key)
-				end
-				sector.increase_scrollbar_size()
-				return keybind
 			end
 			sector.toggle = function(text,default,callback)
 				local toggle = {}
 				local value = default
 				local Toggle = Instance.new("TextButton")
-				local TextLabel = Instance.new("TextLabel")
+				local Text = Instance.new("TextLabel")
 				local Bg = Instance.new("TextButton")
 				local UIGradient = Instance.new("UIGradient")
 				Toggle.Name = text
@@ -753,30 +557,31 @@ lib.create_window = function(theme, menu_key)
 				Toggle.BackgroundTransparency = 1.000
 				Toggle.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Toggle.BorderSizePixel = 0
-				Toggle.Size = UDim2.new(1, 0, 0, 21)
+				Toggle.Position = UDim2.new(0, 0, 0.306451619, 0)
+				Toggle.Size = UDim2.new(0, 249, 0, 21)
 				Toggle.Font = Enum.Font.SourceSans
 				Toggle.Text = ""
 				Toggle.TextColor3 = Color3.fromRGB(172, 172, 172)
 				Toggle.TextSize = 14.000
 				Toggle.TextXAlignment = Enum.TextXAlignment.Left
-				TextLabel.Name = "Text"
-				TextLabel.Parent = Toggle
-				TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				TextLabel.BackgroundTransparency = 1.000
-				TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				TextLabel.BorderSizePixel = 0
-				TextLabel.Position = UDim2.new(0, 0, 0, 0)
-				TextLabel.Size = UDim2.new(1, -30, 1, 0)
-				TextLabel.Font = Enum.Font.SourceSans
-				TextLabel.TextColor3 = themes[theme]["Text"]
-				TextLabel.TextSize = 14.000
-				TextLabel.TextStrokeTransparency = 0.800
-				TextLabel.TextXAlignment = Enum.TextXAlignment.Left
-				TextLabel.Text = text
+				Text.Name = "Text"
+				Text.Parent = Toggle
+				Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				Text.BackgroundTransparency = 1.000
+				Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				Text.BorderSizePixel = 0
+				Text.Position = UDim2.new(0.0923694745, 0, 0, 0)
+				Text.Size = UDim2.new(0, 226, 0, 21)
+				Text.Font = Enum.Font.SourceSans
+				Text.TextColor3 = themes[theme]["Text"]
+				Text.TextSize = 14.000
+				Text.TextStrokeTransparency = 0.800
+				Text.TextXAlignment = Enum.TextXAlignment.Left
+				Text.Text = text
 				Bg.Name = "Bg"
 				Bg.Parent = Toggle
 				Bg.BorderColor3 = themes[theme]["ElementOutline"]
-				Bg.Position = UDim2.new(1, -18, 0.325, 0)
+				Bg.Position = UDim2.new(0, 5, 0.324999988, 0)
 				Bg.Size = UDim2.new(0, 8, 0, 8)
 				Bg.Font = Enum.Font.SourceSans
 				Bg.Text = ""
@@ -795,7 +600,7 @@ lib.create_window = function(theme, menu_key)
 					callback(value)
 				end
 				toggle.set_text = function(_text)
-					TextLabel.Text = _text
+					Text.Text = _text
 				end
 				toggle.add_color = function(_default, cpcallback)
 					local colorpicker = {}
@@ -807,7 +612,7 @@ lib.create_window = function(theme, menu_key)
 					Colorpicker.Parent = Toggle
 					Colorpicker.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 					Colorpicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
-					Colorpicker.Position = UDim2.new(1, -30, 0.325, 0)
+					Colorpicker.Position = UDim2.new(0.935, 0, 0.325, 0)
 					Colorpicker.Size = UDim2.new(0, 11, 0, 11)
 					Colorpicker.AutoButtonColor = false
 					Colorpicker.Font = Enum.Font.SourceSans
@@ -927,7 +732,7 @@ lib.create_window = function(theme, menu_key)
 					return colorpicker
 				end
 				toggle.get = function()
-					return value
+					return Text.Text
 				end
 				Toggle.MouseButton1Down:Connect(function()
 					value = not value
@@ -946,7 +751,7 @@ lib.create_window = function(theme, menu_key)
 				local dragging = false
 				local value
 				local Slider = Instance.new("TextButton")
-				local TextLabel = Instance.new("TextLabel")
+				local Text = Instance.new("TextLabel")
 				local Bg = Instance.new("TextButton")
 				local UIGradient = Instance.new("UIGradient")
 				local Fill = Instance.new("TextButton")
@@ -957,31 +762,32 @@ lib.create_window = function(theme, menu_key)
 				Slider.BackgroundTransparency = 1.000
 				Slider.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Slider.BorderSizePixel = 0
-				Slider.Size = UDim2.new(1, 0, 0, 21)
+				Slider.Position = UDim2.new(0, 0, 0.306451619, 0)
+				Slider.Size = UDim2.new(0, 249, 0, 21)
 				Slider.Font = Enum.Font.SourceSans
 				Slider.Text = ""
 				Slider.TextColor3 = Color3.fromRGB(172, 172, 172)
 				Slider.TextSize = 14.000
 				Slider.TextXAlignment = Enum.TextXAlignment.Left
-				TextLabel.Name = "Text"
-				TextLabel.Parent = Slider
-				TextLabel.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				TextLabel.BackgroundTransparency = 1.000
-				TextLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				TextLabel.BorderSizePixel = 0
-				TextLabel.Position = UDim2.new(0, 0, 0, 0)
-				TextLabel.Size = UDim2.new(1, 0, 0.6, 0)
-				TextLabel.Font = Enum.Font.SourceSans
-				TextLabel.TextColor3 = themes[theme]["Text"]
-				TextLabel.TextSize = 14.000
-				TextLabel.TextStrokeTransparency = 0.800
-				TextLabel.TextXAlignment = Enum.TextXAlignment.Left
+				Text.Name = "Text"
+				Text.Parent = Slider
+				Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				Text.BackgroundTransparency = 1.000
+				Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				Text.BorderSizePixel = 0
+				Text.Position = UDim2.new(0, 0, -0.0476190485, 0)
+				Text.Size = UDim2.new(0, 226, 0, 7)
+				Text.Font = Enum.Font.SourceSans
+				Text.TextColor3 = themes[theme]["Text"]
+				Text.TextSize = 14.000
+				Text.TextStrokeTransparency = 0.800
+				Text.TextXAlignment = Enum.TextXAlignment.Left
 				Bg.Name = "Bg"
 				Bg.Parent = Slider
 				Bg.BackgroundColor3 = themes[theme]["SliderBg"]
 				Bg.BorderColor3 = themes[theme]["ElementOutline"]
-				Bg.Position = UDim2.new(0, 0, 0.7, 0)
-				Bg.Size = UDim2.new(1, 0, 0.3, 0)
+				Bg.Position = UDim2.new(0, 5, 0.599998832, 0)
+				Bg.Size = UDim2.new(0, 238, 0, 8)
 				Bg.AutoButtonColor = false
 				Bg.Font = Enum.Font.SourceSans
 				Bg.Text = ""
@@ -997,8 +803,8 @@ lib.create_window = function(theme, menu_key)
 				Fill.Parent = Bg
 				Fill.BackgroundColor3 = themes[theme]["Slider"]
 				Fill.BorderColor3 = themes[theme]["ElementOutline"]
-				Fill.Position = UDim2.new(0, 0, 0, 0)
-				Fill.Size = UDim2.new((default - min) / (max - min), 0, 1, 0)
+				Fill.Position = UDim2.new(-0.0168067235, 5, -0.0250015259, 0)
+				Fill.Size = UDim2.new(0.5, 0, 1, 0)
 				Fill.AutoButtonColor = false
 				Fill.Font = Enum.Font.SourceSans
 				Fill.Text = ""
@@ -1012,15 +818,15 @@ lib.create_window = function(theme, menu_key)
 				UIGradient_2.Parent = Fill
 				slider.set = function(percentage)
 					Fill.Size = UDim2.new(percentage, 0, 1, 0)
-					value = (percentage) * (max - min) + min
+					value = (percentage / 100) * (max - min) + min
 					callback(value)
-					TextLabel.Text = text.." "..tostring(math.round(value * 100) / 100)..indicator
+					Text.Text = text.." "..tostring(math.round(value * 100) / 100)..indicator
 				end
 				slider.get = function()
 					return value
 				end
 				slider.set_text = function(_text)
-					TextLabel.Text = _text.." "..tostring(math.round(value * 100) / 100)..indicator
+					Text.Text = _text.." "..tostring(math.round(value * 100) / 100)..indicator
 					text = _text
 				end
 				Bg.InputBegan:Connect(function(input)
@@ -1049,14 +855,13 @@ lib.create_window = function(theme, menu_key)
 						local abs = Bg.AbsolutePosition.X
 						local abs_size = Bg.AbsoluteSize.X
 						local size = math.clamp((mouse_pos.X - abs) / abs_size, 0, 1)
-						slider.set(size)
+						slider.set(size * 100)
 					end
 				end)
-				slider.set((default - min) / (max - min))
-				sector.increase_scrollbar_size()
+				slider.set((default - min) / (max - min) * 100)
 				return slider
 			end
-			table.insert(window.tab_contents, {Tab.Name, Sector})
+			table.insert(window.tab_contents,{ Tab.Name, Sector })
 			if #window.tab_contents == 1 then
 				window.selected_tab = Tab.Name
 				window.tab_colors(Tab)
