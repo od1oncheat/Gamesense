@@ -272,7 +272,7 @@ lib.create_window = function(theme, menu_key)
 			Sector.Position = UDim2.new(-0.00108384306, 0, -0.0011133909, 0)
 			Sector.Size = UDim2.new(0.5, -5, 1, 0)
 			Sector.Visible = false
-			Sector.ClipsDescendants = true -- Чтобы значение слайдера не выходило за границы
+			Sector.ClipsDescendants = true
 
 			if tab.sectorCount == 2 then
 				Sector.Position = UDim2.new(0.5, 5, -0.0011133909, 0)
@@ -813,13 +813,13 @@ lib.create_window = function(theme, menu_key)
 					local colorpicker = {}
 
 					local choosing_hue = false
-					local choosing_saturation = false
+					local choosing_color = false
 
 					local Colorpicker = Instance.new("TextButton")
 
 					Colorpicker.Name = "Colorpicker"
 					Colorpicker.Parent = Toggle
-					Colorpicker.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					Colorpicker.BackgroundColor3 = _default
 					Colorpicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
 					Colorpicker.Position = UDim2.new(0.85, 0, 0.325, 0)
 					Colorpicker.Size = UDim2.new(0, 22, 0, 11)
@@ -832,84 +832,91 @@ lib.create_window = function(theme, menu_key)
 					local default_hue, default_saturation, default_value = _default:ToHSV()
 					local hue_value = default_hue
 					local sat_value = default_saturation
-					local value_value = default_value
+					local val_value = default_value
 
 					local ColorPicker = Instance.new("Frame")
-					local Saturation = Instance.new("TextButton")
-					local ColorGradient = Instance.new("Frame")
-					local WhiteToColorGradient = Instance.new("UIGradient")
-					local BlackGradient = Instance.new("UIGradient")
-					local SaturationDrag = Instance.new("Frame")
-					local Hue = Instance.new("ImageButton")
-					local SaturationDrag_2 = Instance.new("Frame")
+					local Color = Instance.new("Frame")
+					local ColorGradient = Instance.new("UIGradient")
+					local ValueGradient = Instance.new("UIGradient")
+					local ColorSelection = Instance.new("Frame")
+					local Hue = Instance.new("Frame")
+					local HueGradient = Instance.new("UIGradient")
+					local HueSelection = Instance.new("Frame")
 
 					ColorPicker.Name = "ColorPicker"
 					ColorPicker.Parent = Sector
 					ColorPicker.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
 					ColorPicker.BorderColor3 = Color3.fromRGB(35, 35, 35)
 					ColorPicker.BorderSizePixel = 2
-					ColorPicker.Size = UDim2.new(0, 125, 0, 100)
+					ColorPicker.Size = UDim2.new(0, 150, 0, 120)
 					ColorPicker.Visible = false
+					ColorPicker.ZIndex = 200
 
-					Saturation.Name = "Saturation"
-					Saturation.Parent = ColorPicker
-					Saturation.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-					Saturation.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					Saturation.BorderSizePixel = 0
-					Saturation.Position = UDim2.new(0.288, 0, 0.13, 0)
-					Saturation.Size = UDim2.new(0, 76, 0, 76)
-					Saturation.Font = Enum.Font.SourceSans
-					Saturation.Text = ""
-					Saturation.TextColor3 = Color3.fromRGB(0, 0, 0)
-					Saturation.TextSize = 14.000
-					Saturation.AutoButtonColor = false
-
-					-- Новый градиент для цветового квадрата
-					ColorGradient.Name = "ColorGradient"
-					ColorGradient.Parent = Saturation
-					ColorGradient.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-					ColorGradient.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					ColorGradient.BorderSizePixel = 0
-					ColorGradient.Size = UDim2.new(1, 0, 1, 0)
+					Color.Name = "Color"
+					Color.Parent = ColorPicker
+					Color.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					Color.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					Color.BorderSizePixel = 0
+					Color.Position = UDim2.new(0.05, 0, 0.1, 0)
+					Color.Size = UDim2.new(0, 100, 0, 100)
+					Color.ZIndex = 201
 
 					-- Горизонтальный градиент: от белого к выбранному цвету
-					WhiteToColorGradient.Color = ColorSequence.new{
+					ColorGradient.Color = ColorSequence.new{
 						ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
 						ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, 1, 1))
 					}
-					WhiteToColorGradient.Rotation = 0
-					WhiteToColorGradient.Parent = ColorGradient
+					ColorGradient.Rotation = 0
+					ColorGradient.Parent = Color
 
 					-- Вертикальный градиент: от прозрачного к черному
-					BlackGradient.Color = ColorSequence.new{
+					ValueGradient.Color = ColorSequence.new{
 						ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
 						ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))
 					}
-					BlackGradient.Rotation = 90
-					BlackGradient.Parent = Saturation
+					ValueGradient.Transparency = NumberSequence.new{
+						NumberSequenceKeypoint.new(0, 1),
+						NumberSequenceKeypoint.new(1, 0)
+					}
+					ValueGradient.Rotation = 90
+					ValueGradient.Parent = Color
 
-					SaturationDrag.Name = "SaturationDrag"
-					SaturationDrag.Parent = Saturation
-					SaturationDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-					SaturationDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					SaturationDrag.Size = UDim2.new(0, 3, 0, 3)
+					ColorSelection.Name = "ColorSelection"
+					ColorSelection.Parent = Color
+					ColorSelection.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					ColorSelection.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					ColorSelection.BorderSizePixel = 1
+					ColorSelection.Size = UDim2.new(0, 3, 0, 3)
+					ColorSelection.ZIndex = 202
 
 					Hue.Name = "Hue"
 					Hue.Parent = ColorPicker
 					Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 					Hue.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					Hue.BorderSizePixel = 0
-					Hue.Position = UDim2.new(0.112, 0, 0.13, 0)
-					Hue.Size = UDim2.new(0, 13, 0, 76)
-					Hue.Image = "rbxassetid://129669031573073"
-					Hue.AutoButtonColor = false
+					Hue.Position = UDim2.new(0.75, 0, 0.1, 0)
+					Hue.Size = UDim2.new(0, 15, 0, 100)
+					Hue.ZIndex = 201
 
-					SaturationDrag_2.Name = "SaturationDrag_2"
-					SaturationDrag_2.Parent = Hue
-					SaturationDrag_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-					SaturationDrag_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					SaturationDrag_2.BorderSizePixel = 1
-					SaturationDrag_2.Size = UDim2.new(1, 0, 0, 3)
+					HueGradient.Color = ColorSequence.new{
+						ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 4)),
+						ColorSequenceKeypoint.new(0.17, Color3.fromRGB(255, 0, 251)),
+						ColorSequenceKeypoint.new(0.33, Color3.fromRGB(0, 17, 255)),
+						ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 255, 255)),
+						ColorSequenceKeypoint.new(0.67, Color3.fromRGB(21, 255, 0)),
+						ColorSequenceKeypoint.new(0.83, Color3.fromRGB(234, 255, 0)),
+						ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 4))
+					}
+					HueGradient.Rotation = 270
+					HueGradient.Parent = Hue
+
+					HueSelection.Name = "HueSelection"
+					HueSelection.Parent = Hue
+					HueSelection.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					HueSelection.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					HueSelection.BorderSizePixel = 1
+					HueSelection.Size = UDim2.new(1, 0, 0, 2)
+					HueSelection.ZIndex = 202
 
 					Colorpicker.MouseButton1Down:Connect(function()
 						for _, element in pairs(Sector:GetChildren()) do
@@ -919,41 +926,48 @@ lib.create_window = function(theme, menu_key)
 						end
 
 						local abs_pos = Colorpicker.AbsolutePosition
-						ColorPicker.Position = UDim2.new(0, abs_pos.X - Sector.AbsolutePosition.X - 120, 0, abs_pos.Y - Sector.AbsolutePosition.Y + Colorpicker.Size.Y.Offset + 16)
+						ColorPicker.Position = UDim2.new(0, abs_pos.X - Sector.AbsolutePosition.X - 150, 0, abs_pos.Y - Sector.AbsolutePosition.Y + Colorpicker.Size.Y.Offset + 5)
 						ColorPicker.Visible = not ColorPicker.Visible
 					end)
 
-					colorpicker.set = function(hue, sat, val)
-						SaturationDrag.Position = UDim2.new(sat - 0.03, 0, val, 0)
-						SaturationDrag_2.Position = UDim2.new(0, 0, 1 - hue, 0)
-
-						hue_value = hue
-						sat_value = sat
-						value_value = val
-
-						-- Обновляем градиент с новым цветом
-						WhiteToColorGradient.Color = ColorSequence.new{
+					local function update_color_picker()
+						-- Обновляем горизонтальный градиент с новым оттенком
+						ColorGradient.Color = ColorSequence.new{
 							ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
 							ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, 1, 1))
 						}
-
-						Colorpicker.BackgroundColor3 = Color3.fromHSV(hue_value, sat_value, value_value)
 						
-						cpcallback(Colorpicker.BackgroundColor3)
+						-- Обновляем позиции селекторов
+						ColorSelection.Position = UDim2.new(sat_value, -1.5, 1 - val_value, -1.5)
+						HueSelection.Position = UDim2.new(0, 0, hue_value, -1)
+						
+						-- Обновляем цвет кнопки
+						local new_color = Color3.fromHSV(hue_value, sat_value, val_value)
+						Colorpicker.BackgroundColor3 = new_color
+						cpcallback(new_color)
 					end
 
-					Saturation.InputBegan:Connect(function(input)
+					colorpicker.set = function(hue, sat, val)
+						hue_value = hue
+						sat_value = sat
+						val_value = val
+						update_color_picker()
+					end
+
+					-- Обработка выбора цвета
+					Color.InputBegan:Connect(function(input)
 						if input.UserInputType == Enum.UserInputType.MouseButton1 then
-							choosing_saturation = true
+							choosing_color = true
 						end
 					end)
 
-					Saturation.InputEnded:Connect(function(input)
+					Color.InputEnded:Connect(function(input)
 						if input.UserInputType == Enum.UserInputType.MouseButton1 then
-							choosing_saturation = false
+							choosing_color = false
 						end
 					end)
 
+					-- Обработка выбора оттенка
 					Hue.InputBegan:Connect(function(input)
 						if input.UserInputType == Enum.UserInputType.MouseButton1 then
 							choosing_hue = true
@@ -966,11 +980,11 @@ lib.create_window = function(theme, menu_key)
 						end
 					end)
 
-					Main.InputChanged:Connect(function(input)
-						if choosing_saturation and input.UserInputType == Enum.UserInputType.MouseMovement then
-							local mouse_pos = Vector2.new(game.Players.LocalPlayer:GetMouse().X, game.Players.LocalPlayer:GetMouse().Y)
-							local abs_pos = Saturation.AbsolutePosition
-							local abs_size = Saturation.AbsoluteSize
+					services.run.RenderStepped:Connect(function()
+						if choosing_color then
+							local mouse_pos = services.uis:GetMouseLocation()
+							local abs_pos = Color.AbsolutePosition
+							local abs_size = Color.AbsoluteSize
 
 							local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
 							local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
@@ -978,18 +992,18 @@ lib.create_window = function(theme, menu_key)
 							colorpicker.set(hue_value, x, 1 - y)
 						end
 
-						if choosing_hue and input.UserInputType == Enum.UserInputType.MouseMovement then
-							local mouse_pos = Vector2.new(game.Players.LocalPlayer:GetMouse().Y, game.Players.LocalPlayer:GetMouse().Y)
+						if choosing_hue then
+							local mouse_pos = services.uis:GetMouseLocation()
 							local abs_pos = Hue.AbsolutePosition
 							local abs_size = Hue.AbsoluteSize
 
 							local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
 
-							colorpicker.set(1 - y, sat_value, value_value)
+							colorpicker.set(1 - y, sat_value, val_value)
 						end
 					end)
 
-					colorpicker.set(hue_value, sat_value, value_value)
+					colorpicker.set(hue_value, sat_value, val_value)
 
 					return colorpicker
 				end
@@ -1033,7 +1047,7 @@ lib.create_window = function(theme, menu_key)
 				Slider.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Slider.BorderSizePixel = 0
 				Slider.Position = UDim2.new(0, 0, 0.306451619, 0)
-				Slider.Size = UDim2.new(0, 249, 0, 30) -- Увеличена высота для текста
+				Slider.Size = UDim2.new(0, 249, 0, 35) -- Увеличена высота для текста
 				Slider.Font = Enum.Font.SourceSans
 				Slider.Text = ""
 				Slider.TextColor3 = Color3.fromRGB(172, 172, 172)
@@ -1046,8 +1060,8 @@ lib.create_window = function(theme, menu_key)
 				Text.BackgroundTransparency = 1.000
 				Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Text.BorderSizePixel = 0
-				Text.Position = UDim2.new(0.0923694745, 0, -0.3, 0) -- Текст выше слайдера
-				Text.Size = UDim2.new(0, 226, 0, 21)
+				Text.Position = UDim2.new(0.02, 0, 0, 0) -- Текст начинается с той же позиции что и слайдер
+				Text.Size = UDim2.new(0, 226, 0, 15) -- Уменьшена высота текста
 				Text.Font = Enum.Font.SourceSans
 				Text.TextColor3 = themes[theme]["Text"]
 				Text.TextSize = 14.000
@@ -1059,7 +1073,7 @@ lib.create_window = function(theme, menu_key)
 				Bg.Parent = Slider
 				Bg.BackgroundColor3 = themes[theme]["SliderBg"]
 				Bg.BorderColor3 = themes[theme]["ElementOutline"]
-				Bg.Position = UDim2.new(0, 5, 0.7, 0) -- Сдвинуто ниже для текста
+				Bg.Position = UDim2.new(0.02, 0, 0.6, 0) -- Сдвинуто ниже для текста, начинается с той же позиции
 				Bg.Size = UDim2.new(0, 238, 0, 8)
 				Bg.AutoButtonColor = false
 				Bg.Font = Enum.Font.SourceSans
@@ -1085,8 +1099,8 @@ lib.create_window = function(theme, menu_key)
 				ValueLabel.BackgroundTransparency = 1.000
 				ValueLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				ValueLabel.BorderSizePixel = 0
-				ValueLabel.Position = UDim2.new(1, -35, 1, 2) -- Позиция в конце Bg, не выходит за границы
-				ValueLabel.Size = UDim2.new(0, 35, 0, 10)
+				ValueLabel.Position = UDim2.new(1, -40, 1, 2) -- Позиция в конце Bg, не выходит за границы
+				ValueLabel.Size = UDim2.new(0, 40, 0, 10)
 				ValueLabel.Font = Enum.Font.SourceSans
 				ValueLabel.TextColor3 = themes[theme]["Text"]
 				ValueLabel.TextSize = 11.000
