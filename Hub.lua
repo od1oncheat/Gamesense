@@ -284,6 +284,7 @@ lib.create_window = function(theme, menu_key)
 			Sector.Size = UDim2.new(0.5, -5, 1, 0)
 			Sector.Visible = false
 			Sector.ClipsDescendants = true
+			Sector.ZIndex = 5
 
 			if tab.sectorCount == 2 then
 				Sector.Position = UDim2.new(0.5, 5, -0.0011133909, 0)
@@ -622,7 +623,7 @@ lib.create_window = function(theme, menu_key)
 				DropdownContent.Active = true
 				DropdownContent.BackgroundColor3 = themes[theme]["ElementBg"]
 				DropdownContent.BorderColor3 = themes[theme]["ElementOutline"]
-				DropdownContent.Position = UDim2.new(0, 0, 1, 2)
+				DropdownContent.Position = UDim2.new(-0.02, 0, 1, 2)
 				DropdownContent.Size = UDim2.new(0, 249, 0, 0)
 				DropdownContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 				DropdownContent.ScrollBarThickness = 3
@@ -632,7 +633,7 @@ lib.create_window = function(theme, menu_key)
 				DropdownContent.ClipsDescendants = true
 
 				UIPadding_2.Parent = DropdownContent
-				UIPadding_2.PaddingLeft = UDim.new(0, 0)
+				UIPadding_2.PaddingLeft = UDim.new(0, 5)
 				UIPadding_2.PaddingTop = UDim.new(0, 5)
 
 				UIListLayout.Parent = DropdownContent
@@ -701,7 +702,7 @@ lib.create_window = function(theme, menu_key)
 					Button.Parent = DropdownContent
 					Button.BackgroundColor3 = themes[theme]["ElementBg"]
 					Button.BorderColor3 = themes[theme]["ElementOutline"]
-					Button.Size = UDim2.new(0, 249, 0, 21)
+					Button.Size = UDim2.new(0, 238, 0, 21)
 					Button.Font = Enum.Font.SourceSans
 					Button.TextColor3 = themes[theme]["Text"]
 					Button.TextSize = 14.000
@@ -767,7 +768,7 @@ lib.create_window = function(theme, menu_key)
 				Toggle.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Toggle.BorderSizePixel = 0
 				Toggle.Position = UDim2.new(0, 0, 0.306451619, 0)
-				Toggle.Size = UDim2.new(0, 249, 0, 18)
+				Toggle.Size = UDim2.new(0, 249, 0, 21)
 				Toggle.Font = Enum.Font.SourceSans
 				Toggle.Text = ""
 				Toggle.TextColor3 = Color3.fromRGB(172, 172, 172)
@@ -793,7 +794,7 @@ lib.create_window = function(theme, menu_key)
 				Bg.Parent = Toggle
 				Bg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
 				Bg.BorderColor3 = themes[theme]["ElementOutline"]
-				Bg.Position = UDim2.new(0, 5, 0.2, 0)
+				Bg.Position = UDim2.new(0, 5, 0.324999988, 0)
 				Bg.Size = UDim2.new(0, 8, 0, 8)
 				Bg.Font = Enum.Font.SourceSans
 				Bg.Text = ""
@@ -1124,7 +1125,7 @@ end
 				Text.Size = UDim2.new(0, 226, 0, 12)
 				Text.Font = Enum.Font.SourceSans
 				Text.TextColor3 = themes[theme]["Text"]
-				Text.TextSize = 14.000
+				Text.TextSize = 12.000
 				Text.TextStrokeTransparency = 0.800
 				Text.TextXAlignment = Enum.TextXAlignment.Left
 				Text.Text = text
@@ -1159,11 +1160,11 @@ end
 				ValueLabel.BackgroundTransparency = 1.000
 				ValueLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				ValueLabel.BorderSizePixel = 0
-				ValueLabel.Position = UDim2.new(1, -40, 1, 2)
+				ValueLabel.Position = UDim2.new(1, -40, 0, -10)
 				ValueLabel.Size = UDim2.new(0, 40, 0, 8)
 				ValueLabel.Font = Enum.Font.SourceSans
 				ValueLabel.TextColor3 = themes[theme]["Text"]
-				ValueLabel.TextSize = 11.000
+				ValueLabel.TextSize = 10.000
 				ValueLabel.TextXAlignment = Enum.TextXAlignment.Right
 				
 				local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
