@@ -856,7 +856,7 @@ lib.create_window = function(theme, menu_key)
     ColorPicker.Visible = false
     ColorPicker.ZIndex = 200
 
-    -- Hue Slider (Left)
+    -- Hue Slider (Left) - Full color spectrum
     Hue.Name = "Hue"
     Hue.Parent = ColorPicker
     Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -891,7 +891,7 @@ lib.create_window = function(theme, menu_key)
     HueDrag.Size = UDim2.new(1, 0, 0, 2)
     HueDrag.ZIndex = 202
 
-    -- Saturation Slider (Middle)
+    -- Saturation Slider (Middle) - White to Color
     Saturation.Name = "Saturation"
     Saturation.Parent = ColorPicker
     Saturation.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -921,7 +921,7 @@ lib.create_window = function(theme, menu_key)
     SaturationDrag.Size = UDim2.new(1, 0, 0, 2)
     SaturationDrag.ZIndex = 202
 
-    -- Value Slider (Right)
+    -- Value Slider (Right) - Black to Color
     Value.Name = "Value"
     Value.Parent = ColorPicker
     Value.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -974,22 +974,22 @@ lib.create_window = function(theme, menu_key)
     end)
 
     local function update_color_picker()
-        -- Update saturation gradient
+        -- Update saturation gradient (White to Pure Color)
         SaturationGradient.Color = ColorSequence.new{
             ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
             ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, 1, 1))
         }
         
-        -- Update value gradient
+        -- Update value gradient (Black to Full Color)
         ValueGradient.Color = ColorSequence.new{
             ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
             ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, sat_value, 1))
         }
         
-        -- Update selection positions
+        -- Update selection positions (FIXED: правильное позиционирование бегунков)
         HueDrag.Position = UDim2.new(0, 0, hue_value, -1)
-        SaturationDrag.Position = UDim2.new(0, 0, 1 - sat_value, -1)
-        ValueDrag.Position = UDim2.new(0, 0, 1 - val_value, -1)
+        SaturationDrag.Position = UDim2.new(0, 0, sat_value, -1)  -- 0 = белый (верх), 1 = цвет (низ)
+        ValueDrag.Position = UDim2.new(0, 0, val_value, -1)       -- 0 = черный (верх), 1 = цвет (низ)
         
         -- Calculate final color
         local final_color = Color3.fromHSV(hue_value, sat_value, val_value)
@@ -1035,7 +1035,7 @@ lib.create_window = function(theme, menu_key)
             local abs_size = Saturation.AbsoluteSize
 
             local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-            colorpicker.set(hue_value, 1 - y, val_value)
+            colorpicker.set(hue_value, y, val_value)  -- FIXED: прямое значение, не 1-y
         end
     end)
 
@@ -1055,7 +1055,7 @@ lib.create_window = function(theme, menu_key)
             local abs_size = Value.AbsoluteSize
 
             local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-            colorpicker.set(hue_value, sat_value, 1 - y)
+            colorpicker.set(hue_value, sat_value, y)  -- FIXED: прямое значение, не 1-y
         end
     end)
 
@@ -1065,7 +1065,7 @@ lib.create_window = function(theme, menu_key)
         end
     end)
 
-    -- Real-time dragging
+    -- Real-time dragging (FIXED: правильное вычисление позиции)
     services.run.RenderStepped:Connect(function()
         if choosing_hue then
             local mouse_pos = services.uis:GetMouseLocation()
@@ -1082,7 +1082,7 @@ lib.create_window = function(theme, menu_key)
             local abs_size = Saturation.AbsoluteSize
 
             local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-            colorpicker.set(hue_value, 1 - y, val_value)
+            colorpicker.set(hue_value, y, val_value)  -- FIXED: прямое значение
         end
 
         if choosing_value then
@@ -1091,7 +1091,7 @@ lib.create_window = function(theme, menu_key)
             local abs_size = Value.AbsoluteSize
 
             local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-            colorpicker.set(hue_value, sat_value, 1 - y)
+            colorpicker.set(hue_value, sat_value, y)  -- FIXED: прямое значение
         end
     end)
 
