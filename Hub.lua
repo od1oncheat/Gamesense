@@ -809,7 +809,7 @@ lib.create_window = function(theme, menu_key)
 					Text.Text = _text
 				end
 				
-				toggle.add_color = function(_default, cpcallback)
+toggle.add_color = function(_default, cpcallback)
     local colorpicker = {}
 
     local choosing_hue = false
@@ -986,7 +986,7 @@ lib.create_window = function(theme, menu_key)
             ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, sat_value, 1))
         }
         
-        -- Update selection positions
+        -- FIXED: Правильное позиционирование бегунков
         HueDrag.Position = UDim2.new(0, 0, hue_value, -1)
         SaturationDrag.Position = UDim2.new(0, 0, sat_value, -1)
         ValueDrag.Position = UDim2.new(0, 0, val_value, -1)
@@ -999,93 +999,69 @@ lib.create_window = function(theme, menu_key)
     end
 
     colorpicker.set = function(hue, sat, val)
-        hue_value = hue
-        sat_value = sat
-        val_value = val
+        hue_value = math.clamp(hue, 0, 1)
+        sat_value = math.clamp(sat, 0, 1)
+        val_value = math.clamp(val, 0, 1)
         update_color_picker()
     end
 
-    -- Input handling functions (FIXED: using the old logic)
-    local function handleColorInput(input, slider, isHue, isSaturation, isValue)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+    -- FIXED: Упрощенная логика обработки мыши
+    local function handleMouseInput(slider, isHue, isSaturation, isValue)
+        local connection
+        connection = services.run.RenderStepped:Connect(function()
+            local mouse = services.uis:GetMouseLocation()
+            local absPos = slider.AbsolutePosition
+            local absSize = slider.AbsoluteSize
+            
+            -- Вычисляем позицию относительно слайдера
+            local relativeY = (mouse.Y - absPos.Y) / absSize.Y
+            relativeY = math.clamp(relativeY, 0, 1)
+            
             if isHue then
-                choosing_hue = true
+                colorpicker.set(relativeY, sat_value, val_value)
             elseif isSaturation then
-                choosing_saturation = true
+                colorpicker.set(hue_value, relativeY, val_value)
             elseif isValue then
-                choosing_value = true
+                colorpicker.set(hue_value, sat_value, relativeY)
             end
-        end
-    end
-
-    local function handleInputEnd(input, isHue, isSaturation, isValue)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            if isHue then
-                choosing_hue = false
-            elseif isSaturation then
-                choosing_saturation = false
-            elseif isValue then
-                choosing_value = false
+        end)
+        
+        -- Отключаем когда отпускаем мышь
+        services.uis.InputEnded:Connect(function(input)
+            if input.UserInputType == Enum.UserInputType.MouseButton1 then
+                connection:Disconnect()
+                if isHue then
+                    choosing_hue = false
+                elseif isSaturation then
+                    choosing_saturation = false
+                elseif isValue then
+                    choosing_value = false
+                end
             end
-        end
+        end)
     end
 
-    local function handleInputChanged(input)
-        if choosing_saturation and input.UserInputType == Enum.UserInputType.MouseMovement then
-            local mouse_pos = Vector2.new(services.uis:GetMouseLocation().X, services.uis:GetMouseLocation().Y)
-            local abs_pos = Saturation.AbsolutePosition
-            local abs_size = Saturation.AbsoluteSize
-
-            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-            colorpicker.set(hue_value, y, val_value)
-        end
-
-        if choosing_hue and input.UserInputType == Enum.UserInputType.MouseMovement then
-            local mouse_pos = Vector2.new(services.uis:GetMouseLocation().X, services.uis:GetMouseLocation().Y)
-            local abs_pos = Hue.AbsolutePosition
-            local abs_size = Hue.AbsoluteSize
-
-            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-            colorpicker.set(y, sat_value, val_value)
-        end
-
-        if choosing_value and input.UserInputType == Enum.UserInputType.MouseMovement then
-            local mouse_pos = Vector2.new(services.uis:GetMouseLocation().X, services.uis:GetMouseLocation().Y)
-            local abs_pos = Value.AbsolutePosition
-            local abs_size = Value.AbsoluteSize
-
-            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-            colorpicker.set(hue_value, sat_value, y)
-        end
-    end
-
-    -- Connect events
+    -- Обработчики кликов
     Hue.InputBegan:Connect(function(input)
-        handleColorInput(input, Hue, true, false, false)
-    end)
-
-    Hue.InputEnded:Connect(function(input)
-        handleInputEnd(input, true, false, false)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 and not choosing_hue then
+            choosing_hue = true
+            handleMouseInput(Hue, true, false, false)
+        end
     end)
 
     Saturation.InputBegan:Connect(function(input)
-        handleColorInput(input, Saturation, false, true, false)
-    end)
-
-    Saturation.InputEnded:Connect(function(input)
-        handleInputEnd(input, false, true, false)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 and not choosing_saturation then
+            choosing_saturation = true
+            handleMouseInput(Saturation, false, true, false)
+        end
     end)
 
     Value.InputBegan:Connect(function(input)
-        handleColorInput(input, Value, false, false, true)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 and not choosing_value then
+            choosing_value = true
+            handleMouseInput(Value, false, false, true)
+        end
     end)
-
-    Value.InputEnded:Connect(function(input)
-        handleInputEnd(input, false, false, true)
-    end)
-
-    -- FIXED: Using InputChanged instead of RenderStepped (like in old code)
-    services.uis.InputChanged:Connect(handleInputChanged)
 
     colorpicker.set(hue_value, sat_value, val_value)
 
