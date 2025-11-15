@@ -577,148 +577,402 @@ lib.create_window = function(theme, menu_key)
 			end
 			
 			sector.dropdown = function(text, options, default, callback)
-				local dropdown = {}
-				dropdown.selected = default
+    local dropdown = {}
+    dropdown.selected = default
 
-				local Dropdown = Instance.new("TextButton")
-				local UIPadding = Instance.new("UIPadding")
-				local Image = Instance.new("ImageLabel")
-				local DropdownContent = Instance.new("ScrollingFrame")
-				local UIPadding_2 = Instance.new("UIPadding")
-				local UIListLayout = Instance.new("UIListLayout")
+    local Dropdown = Instance.new("TextButton")
+    local UIPadding = Instance.new("UIPadding")
+    local Image = Instance.new("ImageLabel")
+    local DropdownContent = Instance.new("ScrollingFrame")
+    local UIPadding_2 = Instance.new("UIPadding")
+    local UIListLayout = Instance.new("UIListLayout")
 
-				Dropdown.Name = "Dropdown"
-				Dropdown.Parent = SectorContent
-				Dropdown.BackgroundColor3 = themes[theme]["ElementBg"]
-				Dropdown.BorderColor3 = themes[theme]["ElementOutline"]
-				Dropdown.Position = UDim2.new(0.0157480314, 0, 0.254480273, 0)
-				Dropdown.Size = UDim2.new(0, 249, 0, 21)
-				Dropdown.AutoButtonColor = false
-				Dropdown.Font = Enum.Font.SourceSans
-				Dropdown.Text = text
-				Dropdown.TextColor3 = themes[theme]["Text"]
-				Dropdown.TextSize = 14.000
-				Dropdown.TextXAlignment = Enum.TextXAlignment.Left
-				Dropdown.ZIndex = 100
+    Dropdown.Name = "Dropdown"
+    Dropdown.Parent = SectorContent
+    Dropdown.BackgroundColor3 = themes[theme]["ElementBg"]
+    Dropdown.BorderColor3 = themes[theme]["ElementOutline"]
+    Dropdown.Position = UDim2.new(0.0157480314, 0, 0.254480273, 0)
+    Dropdown.Size = UDim2.new(0, 249, 0, 21)
+    Dropdown.AutoButtonColor = false
+    Dropdown.Font = Enum.Font.SourceSans
+    Dropdown.Text = text
+    Dropdown.TextColor3 = themes[theme]["Text"]
+    Dropdown.TextSize = 14.000
+    Dropdown.TextXAlignment = Enum.TextXAlignment.Left
+    Dropdown.ZIndex = 100
 
-				UIPadding.Parent = Dropdown
-				UIPadding.PaddingLeft = UDim.new(0, 30)
+    UIPadding.Parent = Dropdown
+    UIPadding.PaddingLeft = UDim.new(0, 5)
 
-				Image.Name = "Image"
-				Image.Parent = Dropdown
-				Image.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				Image.BackgroundTransparency = 1.000
-				Image.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				Image.BorderSizePixel = 0
-				Image.Position = UDim2.new(-0.100456618, 0, 0.142857149, 0)
-				Image.Size = UDim2.new(0, 15, 0, 15)
-				Image.Image = "rbxassetid://74187648454886"
-				Image.ImageColor3 = Color3.fromRGB(115, 115, 115)
-				Image.ZIndex = 101
+    Image.Name = "Image"
+    Image.Parent = Dropdown
+    Image.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Image.BackgroundTransparency = 1.000
+    Image.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Image.BorderSizePixel = 0
+    Image.Position = UDim2.new(0.9, 0, 0.142857149, 0)
+    Image.Size = UDim2.new(0, 15, 0, 15)
+    Image.Image = "rbxassetid://74187648454886"
+    Image.ImageColor3 = Color3.fromRGB(115, 115, 115)
+    Image.ZIndex = 101
 
-				DropdownContent.Name = "DropdownContent"
-				DropdownContent.Parent = Dropdown
-				DropdownContent.Active = true
-				DropdownContent.BackgroundColor3 = themes[theme]["ElementBg"]
-				DropdownContent.BorderColor3 = themes[theme]["ElementOutline"]
-				DropdownContent.Position = UDim2.new(-0.1369863, 0, 1, 0)
-				DropdownContent.Size = UDim2.new(0, 249, 0, 116)
-				DropdownContent.CanvasSize = UDim2.new(0, 0, 0, 0)
-				DropdownContent.ScrollBarThickness = 3
-				DropdownContent.ScrollBarImageColor3 = Color3.fromRGB(50, 50, 50)
-				DropdownContent.Visible = false
-				DropdownContent.ZIndex = 102
+    DropdownContent.Name = "DropdownContent"
+    DropdownContent.Parent = Dropdown
+    DropdownContent.Active = true
+    DropdownContent.BackgroundColor3 = themes[theme]["ElementBg"]
+    DropdownContent.BorderColor3 = themes[theme]["ElementOutline"]
+    DropdownContent.Position = UDim2.new(-0.1369863, 0, 1, 2)
+    DropdownContent.Size = UDim2.new(0, 249, 0, 0)
+    DropdownContent.CanvasSize = UDim2.new(0, 0, 0, 0)
+    DropdownContent.ScrollBarThickness = 3
+    DropdownContent.ScrollBarImageColor3 = Color3.fromRGB(50, 50, 50)
+    DropdownContent.Visible = false
+    DropdownContent.ZIndex = 102
+    DropdownContent.ClipsDescendants = true
 
-				UIPadding_2.Parent = DropdownContent
-				UIPadding_2.PaddingLeft = UDim.new(0, 5)
-				UIPadding_2.PaddingTop = UDim.new(0, 5)
+    UIPadding_2.Parent = DropdownContent
+    UIPadding_2.PaddingLeft = UDim.new(0, 5)
+    UIPadding_2.PaddingTop = UDim.new(0, 5)
 
-				UIListLayout.Parent = DropdownContent
-				UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-				UIListLayout.Padding = UDim.new(0, 5)
+    UIListLayout.Parent = DropdownContent
+    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayout.Padding = UDim.new(0, 5)
 
-				Dropdown.MouseButton1Down:Connect(function()
-					DropdownContent.Visible = not DropdownContent.Visible
-					Image.Image = DropdownContent.Visible and "rbxassetid://74187648454886" or "rbxassetid://97940921082727"
-				end)
+    local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    
+    Dropdown.MouseEnter:Connect(function()
+        services.tween:Create(Dropdown, tweenInfo, {BackgroundColor3 = themes[theme]["ButtonHover"]}):Play()
+    end)
+    
+    Dropdown.MouseLeave:Connect(function()
+        if not DropdownContent.Visible then
+            services.tween:Create(Dropdown, tweenInfo, {BackgroundColor3 = themes[theme]["ElementBg"]}):Play()
+        end
+    end)
 
-				dropdown.unselect_all = function()
-					for _, button in pairs(DropdownContent:GetChildren()) do
-						if button:IsA("TextButton") then
-							button.BorderColor3 = themes[theme]["ElementOutline"]
-						end
-					end
-				end
+    local isOpen = false
+    local function toggleDropdown()
+        isOpen = not isOpen
+        
+        if isOpen then
+            DropdownContent.Visible = true
+            services.tween:Create(Image, tweenInfo, {Rotation = 180}):Play()
+            services.tween:Create(DropdownContent, tweenInfo, {Size = UDim2.new(0, 249, 0, 116)}):Play()
+        else
+            services.tween:Create(Image, tweenInfo, {Rotation = 0}):Play()
+            services.tween:Create(DropdownContent, tweenInfo, {Size = UDim2.new(0, 249, 0, 0)}):Play()
+            wait(0.2)
+            DropdownContent.Visible = false
+        end
+    end
+    
+    Dropdown.MouseButton1Down:Connect(toggleDropdown)
 
-				dropdown.set = function(name)
-					dropdown.unselect_all()
-					dropdown.selected = name
-					local selectedButton = DropdownContent:FindFirstChild(name)
-					if selectedButton then
-						selectedButton.BorderColor3 = themes[theme]["DropdownSelected"]
-					end
-					callback(name)
-				end
-				
-				dropdown.set_text = function(_text)
-					Dropdown.Text = _text
-				end
-				
-				dropdown.get = function()
-					return dropdown.selected
-				end
-				
-				dropdown.add = function(name)
-					local Button = Instance.new("TextButton")
-					Button.Name = name
-					Button.Parent = DropdownContent
-					Button.BackgroundColor3 = themes[theme]["ElementBg"]
-					Button.BorderColor3 = themes[theme]["ElementOutline"]
-					Button.Size = UDim2.new(0, 238, 0, 21)
-					Button.Font = Enum.Font.SourceSans
-					Button.TextColor3 = themes[theme]["Text"]
-					Button.TextSize = 14.000
-					Button.Text = name
-					Button.AutoButtonColor = false
-					Button.ZIndex = 103
+    dropdown.unselect_all = function()
+        for _, button in pairs(DropdownContent:GetChildren()) do
+            if button:IsA("TextButton") then
+                button.BorderColor3 = themes[theme]["ElementOutline"]
+            end
+        end
+    end
 
-					local UIGradient = Instance.new("UIGradient")
-					UIGradient.Color = ColorSequence.new{
-						ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), 
-						ColorSequenceKeypoint.new(1.00, Color3.fromRGB(175, 175, 175))
-					}
-					UIGradient.Rotation = 90
-					UIGradient.Parent = Button
+    dropdown.set = function(name)
+        dropdown.unselect_all()
+        dropdown.selected = name
+        local selectedButton = DropdownContent:FindFirstChild(name)
+        if selectedButton then
+            selectedButton.BorderColor3 = themes[theme]["DropdownSelected"]
+        end
+        callback(name)
+        toggleDropdown() -- Закрытие при выборе
+    end
+    
+    dropdown.set_text = function(_text)
+        Dropdown.Text = _text
+    end
+    
+    dropdown.get = function()
+        return dropdown.selected
+    end
+    
+    dropdown.add = function(name)
+        local Button = Instance.new("TextButton")
+        Button.Name = name
+        Button.Parent = DropdownContent
+        Button.BackgroundColor3 = themes[theme]["ElementBg"]
+        Button.BorderColor3 = themes[theme]["ElementOutline"]
+        Button.Size = UDim2.new(0, 238, 0, 21)
+        Button.Font = Enum.Font.SourceSans
+        Button.TextColor3 = themes[theme]["Text"]
+        Button.TextSize = 14.000
+        Button.Text = name
+        Button.AutoButtonColor = false
+        Button.ZIndex = 103
 
-					Button.MouseButton1Down:Connect(function()
-						dropdown.set(name)
-					end)
+        local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        
+        Button.MouseEnter:Connect(function()
+            services.tween:Create(Button, tweenInfo, {BackgroundColor3 = themes[theme]["ButtonHover"]}):Play()
+        end)
+        
+        Button.MouseLeave:Connect(function()
+            if Button.BorderColor3 ~= themes[theme]["DropdownSelected"] then
+                services.tween:Create(Button, tweenInfo, {BackgroundColor3 = themes[theme]["ElementBg"]}):Play()
+            end
+        end)
 
-					if name == default then
-						dropdown.set(name)
-					end
+        Button.MouseButton1Down:Connect(function()
+            dropdown.set(name)
+        end)
 
-					DropdownContent.CanvasSize += UDim2.new(0, 0, 0, Button.AbsoluteSize.Y + 6)
-				end
+        if name == default then
+            dropdown.set(name)
+        end
 
-				dropdown.remove = function(name)
-					DropdownContent.CanvasSize -= UDim2.new(0, 0, 0, DropdownContent:FindFirstChild(name).AbsoluteSize.Y + 6)
-					DropdownContent:FindFirstChild(name):Destroy()
-					dropdown.selected = ""
-				end
-				
-				dropdown.delete = function()
-					Dropdown:Destroy()
-				end
+        DropdownContent.CanvasSize += UDim2.new(0, 0, 0, Button.AbsoluteSize.Y + 6)
+    end
 
-				for idx, option in pairs(options) do
-					dropdown.add(option)
-				end
+    dropdown.remove = function(name)
+        DropdownContent.CanvasSize -= UDim2.new(0, 0, 0, DropdownContent:FindFirstChild(name).AbsoluteSize.Y + 6)
+        DropdownContent:FindFirstChild(name):Destroy()
+        dropdown.selected = ""
+    end
+    
+    dropdown.delete = function()
+        Dropdown:Destroy()
+    end
 
-				sector.increase_scrollbar_size()
+    for idx, option in pairs(options) do
+        dropdown.add(option)
+    end
 
-				return dropdown
-			end
+    sector.increase_scrollbar_size()
+
+    return dropdown
+end
+
+-- Новый элемент: мультикомбобокс (множественный выбор)
+sector.multicombobox = function(text, options, defaults, callback)
+    local multicombobox = {}
+    multicombobox.selected = defaults or {}
+    multicombobox.options = {}
+
+    local MultiCombobox = Instance.new("TextButton")
+    local UIPadding = Instance.new("UIPadding")
+    local Image = Instance.new("ImageLabel")
+    local MultiComboboxContent = Instance.new("ScrollingFrame")
+    local UIPadding_2 = Instance.new("UIPadding")
+    local UIListLayout = Instance.new("UIListLayout")
+
+    MultiCombobox.Name = "MultiCombobox"
+    MultiCombobox.Parent = SectorContent
+    MultiCombobox.BackgroundColor3 = themes[theme]["ElementBg"]
+    MultiCombobox.BorderColor3 = themes[theme]["ElementOutline"]
+    MultiCombobox.Position = UDim2.new(0.0157480314, 0, 0.254480273, 0)
+    MultiCombobox.Size = UDim2.new(0, 249, 0, 21)
+    MultiCombobox.AutoButtonColor = false
+    MultiCombobox.Font = Enum.Font.SourceSans
+    MultiCombobox.Text = text
+    MultiCombobox.TextColor3 = themes[theme]["Text"]
+    MultiCombobox.TextSize = 14.000
+    MultiCombobox.TextXAlignment = Enum.TextXAlignment.Left
+    MultiCombobox.ZIndex = 100
+
+    UIPadding.Parent = MultiCombobox
+    UIPadding.PaddingLeft = UDim.new(0, 5)
+
+    Image.Name = "Image"
+    Image.Parent = MultiCombobox
+    Image.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Image.BackgroundTransparency = 1.000
+    Image.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Image.BorderSizePixel = 0
+    Image.Position = UDim2.new(0.9, 0, 0.142857149, 0)
+    Image.Size = UDim2.new(0, 15, 0, 15)
+    Image.Image = "rbxassetid://74187648454886"
+    Image.ImageColor3 = Color3.fromRGB(115, 115, 115)
+    Image.ZIndex = 101
+
+    MultiComboboxContent.Name = "MultiComboboxContent"
+    MultiComboboxContent.Parent = MultiCombobox
+    MultiComboboxContent.Active = true
+    MultiComboboxContent.BackgroundColor3 = themes[theme]["ElementBg"]
+    MultiComboboxContent.BorderColor3 = themes[theme]["ElementOutline"]
+    MultiComboboxContent.Position = UDim2.new(-0.1369863, 0, 1, 2)
+    MultiComboboxContent.Size = UDim2.new(0, 249, 0, 0)
+    MultiComboboxContent.CanvasSize = UDim2.new(0, 0, 0, 0)
+    MultiComboboxContent.ScrollBarThickness = 3
+    MultiComboboxContent.ScrollBarImageColor3 = Color3.fromRGB(50, 50, 50)
+    MultiComboboxContent.Visible = false
+    MultiComboboxContent.ZIndex = 102
+    MultiComboboxContent.ClipsDescendants = true
+
+    UIPadding_2.Parent = MultiComboboxContent
+    UIPadding_2.PaddingLeft = UDim.new(0, 5)
+    UIPadding_2.PaddingTop = UDim.new(0, 5)
+
+    UIListLayout.Parent = MultiComboboxContent
+    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    UIListLayout.Padding = UDim.new(0, 5)
+
+    local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+    
+    MultiCombobox.MouseEnter:Connect(function()
+        services.tween:Create(MultiCombobox, tweenInfo, {BackgroundColor3 = themes[theme]["ButtonHover"]}):Play()
+    end)
+    
+    MultiCombobox.MouseLeave:Connect(function()
+        if not MultiComboboxContent.Visible then
+            services.tween:Create(MultiCombobox, tweenInfo, {BackgroundColor3 = themes[theme]["ElementBg"]}):Play()
+        end
+    end)
+
+    local isOpen = false
+    local function toggleMultiCombobox()
+        isOpen = not isOpen
+        
+        if isOpen then
+            MultiComboboxContent.Visible = true
+            services.tween:Create(Image, tweenInfo, {Rotation = 180}):Play()
+            services.tween:Create(MultiComboboxContent, tweenInfo, {Size = UDim2.new(0, 249, 0, 116)}):Play()
+        else
+            services.tween:Create(Image, tweenInfo, {Rotation = 0}):Play()
+            services.tween:Create(MultiComboboxContent, tweenInfo, {Size = UDim2.new(0, 249, 0, 0)}):Play()
+            wait(0.2)
+            MultiComboboxContent.Visible = false
+        end
+    end
+    
+    MultiCombobox.MouseButton1Down:Connect(toggleMultiCombobox)
+
+    multicombobox.update_text = function()
+        local selectedCount = 0
+        local selectedNames = {}
+        for name, selected in pairs(multicombobox.selected) do
+            if selected then
+                selectedCount = selectedCount + 1
+                table.insert(selectedNames, name)
+            end
+        end
+        
+        if selectedCount == 0 then
+            MultiCombobox.Text = text
+        elseif selectedCount == 1 then
+            MultiCombobox.Text = selectedNames[1]
+        else
+            MultiCombobox.Text = text.." ("..selectedCount.." selected)"
+        end
+    end
+
+    multicombobox.toggle_option = function(name)
+        multicombobox.selected[name] = not multicombobox.selected[name]
+        
+        local optionButton = MultiComboboxContent:FindFirstChild(name)
+        if optionButton then
+            if multicombobox.selected[name] then
+                optionButton.BorderColor3 = themes[theme]["DropdownSelected"]
+                optionButton.BackgroundColor3 = themes[theme]["ButtonHover"]
+            else
+                optionButton.BorderColor3 = themes[theme]["ElementOutline"]
+                optionButton.BackgroundColor3 = themes[theme]["ElementBg"]
+            end
+        end
+        
+        multicombobox.update_text()
+        callback(multicombobox.selected)
+    end
+
+    multicombobox.set = function(name, value)
+        multicombobox.selected[name] = value
+        multicombobox.toggle_option(name)
+    end
+    
+    multicombobox.get = function(name)
+        return multicombobox.selected[name]
+    end
+    
+    multicombobox.get_all = function()
+        return multicombobox.selected
+    end
+    
+    multicombobox.clear = function()
+        for name, _ in pairs(multicombobox.selected) do
+            multicombobox.selected[name] = false
+            local optionButton = MultiComboboxContent:FindFirstChild(name)
+            if optionButton then
+                optionButton.BorderColor3 = themes[theme]["ElementOutline"]
+                optionButton.BackgroundColor3 = themes[theme]["ElementBg"]
+            end
+        end
+        multicombobox.update_text()
+        callback(multicombobox.selected)
+    end
+    
+    multicombobox.add = function(name)
+        multicombobox.options[name] = true
+        multicombobox.selected[name] = multicombobox.selected[name] or false
+
+        local Button = Instance.new("TextButton")
+        Button.Name = name
+        Button.Parent = MultiComboboxContent
+        Button.BackgroundColor3 = themes[theme]["ElementBg"]
+        Button.BorderColor3 = themes[theme]["ElementOutline"]
+        Button.Size = UDim2.new(0, 238, 0, 21)
+        Button.Font = Enum.Font.SourceSans
+        Button.TextColor3 = themes[theme]["Text"]
+        Button.TextSize = 14.000
+        Button.Text = name
+        Button.AutoButtonColor = false
+        Button.ZIndex = 103
+
+        local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        
+        Button.MouseEnter:Connect(function()
+            services.tween:Create(Button, tweenInfo, {BackgroundColor3 = themes[theme]["ButtonHover"]}):Play()
+        end)
+        
+        Button.MouseLeave:Connect(function()
+            if not multicombobox.selected[name] then
+                services.tween:Create(Button, tweenInfo, {BackgroundColor3 = themes[theme]["ElementBg"]}):Play()
+            end
+        end)
+
+        Button.MouseButton1Down:Connect(function()
+            multicombobox.toggle_option(name)
+        end)
+
+        if multicombobox.selected[name] then
+            Button.BorderColor3 = themes[theme]["DropdownSelected"]
+            Button.BackgroundColor3 = themes[theme]["ButtonHover"]
+        end
+
+        MultiComboboxContent.CanvasSize += UDim2.new(0, 0, 0, Button.AbsoluteSize.Y + 6)
+    end
+
+    multicombobox.remove = function(name)
+        multicombobox.options[name] = nil
+        multicombobox.selected[name] = nil
+        
+        MultiComboboxContent.CanvasSize -= UDim2.new(0, 0, 0, MultiComboboxContent:FindFirstChild(name).AbsoluteSize.Y + 6)
+        MultiComboboxContent:FindFirstChild(name):Destroy()
+        multicombobox.update_text()
+        callback(multicombobox.selected)
+    end
+    
+    multicombobox.delete = function()
+        MultiCombobox:Destroy()
+    end
+
+    for idx, option in pairs(options) do
+        multicombobox.add(option)
+    end
+
+    multicombobox.update_text()
+
+    sector.increase_scrollbar_size()
+
+    return multicombobox
+end
 			
 			sector.toggle = function(text,default,callback)
 				local toggle = {}
