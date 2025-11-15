@@ -283,7 +283,7 @@ lib.create_window = function(theme, menu_key)
 			Sector.Position = UDim2.new(-0.00108384306, 0, -0.0011133909, 0)
 			Sector.Size = UDim2.new(0.5, -5, 1, 0)
 			Sector.Visible = false
-			Sector.ClipsDescendants = false
+			Sector.ClipsDescendants = true
 
 			if tab.sectorCount == 2 then
 				Sector.Position = UDim2.new(0.5, 5, -0.0011133909, 0)
@@ -304,8 +304,6 @@ lib.create_window = function(theme, menu_key)
 			Title.TextStrokeTransparency = 0.500
 			Title.TextXAlignment = Enum.TextXAlignment.Left
 			Title.Text = name
-			Title.ClipsDescendants = false
-			
 
 			SectorContent.Name = "SectorContent"
 			SectorContent.Parent = Sector
