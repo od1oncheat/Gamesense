@@ -321,7 +321,7 @@ lib.create_window = function(theme, menu_key)
 
 			UIListLayout.Parent = SectorContent
 			UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-			UIListLayout.Padding = UDim.new(0,7)
+			UIListLayout.Padding = UDim.new(0, 10)
 
 			UIPadding.Parent = SectorContent
 			UIPadding.PaddingLeft = UDim.new(0, 5)
@@ -338,7 +338,7 @@ lib.create_window = function(theme, menu_key)
 				local totalHeight = 0
 				for _, element in pairs(SectorContent:GetChildren()) do
 					if element:IsA("GuiObject") then
-						totalHeight = totalHeight + element.AbsoluteSize.Y + 7
+						totalHeight = totalHeight + element.AbsoluteSize.Y + 10
 					end
 				end
 				SectorContent.CanvasSize = UDim2.new(0, 0, 0, totalHeight + 5)
@@ -632,7 +632,7 @@ lib.create_window = function(theme, menu_key)
 				DropdownContent.ClipsDescendants = true
 
 				UIPadding_2.Parent = DropdownContent
-				UIPadding_2.PaddingLeft = UDim.new(0, 5)
+				UIPadding_2.PaddingLeft = UDim.new(0, 0)
 				UIPadding_2.PaddingTop = UDim.new(0, 5)
 
 				UIListLayout.Parent = DropdownContent
@@ -701,7 +701,7 @@ lib.create_window = function(theme, menu_key)
 					Button.Parent = DropdownContent
 					Button.BackgroundColor3 = themes[theme]["ElementBg"]
 					Button.BorderColor3 = themes[theme]["ElementOutline"]
-					Button.Size = UDim2.new(0, 238, 0, 21)
+					Button.Size = UDim2.new(0, 249, 0, 21)
 					Button.Font = Enum.Font.SourceSans
 					Button.TextColor3 = themes[theme]["Text"]
 					Button.TextSize = 14.000
@@ -767,7 +767,7 @@ lib.create_window = function(theme, menu_key)
 				Toggle.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Toggle.BorderSizePixel = 0
 				Toggle.Position = UDim2.new(0, 0, 0.306451619, 0)
-				Toggle.Size = UDim2.new(0, 249, 0, 21)
+				Toggle.Size = UDim2.new(0, 249, 0, 18)
 				Toggle.Font = Enum.Font.SourceSans
 				Toggle.Text = ""
 				Toggle.TextColor3 = Color3.fromRGB(172, 172, 172)
@@ -780,7 +780,7 @@ lib.create_window = function(theme, menu_key)
 				Text.BackgroundTransparency = 1.000
 				Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Text.BorderSizePixel = 0
-				Text.Position = UDim2.new(0.0923694745, 0, 0, 0)
+				Text.Position = UDim2.new(0.0923694745, 0, -0.1, 0)
 				Text.Size = UDim2.new(0, 226, 0, 21)
 				Text.Font = Enum.Font.SourceSans
 				Text.TextColor3 = themes[theme]["Text"]
@@ -793,7 +793,7 @@ lib.create_window = function(theme, menu_key)
 				Bg.Parent = Toggle
 				Bg.BackgroundColor3 = themes[theme]["ToggleUnchecked"]
 				Bg.BorderColor3 = themes[theme]["ElementOutline"]
-				Bg.Position = UDim2.new(0, 5, 0.324999988, 0)
+				Bg.Position = UDim2.new(0, 5, 0.2, 0)
 				Bg.Size = UDim2.new(0, 8, 0, 8)
 				Bg.Font = Enum.Font.SourceSans
 				Bg.Text = ""
@@ -1107,7 +1107,7 @@ end
 				Slider.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Slider.BorderSizePixel = 0
 				Slider.Position = UDim2.new(0, 0, 0.306451619, 0)
-				Slider.Size = UDim2.new(0, 249, 0, 35)
+				Slider.Size = UDim2.new(0, 249, 0, 25)
 				Slider.Font = Enum.Font.SourceSans
 				Slider.Text = ""
 				Slider.TextColor3 = Color3.fromRGB(172, 172, 172)
@@ -1121,7 +1121,7 @@ end
 				Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Text.BorderSizePixel = 0
 				Text.Position = UDim2.new(0.02, 0, 0, 0)
-				Text.Size = UDim2.new(0, 226, 0, 15)
+				Text.Size = UDim2.new(0, 226, 0, 12)
 				Text.Font = Enum.Font.SourceSans
 				Text.TextColor3 = themes[theme]["Text"]
 				Text.TextSize = 14.000
@@ -1134,7 +1134,7 @@ end
 				Bg.BackgroundColor3 = themes[theme]["SliderBg"]
 				Bg.BorderColor3 = themes[theme]["ElementOutline"]
 				Bg.Position = UDim2.new(0.02, 0, 0.6, 0)
-				Bg.Size = UDim2.new(0, 238, 0, 8)
+				Bg.Size = UDim2.new(0, 238, 0, 6)
 				Bg.AutoButtonColor = false
 				Bg.Font = Enum.Font.SourceSans
 				Bg.Text = ""
@@ -1160,7 +1160,7 @@ end
 				ValueLabel.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				ValueLabel.BorderSizePixel = 0
 				ValueLabel.Position = UDim2.new(1, -40, 1, 2)
-				ValueLabel.Size = UDim2.new(0, 40, 0, 10)
+				ValueLabel.Size = UDim2.new(0, 40, 0, 8)
 				ValueLabel.Font = Enum.Font.SourceSans
 				ValueLabel.TextColor3 = themes[theme]["Text"]
 				ValueLabel.TextSize = 11.000
