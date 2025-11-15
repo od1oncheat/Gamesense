@@ -592,7 +592,6 @@ lib.create_window = function(theme, menu_key)
 
 				UIPadding.Parent = Dropdown
 				UIPadding.PaddingLeft = UDim.new(0, 5)
-				UIPadding.PaddingRight = UDim.new(0, 20)
 
 				Image.Name = "Image"
 				Image.Parent = Dropdown
@@ -611,7 +610,7 @@ lib.create_window = function(theme, menu_key)
 				DropdownContent.Active = true
 				DropdownContent.BackgroundColor3 = themes[theme]["ElementBg"]
 				DropdownContent.BorderColor3 = themes[theme]["ElementOutline"]
-				DropdownContent.Position = UDim2.new(0, 0, 1, 2) -- Fixed: properly aligned to left
+				DropdownContent.Position = UDim2.new(0, 0, 1, 2) -- Fixed: aligned properly
 				DropdownContent.Size = UDim2.new(0, 249, 0, 0)
 				DropdownContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 				DropdownContent.ScrollBarThickness = 3
@@ -815,7 +814,6 @@ lib.create_window = function(theme, menu_key)
 
 					local choosing_hue = false
 					local choosing_saturation = false
-					local choosing_darkness = false
 
 					local Colorpicker = Instance.new("TextButton")
 
@@ -835,24 +833,23 @@ lib.create_window = function(theme, menu_key)
 					local hue_value = default_hue
 					local sat_value = default_saturation
 					local val_value = default_value
-					local darkness_value = 1.0
 
 					local ColorPicker = Instance.new("Frame")
 					local Saturation = Instance.new("TextButton")
 					local WhiteToColorGradient = Instance.new("UIGradient")
 					local SaturationDrag = Instance.new("Frame")
 					local Hue = Instance.new("ImageButton")
-					local SaturationDrag_2 = Instance.new("Frame")
+					local HueSelection = Instance.new("Frame")
 					local Darkness = Instance.new("TextButton")
 					local DarknessGradient = Instance.new("UIGradient")
 					local DarknessDrag = Instance.new("Frame")
 
 					ColorPicker.Name = "ColorPicker"
 					ColorPicker.Parent = Sector
-					ColorPicker.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
-					ColorPicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
+					ColorPicker.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+					ColorPicker.BorderColor3 = Color3.fromRGB(35, 35, 35)
 					ColorPicker.BorderSizePixel = 2
-					ColorPicker.Size = UDim2.new(0, 150, 0, 130)
+					ColorPicker.Size = UDim2.new(0, 150, 0, 140)
 					ColorPicker.Visible = false
 					ColorPicker.ZIndex = 200
 
@@ -861,8 +858,8 @@ lib.create_window = function(theme, menu_key)
 					Saturation.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 					Saturation.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					Saturation.BorderSizePixel = 0
-					Saturation.Position = UDim2.new(0.288, 0, 0.1, 0)
-					Saturation.Size = UDim2.new(0, 76, 0, 60)
+					Saturation.Position = UDim2.new(0.05, 0, 0.05, 0)
+					Saturation.Size = UDim2.new(0, 100, 0, 80)
 					Saturation.Font = Enum.Font.SourceSans
 					Saturation.Text = ""
 					Saturation.TextColor3 = Color3.fromRGB(0, 0, 0)
@@ -870,7 +867,7 @@ lib.create_window = function(theme, menu_key)
 					Saturation.AutoButtonColor = false
 					Saturation.ZIndex = 201
 
-					-- Fixed: Vertical gradient - white to color
+					-- Fixed: Only white to color gradient (vertical)
 					WhiteToColorGradient.Color = ColorSequence.new{
 						ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
 						ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, 1, 1))
@@ -882,6 +879,7 @@ lib.create_window = function(theme, menu_key)
 					SaturationDrag.Parent = Saturation
 					SaturationDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 					SaturationDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					SaturationDrag.BorderSizePixel = 1
 					SaturationDrag.Size = UDim2.new(0, 3, 0, 3)
 					SaturationDrag.ZIndex = 202
 
@@ -890,21 +888,21 @@ lib.create_window = function(theme, menu_key)
 					Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 					Hue.BorderColor3 = Color3.fromRGB(0, 0, 0)
 					Hue.BorderSizePixel = 0
-					Hue.Position = UDim2.new(0.112, 0, 0.1, 0)
-					Hue.Size = UDim2.new(0, 13, 0, 60)
+					Hue.Position = UDim2.new(0.75, 0, 0.05, 0)
+					Hue.Size = UDim2.new(0, 15, 0, 80)
 					Hue.Image = "rbxassetid://129669031573073"
 					Hue.AutoButtonColor = false
 					Hue.ZIndex = 201
 
-					SaturationDrag_2.Name = "SaturationDrag_2"
-					SaturationDrag_2.Parent = Hue
-					SaturationDrag_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-					SaturationDrag_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					SaturationDrag_2.BorderSizePixel = 1
-					SaturationDrag_2.Size = UDim2.new(1, 0, 0, 3)
-					SaturationDrag_2.ZIndex = 202
+					HueSelection.Name = "HueSelection"
+					HueSelection.Parent = Hue
+					HueSelection.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					HueSelection.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					HueSelection.BorderSizePixel = 1
+					HueSelection.Size = UDim2.new(1, 0, 0, 2)
+					HueSelection.ZIndex = 202
 
-					-- Added darkness slider
+					-- Added: Darkness slider at the bottom
 					Darkness.Name = "Darkness"
 					Darkness.Parent = ColorPicker
 					Darkness.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -930,6 +928,7 @@ lib.create_window = function(theme, menu_key)
 					DarknessDrag.Parent = Darkness
 					DarknessDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 					DarknessDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					DarknessDrag.BorderSizePixel = 1
 					DarknessDrag.Size = UDim2.new(0, 3, 0, 15)
 					DarknessDrag.ZIndex = 202
 
@@ -946,10 +945,13 @@ lib.create_window = function(theme, menu_key)
 					end)
 
 					local function update_color_picker()
-						-- Update saturation background color with current hue
-						Saturation.BackgroundColor3 = Color3.fromHSV(hue_value, 1, 1)
+						-- Update saturation square gradient
+						WhiteToColorGradient.Color = ColorSequence.new{
+							ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+							ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, 1, 1))
+						}
 						
-						-- Update darkness gradient with current color
+						-- Update darkness gradient
 						local current_color = Color3.fromHSV(hue_value, sat_value, val_value)
 						DarknessGradient.Color = ColorSequence.new{
 							ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
@@ -957,17 +959,12 @@ lib.create_window = function(theme, menu_key)
 						}
 						
 						-- Update selection positions
-						SaturationDrag.Position = UDim2.new(sat_value - 0.015, 0, 1 - val_value - 0.015, 0)
-						SaturationDrag_2.Position = UDim2.new(0, 0, 1 - hue_value - 0.02, 0)
-						DarknessDrag.Position = UDim2.new(darkness_value - 0.015, 0, 0, 0)
+						SaturationDrag.Position = UDim2.new(sat_value, -1.5, 1 - val_value, -1.5)
+						HueSelection.Position = UDim2.new(0, 0, 1 - hue_value, -1)
+						DarknessDrag.Position = UDim2.new(val_value, -1.5, 0, 0)
 						
-						-- Calculate final color with darkness
-						local final_color = Color3.new(
-							current_color.R * darkness_value,
-							current_color.G * darkness_value,
-							current_color.B * darkness_value
-						)
-						
+						-- Calculate final color with darkness applied
+						local final_color = Color3.fromHSV(hue_value, sat_value, val_value)
 						Colorpicker.BackgroundColor3 = final_color
 						cpcallback(final_color)
 					end
@@ -1005,13 +1002,20 @@ lib.create_window = function(theme, menu_key)
 
 					Darkness.InputBegan:Connect(function(input)
 						if input.UserInputType == Enum.UserInputType.MouseButton1 then
-							choosing_darkness = true
+							-- Update value when clicking darkness slider
+							local mouse_pos = services.uis:GetMouseLocation()
+							local abs_pos = Darkness.AbsolutePosition
+							local abs_size = Darkness.AbsoluteSize
+
+							local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
+							val_value = x
+							update_color_picker()
 						end
 					end)
 
 					Darkness.InputEnded:Connect(function(input)
 						if input.UserInputType == Enum.UserInputType.MouseButton1 then
-							choosing_darkness = false
+							-- No need for choosing_darkness flag since we update immediately on click
 						end
 					end)
 
@@ -1035,17 +1039,6 @@ lib.create_window = function(theme, menu_key)
 							local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
 
 							colorpicker.set(1 - y, sat_value, val_value)
-						end
-
-						if choosing_darkness then
-							local mouse_pos = services.uis:GetMouseLocation()
-							local abs_pos = Darkness.AbsolutePosition
-							local abs_size = Darkness.AbsoluteSize
-
-							local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
-
-							darkness_value = x
-							update_color_picker()
 						end
 					end)
 
