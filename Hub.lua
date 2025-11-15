@@ -668,33 +668,6 @@ lib.create_window = function(theme, menu_key)
     
     Dropdown.MouseButton1Down:Connect(toggleDropdown)
 
-    -- Функция для закрытия dropdown при клике вне его
-    local function closeDropdownOnClickOutside(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 and isOpen then
-            local mousePos = input.Position
-            local dropdownAbsPos = Dropdown.AbsolutePosition
-            local dropdownAbsSize = Dropdown.AbsoluteSize
-            local contentAbsPos = DropdownContent.AbsolutePosition
-            local contentAbsSize = DropdownContent.AbsoluteSize
-            
-            -- Проверяем, был ли клик вне dropdown и его контента
-            local isInDropdown = 
-                mousePos.X >= dropdownAbsPos.X and mousePos.X <= dropdownAbsPos.X + dropdownAbsSize.X and
-                mousePos.Y >= dropdownAbsPos.Y and mousePos.Y <= dropdownAbsPos.Y + dropdownAbsSize.Y
-                
-            local isInContent = 
-                mousePos.X >= contentAbsPos.X and mousePos.X <= contentAbsPos.X + contentAbsSize.X and
-                mousePos.Y >= contentAbsPos.Y and mousePos.Y <= contentAbsPos.Y + contentAbsSize.Y
-            
-            if not isInDropdown and not isInContent then
-                toggleDropdown()
-            end
-        end
-    end
-
-    -- Подписываемся на клики
-    services.userInputService.InputBegan:Connect(closeDropdownOnClickOutside)
-
     dropdown.unselect_all = function()
         for _, button in pairs(DropdownContent:GetChildren()) do
             if button:IsA("TextButton") then
@@ -888,33 +861,6 @@ sector.multicombobox = function(text, options, defaults, callback)
     end
     
     MultiCombobox.MouseButton1Down:Connect(toggleMultiCombobox)
-
-    -- Функция для закрытия multicombobox при клике вне его
-    local function closeMultiComboboxOnClickOutside(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 and isOpen then
-            local mousePos = input.Position
-            local comboboxAbsPos = MultiCombobox.AbsolutePosition
-            local comboboxAbsSize = MultiCombobox.AbsoluteSize
-            local contentAbsPos = MultiComboboxContent.AbsolutePosition
-            local contentAbsSize = MultiComboboxContent.AbsoluteSize
-            
-            -- Проверяем, был ли клик вне combobox и его контента
-            local isInCombobox = 
-                mousePos.X >= comboboxAbsPos.X and mousePos.X <= comboboxAbsPos.X + comboboxAbsSize.X and
-                mousePos.Y >= comboboxAbsPos.Y and mousePos.Y <= comboboxAbsPos.Y + comboboxAbsSize.Y
-                
-            local isInContent = 
-                mousePos.X >= contentAbsPos.X and mousePos.X <= contentAbsPos.X + contentAbsSize.X and
-                mousePos.Y >= contentAbsPos.Y and mousePos.Y <= contentAbsPos.Y + contentAbsSize.Y
-            
-            if not isInCombobox and not isInContent then
-                toggleMultiCombobox()
-            end
-        end
-    end
-
-    -- Подписываемся на клики
-    services.userInputService.InputBegan:Connect(closeMultiComboboxOnClickOutside)
 
     multicombobox.update_text = function()
         local selectedCount = 0
