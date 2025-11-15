@@ -304,6 +304,8 @@ lib.create_window = function(theme, menu_key)
 			Title.TextStrokeTransparency = 0.500
 			Title.TextXAlignment = Enum.TextXAlignment.Left
 			Title.Text = name
+			Title.ClipsDescendants = false
+			
 
 			SectorContent.Name = "SectorContent"
 			SectorContent.Parent = Sector
