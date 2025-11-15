@@ -27,16 +27,32 @@ local services = {
 }
 
 local function gethui()
-	return game.Players.LocalPlayer.PlayerGui
+	local coreGui = game:GetService("CoreGui")
+	local playerGui = game.Players.LocalPlayer:FindFirstChild("PlayerGui")
+	if coreGui and (syn or getexecutorname) then
+		return coreGui
+	else
+		return playerGui or game.Players.LocalPlayer:WaitForChild("PlayerGui")
+	end
 end
 
-local function protectgui()
-	
+local function protectgui(gui)
+	if syn and syn.protect_gui then
+		syn.protect_gui(gui)
+	elseif get_hui_gui and type(get_hui_gui) == "function" then
+		get_hui_gui(gui)
+	elseif gethui then
+		gui.Parent = gethui()
+	end
+	if identifyexecutor and string.find(string.lower(identifyexecutor()), "scriptware") then
+		gui.Parent = gethui()
+	end
 end
 
 lib.create_window = function(theme, menu_key)
-	if gethui():FindFirstChild("Mute") then
-		gethui():FindFirstChild("Mute"):Destroy()
+	local targetParent = gethui()
+	if targetParent:FindFirstChild("Mute") then
+		targetParent:FindFirstChild("Mute"):Destroy()
 	end
 
 	local window = {}
@@ -58,8 +74,6 @@ lib.create_window = function(theme, menu_key)
 	local UIGradient = Instance.new("UIGradient")
 	local Content = Instance.new("Frame")
 	local UIListLayout = Instance.new("UIListLayout")
-
-	-- dragging
 
 	window.update_window = function(input)
 		local delta = input.Position - window.drag_start
@@ -116,14 +130,12 @@ lib.create_window = function(theme, menu_key)
 			Mute.Enabled = not Mute.Enabled
 		end
 	end)
-	
-	-- end of dragging
 
 	Mute.Name = "Mute"
-	Mute.Parent = gethui()
-	Mute.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+	Mute.Parent = targetParent
+	Mute.ZIndexBehavior = Enum.ZIndexBehavior.Global
 	Mute.ResetOnSpawn = false
-	Mute.DisplayOrder = 9999
+	Mute.DisplayOrder = 999999
 	Mute.IgnoreGuiInset = true
 
 	Main.Name = "Main"
@@ -175,7 +187,6 @@ lib.create_window = function(theme, menu_key)
 	UIListLayout.Padding = UDim.new(0, 10)
 
 	window.tab_contents = {}
-
 	window.selected_tab = ""
 
 	window.show_tab = function(name)
@@ -284,8 +295,8 @@ lib.create_window = function(theme, menu_key)
 			Title.BackgroundTransparency = 1.000
 			Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			Title.BorderSizePixel = 0
-			Title.Position = UDim2.new(0.028933093, 0, 0.01, 0)
-			Title.Size = UDim2.new(0, 268, 0, 15)
+			Title.Position = UDim2.new(0.028933093, 0, -0.03, 0)
+			Title.Size = UDim2.new(0, 268, 0, 20)
 			Title.Font = Enum.Font.SourceSans
 			Title.TextColor3 = themes[theme]["Text"]
 			Title.TextSize = 18.000
@@ -293,6 +304,7 @@ lib.create_window = function(theme, menu_key)
 			Title.TextStrokeTransparency = 0.500
 			Title.TextXAlignment = Enum.TextXAlignment.Left
 			Title.Text = name
+			Title.ZIndex = 10
 
 			SectorContent.Name = "SectorContent"
 			SectorContent.Parent = Sector
@@ -610,7 +622,7 @@ lib.create_window = function(theme, menu_key)
 				DropdownContent.Active = true
 				DropdownContent.BackgroundColor3 = themes[theme]["ElementBg"]
 				DropdownContent.BorderColor3 = themes[theme]["ElementOutline"]
-				DropdownContent.Position = UDim2.new(0, 0, 1, 2) -- Fixed: aligned properly
+				DropdownContent.Position = UDim2.new(0, 0, 1, 2)
 				DropdownContent.Size = UDim2.new(0, 249, 0, 0)
 				DropdownContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 				DropdownContent.ScrollBarThickness = 3
@@ -856,7 +868,6 @@ toggle.add_color = function(_default, cpcallback)
     ColorPicker.Visible = false
     ColorPicker.ZIndex = 200
 
-    -- Hue Slider (Left) - Full color spectrum
     Hue.Name = "Hue"
     Hue.Parent = ColorPicker
     Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -891,7 +902,6 @@ toggle.add_color = function(_default, cpcallback)
     HueDrag.Size = UDim2.new(1, 0, 0, 2)
     HueDrag.ZIndex = 202
 
-    -- Saturation Slider (Middle) - White to Color
     Saturation.Name = "Saturation"
     Saturation.Parent = ColorPicker
     Saturation.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -921,7 +931,6 @@ toggle.add_color = function(_default, cpcallback)
     SaturationDrag.Size = UDim2.new(1, 0, 0, 2)
     SaturationDrag.ZIndex = 202
 
-    -- Value Slider (Right) - Black to Color
     Value.Name = "Value"
     Value.Parent = ColorPicker
     Value.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -951,7 +960,6 @@ toggle.add_color = function(_default, cpcallback)
     ValueDrag.Size = UDim2.new(1, 0, 0, 2)
     ValueDrag.ZIndex = 202
 
-    -- Color Preview
     Preview.Name = "Preview"
     Preview.Parent = ColorPicker
     Preview.BackgroundColor3 = _default
@@ -974,24 +982,20 @@ toggle.add_color = function(_default, cpcallback)
     end)
 
     local function update_color_picker()
-        -- Update saturation gradient (White to Pure Color)
         SaturationGradient.Color = ColorSequence.new{
             ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
             ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, 1, 1))
         }
         
-        -- Update value gradient (Black to Full Color)
         ValueGradient.Color = ColorSequence.new{
             ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
             ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, sat_value, 1))
         }
         
-        -- FIXED: Правильное позиционирование бегунков
         HueDrag.Position = UDim2.new(0, 0, hue_value, -1)
         SaturationDrag.Position = UDim2.new(0, 0, sat_value, -1)
         ValueDrag.Position = UDim2.new(0, 0, val_value, -1)
         
-        -- Calculate final color
         local final_color = Color3.fromHSV(hue_value, sat_value, val_value)
         Colorpicker.BackgroundColor3 = final_color
         Preview.BackgroundColor3 = final_color
@@ -1005,7 +1009,6 @@ toggle.add_color = function(_default, cpcallback)
         update_color_picker()
     end
 
-    -- FIXED: Упрощенная логика обработки мыши
     local function handleMouseInput(slider, isHue, isSaturation, isValue)
         local connection
         connection = services.run.RenderStepped:Connect(function()
@@ -1013,7 +1016,6 @@ toggle.add_color = function(_default, cpcallback)
             local absPos = slider.AbsolutePosition
             local absSize = slider.AbsoluteSize
             
-            -- Вычисляем позицию относительно слайдера
             local relativeY = (mouse.Y - absPos.Y) / absSize.Y
             relativeY = math.clamp(relativeY, 0, 1)
             
@@ -1026,7 +1028,6 @@ toggle.add_color = function(_default, cpcallback)
             end
         end)
         
-        -- Отключаем когда отпускаем мышь
         services.uis.InputEnded:Connect(function(input)
             if input.UserInputType == Enum.UserInputType.MouseButton1 then
                 connection:Disconnect()
@@ -1041,7 +1042,6 @@ toggle.add_color = function(_default, cpcallback)
         end)
     end
 
-    -- Обработчики кликов
     Hue.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 and not choosing_hue then
             choosing_hue = true
