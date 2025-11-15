@@ -2,7 +2,10 @@ gamesense ui library
 a modern, customizable ui library for roblox scripting with a gamesense-inspired design.
 
 Installation
-```local Gamesense = loadstring(game:HttpGet("https://raw.githubusercontent.com/od1oncheat/Gamesense/refs/heads/main/gamesense.lua"))()```
+```
+local Gamesense = loadstring(game:HttpGet("https://raw.githubusercontent.com/od1oncheat/Gamesense/refs/heads/main/gamesense.lua"))()
+```
+
 Quick Start
 
 ```
@@ -125,35 +128,47 @@ features.clear()
 
 api reference
 window creation
-```local window = lib.create_window(theme, toggle_key)```
+```
+local window = lib.create_window(theme, toggle_key)
+```
 theme: currently only "gamesense"
 toggle_key: enum.keycode for toggling ui visibility
 
 tabs
-```local tab = window.create_tab(icon_image_id)```
+```
+local tab = window.create_tab(icon_image_id)
+```
 icon_image_id: roblox image asset id
 returns: tab object
 
 sectors
-```local sector = tab.create_sector(name)```
+```
+local sector = tab.create_sector(name)
+```
 name: sector title
 maximum 2 sectors per tab
 returns: sector object
 
 ui elements
 toggle
-```local toggle = sector.toggle(text, default, callback)```
+```
+local toggle = sector.toggle(text, default, callback)
+```
 text: display text
 default: initial state (boolean)
 callback: function called when value changes
 
 color picker (attached to toggle)
-```toggle.add_color(default_color, callback)```
+```
+toggle.add_color(default_color, callback)
+```
 default_color: color3 initial color
 callback: function called when color changes
 
 slider
-```local slider = sector.slider(text, indicator, min, max, default, callback)```
+```
+local slider = sector.slider(text, indicator, min, max, default, callback)
+```
 text: display text
 indicator: unit indicator (e.g., "°", "%")
 min/max: value range
@@ -161,14 +176,18 @@ default: initial value
 callback: function called when value changes
 
 dropdown
-```local dropdown = sector.dropdown(text, options, default, callback)```
+```
+local dropdown = sector.dropdown(text, options, default, callback)
+```
 text: display text
 options: table of string options
 default: default selected option
 callback: function called when selection changes
 
 multi-combobox
-```local multicombobox = sector.multicombobox(text, options, defaults, callback)```
+```
+local multicombobox = sector.multicombobox(text, options, defaults, callback)
+```
 text: display text
 options: table of string options
 defaults: table of default selected options
@@ -176,12 +195,16 @@ callback: function called when selections change
 
 
 button
-```local button = sector.button(text, callback)```
+```
+local button = sector.button(text, callback)
+```
 text: button text
 callback: function called when clicked
 
 textbox
-```local textbox = sector.textbox(placeholder, default, callback)```
+```
+local textbox = sector.textbox(placeholder, default, callback)
+```
 placeholder: placeholder text
 default: default text
 callback: function called when text changes
@@ -202,3 +225,53 @@ features
 📱 responsive layout with scrolling
 🔒 anti-detection gui protection
 ⚡ performance optimized
+
+element methods
+dropdown methods
+```
+dropdown.set(option_name) -- select option
+dropdown.add(option_name) -- add new option
+dropdown.remove(option_name) -- remove option
+dropdown.get() -- get current selection
+```
+multi-combobox methods
+```
+multicombobox.set(option, value) -- set option state
+multicombobox.get(option) -- get option state
+multicombobox.get_all() -- get all states
+multicombobox.clear() -- clear all selections
+multicombobox.add(option) -- add new option
+multicombobox.remove(option) -- remove option
+```
+slider methods
+```
+slider.set(value) -- set slider value
+slider.get() -- get current value
+```
+textbox methods
+```
+textbox.set(text) -- set text
+textbox.get() -- get current text
+```
+notes
+
+the ui can be toggled with the specified key (default: insert)
+
+supports multiple executors with gui protection
+
+each tab can have up to 2 sectors
+
+all elements include hover animations and visual feedback
+
+color pickers use hsv color model for accurate color selection
+
+security
+the library includes built-in gui protection for various executors:
+
+synapse x
+
+script-ware
+
+other common exploit environments
+
+the ui automatically parents to the safest available location to prevent detection.
