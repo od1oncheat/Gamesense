@@ -295,8 +295,8 @@ lib.create_window = function(theme, menu_key)
 			Title.BackgroundTransparency = 1.000
 			Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			Title.BorderSizePixel = 0
-			Title.Position = UDim2.new(0.028933093, 0, -0.03, 0)
-			Title.Size = UDim2.new(0, 268, 0, 20)
+			Title.Position = UDim2.new(0.028933093, 0, -0.05, 0)
+			Title.Size = UDim2.new(0, 268, 0, 25)
 			Title.Font = Enum.Font.SourceSans
 			Title.TextColor3 = themes[theme]["Text"]
 			Title.TextSize = 18.000
@@ -304,7 +304,7 @@ lib.create_window = function(theme, menu_key)
 			Title.TextStrokeTransparency = 0.500
 			Title.TextXAlignment = Enum.TextXAlignment.Left
 			Title.Text = name
-			Title.ZIndex = 100
+			Title.ZIndex = 1000
 
 			SectorContent.Name = "SectorContent"
 			SectorContent.Parent = Sector
@@ -321,7 +321,7 @@ lib.create_window = function(theme, menu_key)
 
 			UIListLayout.Parent = SectorContent
 			UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-			UIListLayout.Padding = UDim.new(0, 10)
+			UIListLayout.Padding = UDim.new(0, 5)
 
 			UIPadding.Parent = SectorContent
 			UIPadding.PaddingLeft = UDim.new(0, 5)
@@ -338,7 +338,7 @@ lib.create_window = function(theme, menu_key)
 				local totalHeight = 0
 				for _, element in pairs(SectorContent:GetChildren()) do
 					if element:IsA("GuiObject") then
-						totalHeight = totalHeight + element.AbsoluteSize.Y + 10
+						totalHeight = totalHeight + element.AbsoluteSize.Y + 5
 					end
 				end
 				SectorContent.CanvasSize = UDim2.new(0, 0, 0, totalHeight + 5)
@@ -632,7 +632,7 @@ lib.create_window = function(theme, menu_key)
 				DropdownContent.ClipsDescendants = true
 
 				UIPadding_2.Parent = DropdownContent
-				UIPadding_2.PaddingLeft = UDim.new(0, 0)
+				UIPadding_2.PaddingLeft = UDim.new(0, 5)
 				UIPadding_2.PaddingTop = UDim.new(0, 5)
 
 				UIListLayout.Parent = DropdownContent
@@ -701,7 +701,7 @@ lib.create_window = function(theme, menu_key)
 					Button.Parent = DropdownContent
 					Button.BackgroundColor3 = themes[theme]["ElementBg"]
 					Button.BorderColor3 = themes[theme]["ElementOutline"]
-					Button.Size = UDim2.new(0, 249, 0, 21)
+					Button.Size = UDim2.new(0, 238, 0, 21)
 					Button.Font = Enum.Font.SourceSans
 					Button.TextColor3 = themes[theme]["Text"]
 					Button.TextSize = 14.000
