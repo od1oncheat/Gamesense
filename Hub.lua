@@ -676,15 +676,18 @@ lib.create_window = function(theme, menu_key)
         end
     end
 
-    dropdown.set = function(name)
+    dropdown.set = function(name, skipCallback)
         dropdown.unselect_all()
         dropdown.selected = name
         local selectedButton = DropdownContent:FindFirstChild(name)
         if selectedButton then
             selectedButton.BorderColor3 = themes[theme]["DropdownSelected"]
         end
-        callback(name)
-        toggleDropdown() -- Закрытие при выборе
+        
+        if not skipCallback then
+            callback(name)
+            toggleDropdown() -- Закрытие при выборе (только при реальном выборе пользователем)
+        end
     end
     
     dropdown.set_text = function(_text)
@@ -695,7 +698,7 @@ lib.create_window = function(theme, menu_key)
         return dropdown.selected
     end
     
-    dropdown.add = function(name)
+    dropdown.add = function(name, skipSelection)
         local Button = Instance.new("TextButton")
         Button.Name = name
         Button.Parent = DropdownContent
@@ -725,33 +728,44 @@ lib.create_window = function(theme, menu_key)
             dropdown.set(name)
         end)
 
-        if name == default then
-            dropdown.set(name)
+        -- Не вызываем автоматически dropdown.set при создании элементов
+        if name == default and not skipSelection then
+            dropdown.set(name, true) -- skipCallback = true чтобы не вызывать колбэк
         end
 
         DropdownContent.CanvasSize += UDim2.new(0, 0, 0, Button.AbsoluteSize.Y + 6)
     end
 
     dropdown.remove = function(name)
-        DropdownContent.CanvasSize -= UDim2.new(0, 0, 0, DropdownContent:FindFirstChild(name).AbsoluteSize.Y + 6)
-        DropdownContent:FindFirstChild(name):Destroy()
-        dropdown.selected = ""
+        local button = DropdownContent:FindFirstChild(name)
+        if button then
+            DropdownContent.CanvasSize -= UDim2.new(0, 0, 0, button.AbsoluteSize.Y + 6)
+            button:Destroy()
+            if dropdown.selected == name then
+                dropdown.selected = ""
+            end
+        end
     end
     
     dropdown.delete = function()
         Dropdown:Destroy()
     end
 
+    -- Сначала создаем все элементы без автоматического выбора
     for idx, option in pairs(options) do
-        dropdown.add(option)
+        dropdown.add(option, true) -- skipSelection = true
+    end
+    
+    -- Затем устанавливаем значение по умолчанию (без вызова колбэка)
+    if default then
+        dropdown.set(default, true) -- skipCallback = true
     end
 
     sector.increase_scrollbar_size()
 
     return dropdown
 end
-
--- Исправленный мультикомбобокс
+			
 sector.multicombobox = function(text, options, defaults, callback)
     local multicombobox = {}
     multicombobox.selected = {}
