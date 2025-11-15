@@ -602,7 +602,7 @@ lib.create_window = function(theme, menu_key)
     Dropdown.ZIndex = 100
 
     UIPadding.Parent = Dropdown
-    UIPadding.PaddingLeft = UDim.new(0, 5)
+    UIPadding.PaddingLeft = UDim.new(0, 30)
 
     Image.Name = "Image"
     Image.Parent = Dropdown
@@ -610,7 +610,7 @@ lib.create_window = function(theme, menu_key)
     Image.BackgroundTransparency = 1.000
     Image.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Image.BorderSizePixel = 0
-    Image.Position = UDim2.new(0.9, 0, 0.142857149, 0)
+    Image.Position = UDim2.new(-0.100456618, 0, 0.142857149, 0)
     Image.Size = UDim2.new(0, 15, 0, 15)
     Image.Image = "rbxassetid://74187648454886"
     Image.ImageColor3 = Color3.fromRGB(115, 115, 115)
@@ -621,7 +621,7 @@ lib.create_window = function(theme, menu_key)
     DropdownContent.Active = true
     DropdownContent.BackgroundColor3 = themes[theme]["ElementBg"]
     DropdownContent.BorderColor3 = themes[theme]["ElementOutline"]
-    DropdownContent.Position = UDim2.new(-0.1369863, 0, 1, 2)
+    DropdownContent.Position = UDim2.new(-0.1369863, 0, 1, 0)
     DropdownContent.Size = UDim2.new(0, 249, 0, 0)
     DropdownContent.CanvasSize = UDim2.new(0, 0, 0, 0)
     DropdownContent.ScrollBarThickness = 3
@@ -751,7 +751,7 @@ lib.create_window = function(theme, menu_key)
     return dropdown
 end
 
--- Новый элемент: мультикомбобокс (множественный выбор)
+-- Исправленный мультикомбобокс
 sector.multicombobox = function(text, options, defaults, callback)
     local multicombobox = {}
     multicombobox.selected = defaults or {}
@@ -779,7 +779,7 @@ sector.multicombobox = function(text, options, defaults, callback)
     MultiCombobox.ZIndex = 100
 
     UIPadding.Parent = MultiCombobox
-    UIPadding.PaddingLeft = UDim.new(0, 5)
+    UIPadding.PaddingLeft = UDim.new(0, 30)
 
     Image.Name = "Image"
     Image.Parent = MultiCombobox
@@ -787,7 +787,7 @@ sector.multicombobox = function(text, options, defaults, callback)
     Image.BackgroundTransparency = 1.000
     Image.BorderColor3 = Color3.fromRGB(0, 0, 0)
     Image.BorderSizePixel = 0
-    Image.Position = UDim2.new(0.9, 0, 0.142857149, 0)
+    Image.Position = UDim2.new(-0.100456618, 0, 0.142857149, 0)
     Image.Size = UDim2.new(0, 15, 0, 15)
     Image.Image = "rbxassetid://74187648454886"
     Image.ImageColor3 = Color3.fromRGB(115, 115, 115)
@@ -798,7 +798,7 @@ sector.multicombobox = function(text, options, defaults, callback)
     MultiComboboxContent.Active = true
     MultiComboboxContent.BackgroundColor3 = themes[theme]["ElementBg"]
     MultiComboboxContent.BorderColor3 = themes[theme]["ElementOutline"]
-    MultiComboboxContent.Position = UDim2.new(-0.1369863, 0, 1, 2)
+    MultiComboboxContent.Position = UDim2.new(-0.1369863, 0, 1, 0)
     MultiComboboxContent.Size = UDim2.new(0, 249, 0, 0)
     MultiComboboxContent.CanvasSize = UDim2.new(0, 0, 0, 0)
     MultiComboboxContent.ScrollBarThickness = 3
