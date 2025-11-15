@@ -1088,6 +1088,8 @@ end
 				
 				    return colorpicker
 				end
+			end
+          end
 			
 			sector.slider = function(text, indicator, min, max, default, callback)
 				local slider = {}
