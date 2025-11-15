@@ -602,7 +602,7 @@ lib.create_window = function(theme, menu_key)
 				Dropdown.ZIndex = 100
 
 				UIPadding.Parent = Dropdown
-				UIPadding.PaddingLeft = UDim.new(0, 5)
+				UIPadding.PaddingLeft = UDim.new(0, 30)
 
 				Image.Name = "Image"
 				Image.Parent = Dropdown
@@ -610,7 +610,7 @@ lib.create_window = function(theme, menu_key)
 				Image.BackgroundTransparency = 1.000
 				Image.BorderColor3 = Color3.fromRGB(0, 0, 0)
 				Image.BorderSizePixel = 0
-				Image.Position = UDim2.new(0.9, 0, 0.142857149, 0)
+				Image.Position = UDim2.new(-0.100456618, 0, 0.142857149, 0)
 				Image.Size = UDim2.new(0, 15, 0, 15)
 				Image.Image = "rbxassetid://74187648454886"
 				Image.ImageColor3 = Color3.fromRGB(115, 115, 115)
@@ -621,14 +621,13 @@ lib.create_window = function(theme, menu_key)
 				DropdownContent.Active = true
 				DropdownContent.BackgroundColor3 = themes[theme]["ElementBg"]
 				DropdownContent.BorderColor3 = themes[theme]["ElementOutline"]
-				DropdownContent.Position = UDim2.new(0, 0, 1, 2)
-				DropdownContent.Size = UDim2.new(0, 249, 0, 0)
+				DropdownContent.Position = UDim2.new(-0.1369863, 0, 1, 0)
+				DropdownContent.Size = UDim2.new(0, 249, 0, 116)
 				DropdownContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 				DropdownContent.ScrollBarThickness = 3
 				DropdownContent.ScrollBarImageColor3 = Color3.fromRGB(50, 50, 50)
 				DropdownContent.Visible = false
 				DropdownContent.ZIndex = 102
-				DropdownContent.ClipsDescendants = true
 
 				UIPadding_2.Parent = DropdownContent
 				UIPadding_2.PaddingLeft = UDim.new(0, 5)
@@ -638,35 +637,10 @@ lib.create_window = function(theme, menu_key)
 				UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
 				UIListLayout.Padding = UDim.new(0, 5)
 
-				local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-				
-				Dropdown.MouseEnter:Connect(function()
-					services.tween:Create(Dropdown, tweenInfo, {BackgroundColor3 = themes[theme]["ButtonHover"]}):Play()
+				Dropdown.MouseButton1Down:Connect(function()
+					DropdownContent.Visible = not DropdownContent.Visible
+					Image.Image = DropdownContent.Visible and "rbxassetid://74187648454886" or "rbxassetid://97940921082727"
 				end)
-				
-				Dropdown.MouseLeave:Connect(function()
-					if not DropdownContent.Visible then
-						services.tween:Create(Dropdown, tweenInfo, {BackgroundColor3 = themes[theme]["ElementBg"]}):Play()
-					end
-				end)
-
-				local isOpen = false
-				local function toggleDropdown()
-					isOpen = not isOpen
-					
-					if isOpen then
-						DropdownContent.Visible = true
-						services.tween:Create(Image, tweenInfo, {Rotation = 180}):Play()
-						services.tween:Create(DropdownContent, tweenInfo, {Size = UDim2.new(0, 249, 0, 116)}):Play()
-					else
-						services.tween:Create(Image, tweenInfo, {Rotation = 0}):Play()
-						services.tween:Create(DropdownContent, tweenInfo, {Size = UDim2.new(0, 249, 0, 0)}):Play()
-						wait(0.2)
-						DropdownContent.Visible = false
-					end
-				end
-				
-				Dropdown.MouseButton1Down:Connect(toggleDropdown)
 
 				dropdown.unselect_all = function()
 					for _, button in pairs(DropdownContent:GetChildren()) do
@@ -708,21 +682,16 @@ lib.create_window = function(theme, menu_key)
 					Button.AutoButtonColor = false
 					Button.ZIndex = 103
 
-					local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-					
-					Button.MouseEnter:Connect(function()
-						services.tween:Create(Button, tweenInfo, {BackgroundColor3 = themes[theme]["ButtonHover"]}):Play()
-					end)
-					
-					Button.MouseLeave:Connect(function()
-						if Button.BorderColor3 ~= themes[theme]["DropdownSelected"] then
-							services.tween:Create(Button, tweenInfo, {BackgroundColor3 = themes[theme]["ElementBg"]}):Play()
-						end
-					end)
+					local UIGradient = Instance.new("UIGradient")
+					UIGradient.Color = ColorSequence.new{
+						ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 255, 255)), 
+						ColorSequenceKeypoint.new(1.00, Color3.fromRGB(175, 175, 175))
+					}
+					UIGradient.Rotation = 90
+					UIGradient.Parent = Button
 
 					Button.MouseButton1Down:Connect(function()
 						dropdown.set(name)
-						toggleDropdown()
 					end)
 
 					if name == default then
