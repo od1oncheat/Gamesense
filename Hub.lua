@@ -810,224 +810,222 @@ lib.create_window = function(theme, menu_key)
 				end
 				
 				toggle.add_color = function(_default, cpcallback)
-					local colorpicker = {}
+    local colorpicker = {}
 
-					local choosing_hue = false
-					local choosing_color = false
+    local choosing_hue = false
+    local choosing_color = false
 
-					local Colorpicker = Instance.new("TextButton")
+    local Colorpicker = Instance.new("TextButton")
 
-					Colorpicker.Name = "Colorpicker"
-					Colorpicker.Parent = Toggle
-					Colorpicker.BackgroundColor3 = _default
-					Colorpicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
-					Colorpicker.Position = UDim2.new(0.85, 0, 0.325, 0)
-					Colorpicker.Size = UDim2.new(0, 22, 0, 11)
-					Colorpicker.AutoButtonColor = false
-					Colorpicker.Font = Enum.Font.SourceSans
-					Colorpicker.Text = ""
-					Colorpicker.TextColor3 = Color3.fromRGB(0, 0, 0)
-					Colorpicker.TextSize = 14.000
+    Colorpicker.Name = "Colorpicker"
+    Colorpicker.Parent = Toggle
+    Colorpicker.BackgroundColor3 = _default
+    Colorpicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
+    Colorpicker.Position = UDim2.new(0.85, 0, 0.325, 0)
+    Colorpicker.Size = UDim2.new(0, 22, 0, 11)
+    Colorpicker.AutoButtonColor = false
+    Colorpicker.Font = Enum.Font.SourceSans
+    Colorpicker.Text = ""
+    Colorpicker.TextColor3 = Color3.fromRGB(0, 0, 0)
+    Colorpicker.TextSize = 14.000
 
-					local default_hue, default_saturation, default_value = _default:ToHSV()
-					local hue_value = default_hue
-					local sat_value = default_saturation
-					local val_value = default_value
+    local default_hue, default_saturation, default_value = _default:ToHSV()
+    local hue_value = default_hue
+    local sat_value = default_saturation
+    local val_value = default_value
 
-					local ColorPicker = Instance.new("Frame")
-					local Color = Instance.new("Frame")
-					local ColorGradient = Instance.new("UIGradient")
-					local ValueGradient = Instance.new("UIGradient")
-					local ColorSelection = Instance.new("Frame")
-					local Hue = Instance.new("Frame")
-					local HueGradient = Instance.new("UIGradient")
-					local HueSelection = Instance.new("Frame")
+    local ColorPicker = Instance.new("Frame")
+    local Color = Instance.new("Frame")
+    local WhiteToColorGradient = Instance.new("UIGradient") -- Вертикальный градиент: белый сверху, цвет снизу
+    local BlackGradient = Instance.new("UIGradient") -- Горизонтальный градиент: прозрачный слева, черный справа
+    local ColorSelection = Instance.new("Frame")
+    local Hue = Instance.new("Frame")
+    local HueGradient = Instance.new("UIGradient")
+    local HueSelection = Instance.new("Frame")
 
-					ColorPicker.Name = "ColorPicker"
-					ColorPicker.Parent = Sector
-					ColorPicker.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-					ColorPicker.BorderColor3 = Color3.fromRGB(35, 35, 35)
-					ColorPicker.BorderSizePixel = 2
-					ColorPicker.Size = UDim2.new(0, 150, 0, 120)
-					ColorPicker.Visible = false
-					ColorPicker.ZIndex = 200
+    ColorPicker.Name = "ColorPicker"
+    ColorPicker.Parent = Sector
+    ColorPicker.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    ColorPicker.BorderColor3 = Color3.fromRGB(35, 35, 35)
+    ColorPicker.BorderSizePixel = 2
+    ColorPicker.Size = UDim2.new(0, 150, 0, 140)
+    ColorPicker.Visible = false
+    ColorPicker.ZIndex = 200
 
-					Color.Name = "Color"
-					Color.Parent = ColorPicker
-					Color.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-					Color.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					Color.BorderSizePixel = 0
-					Color.Position = UDim2.new(0.05, 0, 0.1, 0)
-					Color.Size = UDim2.new(0, 100, 0, 100)
-					Color.ZIndex = 201
+    Color.Name = "Color"
+    Color.Parent = ColorPicker
+    Color.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Color.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Color.BorderSizePixel = 0
+    Color.Position = UDim2.new(0.05, 0, 0.1, 0)
+    Color.Size = UDim2.new(0, 100, 0, 100)
+    Color.ZIndex = 201
 
-					-- Горизонтальный градиент: от белого к выбранному цвету
-					ColorGradient.Color = ColorSequence.new{
-						ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
-						ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, 1, 1))
-					}
-					ColorGradient.Rotation = 0
-					ColorGradient.Parent = Color
+    -- Вертикальный градиент: белый сверху, выбранный цвет снизу
+    WhiteToColorGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, 1, 1))
+    }
+    WhiteToColorGradient.Rotation = 90
+    WhiteToColorGradient.Parent = Color
 
-					-- Вертикальный градиент: от прозрачного к черному
-					ValueGradient.Color = ColorSequence.new{
-						ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
-						ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))
-					}
-					ValueGradient.Transparency = NumberSequence.new{
-						NumberSequenceKeypoint.new(0, 1),
-						NumberSequenceKeypoint.new(1, 0)
-					}
-					ValueGradient.Rotation = 90
-					ValueGradient.Parent = Color
+    -- Горизонтальный градиент: прозрачный слева, черный справа
+    BlackGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(0, 0, 0))
+    }
+    BlackGradient.Transparency = NumberSequence.new{
+        NumberSequenceKeypoint.new(0, 1), -- Слева полностью прозрачный
+        NumberSequenceKeypoint.new(1, 0)  -- Справа полностью непрозрачный черный
+    }
+    BlackGradient.Rotation = 0
+    BlackGradient.Parent = Color
 
-					ColorSelection.Name = "ColorSelection"
-					ColorSelection.Parent = Color
-					ColorSelection.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-					ColorSelection.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					ColorSelection.BorderSizePixel = 1
-					ColorSelection.Size = UDim2.new(0, 3, 0, 3)
-					ColorSelection.ZIndex = 202
+    ColorSelection.Name = "ColorSelection"
+    ColorSelection.Parent = Color
+    ColorSelection.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ColorSelection.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ColorSelection.BorderSizePixel = 1
+    ColorSelection.Size = UDim2.new(0, 3, 0, 3)
+    ColorSelection.ZIndex = 202
 
-					Hue.Name = "Hue"
-					Hue.Parent = ColorPicker
-					Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-					Hue.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					Hue.BorderSizePixel = 0
-					Hue.Position = UDim2.new(0.75, 0, 0.1, 0)
-					Hue.Size = UDim2.new(0, 15, 0, 100)
-					Hue.ZIndex = 201
+    Hue.Name = "Hue"
+    Hue.Parent = ColorPicker
+    Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Hue.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Hue.BorderSizePixel = 0
+    Hue.Position = UDim2.new(0.75, 0, 0.1, 0)
+    Hue.Size = UDim2.new(0, 15, 0, 100)
+    Hue.ZIndex = 201
 
-					HueGradient.Color = ColorSequence.new{
-						ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 4)),
-						ColorSequenceKeypoint.new(0.17, Color3.fromRGB(255, 0, 251)),
-						ColorSequenceKeypoint.new(0.33, Color3.fromRGB(0, 17, 255)),
-						ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 255, 255)),
-						ColorSequenceKeypoint.new(0.67, Color3.fromRGB(21, 255, 0)),
-						ColorSequenceKeypoint.new(0.83, Color3.fromRGB(234, 255, 0)),
-						ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 4))
-					}
-					HueGradient.Rotation = 270
-					HueGradient.Parent = Hue
+    HueGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0.00, Color3.fromRGB(255, 0, 4)),
+        ColorSequenceKeypoint.new(0.17, Color3.fromRGB(255, 0, 251)),
+        ColorSequenceKeypoint.new(0.33, Color3.fromRGB(0, 17, 255)),
+        ColorSequenceKeypoint.new(0.50, Color3.fromRGB(0, 255, 255)),
+        ColorSequenceKeypoint.new(0.67, Color3.fromRGB(21, 255, 0)),
+        ColorSequenceKeypoint.new(0.83, Color3.fromRGB(234, 255, 0)),
+        ColorSequenceKeypoint.new(1.00, Color3.fromRGB(255, 0, 4))
+    }
+    HueGradient.Rotation = 270
+    HueGradient.Parent = Hue
 
-					HueSelection.Name = "HueSelection"
-					HueSelection.Parent = Hue
-					HueSelection.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-					HueSelection.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					HueSelection.BorderSizePixel = 1
-					HueSelection.Size = UDim2.new(1, 0, 0, 2)
-					HueSelection.ZIndex = 202
+    HueSelection.Name = "HueSelection"
+    HueSelection.Parent = Hue
+    HueSelection.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    HueSelection.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    HueSelection.BorderSizePixel = 1
+    HueSelection.Size = UDim2.new(1, 0, 0, 2)
+    HueSelection.ZIndex = 202
 
-					Colorpicker.MouseButton1Down:Connect(function()
-						for _, element in pairs(Sector:GetChildren()) do
-							if element.Name == "ColorPicker" and element ~= ColorPicker then
-								element.Visible = false
-							end
-						end
+    Colorpicker.MouseButton1Down:Connect(function()
+        for _, element in pairs(Sector:GetChildren()) do
+            if element.Name == "ColorPicker" and element ~= ColorPicker then
+                element.Visible = false
+            end
+        end
 
-						local abs_pos = Colorpicker.AbsolutePosition
-						ColorPicker.Position = UDim2.new(0, abs_pos.X - Sector.AbsolutePosition.X - 150, 0, abs_pos.Y - Sector.AbsolutePosition.Y + Colorpicker.Size.Y.Offset + 5)
-						ColorPicker.Visible = not ColorPicker.Visible
-					end)
+        local abs_pos = Colorpicker.AbsolutePosition
+        ColorPicker.Position = UDim2.new(0, abs_pos.X - Sector.AbsolutePosition.X - 150, 0, abs_pos.Y - Sector.AbsolutePosition.Y + Colorpicker.Size.Y.Offset + 5)
+        ColorPicker.Visible = not ColorPicker.Visible
+    end)
 
-					local function update_color_picker()
-						-- Обновляем горизонтальный градиент с новым оттенком
-						ColorGradient.Color = ColorSequence.new{
-							ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
-							ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, 1, 1))
-						}
-						
-						-- Обновляем позиции селекторов
-						ColorSelection.Position = UDim2.new(sat_value, -1.5, 1 - val_value, -1.5)
-						HueSelection.Position = UDim2.new(0, 0, hue_value, -1)
-						
-						-- Обновляем цвет кнопки
-						local new_color = Color3.fromHSV(hue_value, sat_value, val_value)
-						Colorpicker.BackgroundColor3 = new_color
-						cpcallback(new_color)
-					end
+    local function update_color_picker()
+        -- Обновляем вертикальный градиент с новым оттенком
+        WhiteToColorGradient.Color = ColorSequence.new{
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+            ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, 1, 1))
+        }
+        
+        -- Обновляем позиции селекторов
+        ColorSelection.Position = UDim2.new(sat_value, -1.5, val_value, -1.5)
+        HueSelection.Position = UDim2.new(0, 0, hue_value, -1)
+        
+        -- Обновляем цвет кнопки
+        local new_color = Color3.fromHSV(hue_value, sat_value, val_value)
+        Colorpicker.BackgroundColor3 = new_color
+        cpcallback(new_color)
+    end
 
-					colorpicker.set = function(hue, sat, val)
-						hue_value = hue
-						sat_value = sat
-						val_value = val
-						update_color_picker()
-					end
+    colorpicker.set = function(hue, sat, val)
+        hue_value = hue
+        sat_value = sat
+        val_value = val
+        update_color_picker()
+    end
 
-					-- Обработка выбора цвета
-					Color.InputBegan:Connect(function(input)
-						if input.UserInputType == Enum.UserInputType.MouseButton1 then
-							choosing_color = true
-						end
-					end)
+    -- Обработка выбора цвета в основном квадрате
+    Color.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            choosing_color = true
+            
+            -- Сразу обновляем позицию при клике
+            local mouse_pos = services.uis:GetMouseLocation()
+            local abs_pos = Color.AbsolutePosition
+            local abs_size = Color.AbsoluteSize
 
-					Color.InputEnded:Connect(function(input)
-						if input.UserInputType == Enum.UserInputType.MouseButton1 then
-							choosing_color = false
-						end
-					end)
+            local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
+            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
 
-					-- Обработка выбора оттенка
-					Hue.InputBegan:Connect(function(input)
-						if input.UserInputType == Enum.UserInputType.MouseButton1 then
-							choosing_hue = true
-						end
-					end)
+            colorpicker.set(hue_value, x, y)
+        end
+    end)
 
-					Hue.InputEnded:Connect(function(input)
-						if input.UserInputType == Enum.UserInputType.MouseButton1 then
-							choosing_hue = false
-						end
-					end)
+    Color.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            choosing_color = false
+        end
+    end)
 
-					services.run.RenderStepped:Connect(function()
-						if choosing_color then
-							local mouse_pos = services.uis:GetMouseLocation()
-							local abs_pos = Color.AbsolutePosition
-							local abs_size = Color.AbsoluteSize
+    -- Обработка выбора оттенка
+    Hue.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            choosing_hue = true
+            
+            -- Сразу обновляем позицию при клике
+            local mouse_pos = services.uis:GetMouseLocation()
+            local abs_pos = Hue.AbsolutePosition
+            local abs_size = Hue.AbsoluteSize
 
-							local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
-							local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
 
-							colorpicker.set(hue_value, x, 1 - y)
-						end
+            colorpicker.set(1 - y, sat_value, val_value)
+        end
+    end)
 
-						if choosing_hue then
-							local mouse_pos = services.uis:GetMouseLocation()
-							local abs_pos = Hue.AbsolutePosition
-							local abs_size = Hue.AbsoluteSize
+    Hue.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            choosing_hue = false
+        end
+    end)
 
-							local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+    services.run.RenderStepped:Connect(function()
+        if choosing_color then
+            local mouse_pos = services.uis:GetMouseLocation()
+            local abs_pos = Color.AbsolutePosition
+            local abs_size = Color.AbsoluteSize
 
-							colorpicker.set(1 - y, sat_value, val_value)
-						end
-					end)
+            local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
+            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
 
-					colorpicker.set(hue_value, sat_value, val_value)
+            colorpicker.set(hue_value, x, y)
+        end
 
-					return colorpicker
-				end
-				
-				toggle.get = function()
-					return Text.Text
-				end
-				
-				Toggle.MouseButton1Down:Connect(function()
-					value = not value
-					toggle.set(value)
-				end)
-				
-				Bg.MouseButton1Down:Connect(function()
-					value = not value
-					toggle.set(value)
-				end)
-				
-				toggle.set(value)
-				
-				sector.increase_scrollbar_size()
-				
-				return toggle
-			end
+        if choosing_hue then
+            local mouse_pos = services.uis:GetMouseLocation()
+            local abs_pos = Hue.AbsolutePosition
+            local abs_size = Hue.AbsoluteSize
+
+            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+
+            colorpicker.set(1 - y, sat_value, val_value)
+        end
+    end)
+
+    colorpicker.set(hue_value, sat_value, val_value)
+
+    return colorpicker
+end
 			
 			sector.slider = function(text, indicator, min, max, default, callback)
 				local slider = {}
