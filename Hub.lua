@@ -986,10 +986,10 @@ lib.create_window = function(theme, menu_key)
             ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, sat_value, 1))
         }
         
-        -- Update selection positions (FIXED: правильное позиционирование бегунков)
+        -- Update selection positions
         HueDrag.Position = UDim2.new(0, 0, hue_value, -1)
-        SaturationDrag.Position = UDim2.new(0, 0, sat_value, -1)  -- 0 = белый (верх), 1 = цвет (низ)
-        ValueDrag.Position = UDim2.new(0, 0, val_value, -1)       -- 0 = черный (верх), 1 = цвет (низ)
+        SaturationDrag.Position = UDim2.new(0, 0, sat_value, -1)
+        ValueDrag.Position = UDim2.new(0, 0, val_value, -1)
         
         -- Calculate final color
         local final_color = Color3.fromHSV(hue_value, sat_value, val_value)
@@ -1005,95 +1005,87 @@ lib.create_window = function(theme, menu_key)
         update_color_picker()
     end
 
-    -- Hue slider interaction
-    Hue.InputBegan:Connect(function(input)
+    -- Input handling functions (FIXED: using the old logic)
+    local function handleColorInput(input, slider, isHue, isSaturation, isValue)
         if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            choosing_hue = true
-            
-            local mouse_pos = services.uis:GetMouseLocation()
+            if isHue then
+                choosing_hue = true
+            elseif isSaturation then
+                choosing_saturation = true
+            elseif isValue then
+                choosing_value = true
+            end
+        end
+    end
+
+    local function handleInputEnd(input, isHue, isSaturation, isValue)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            if isHue then
+                choosing_hue = false
+            elseif isSaturation then
+                choosing_saturation = false
+            elseif isValue then
+                choosing_value = false
+            end
+        end
+    end
+
+    local function handleInputChanged(input)
+        if choosing_saturation and input.UserInputType == Enum.UserInputType.MouseMovement then
+            local mouse_pos = Vector2.new(services.uis:GetMouseLocation().X, services.uis:GetMouseLocation().Y)
+            local abs_pos = Saturation.AbsolutePosition
+            local abs_size = Saturation.AbsoluteSize
+
+            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+            colorpicker.set(hue_value, y, val_value)
+        end
+
+        if choosing_hue and input.UserInputType == Enum.UserInputType.MouseMovement then
+            local mouse_pos = Vector2.new(services.uis:GetMouseLocation().X, services.uis:GetMouseLocation().Y)
             local abs_pos = Hue.AbsolutePosition
             local abs_size = Hue.AbsoluteSize
 
             local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
             colorpicker.set(y, sat_value, val_value)
         end
+
+        if choosing_value and input.UserInputType == Enum.UserInputType.MouseMovement then
+            local mouse_pos = Vector2.new(services.uis:GetMouseLocation().X, services.uis:GetMouseLocation().Y)
+            local abs_pos = Value.AbsolutePosition
+            local abs_size = Value.AbsoluteSize
+
+            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+            colorpicker.set(hue_value, sat_value, y)
+        end
+    end
+
+    -- Connect events
+    Hue.InputBegan:Connect(function(input)
+        handleColorInput(input, Hue, true, false, false)
     end)
 
     Hue.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            choosing_hue = false
-        end
+        handleInputEnd(input, true, false, false)
     end)
 
-    -- Saturation slider interaction
     Saturation.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            choosing_saturation = true
-            
-            local mouse_pos = services.uis:GetMouseLocation()
-            local abs_pos = Saturation.AbsolutePosition
-            local abs_size = Saturation.AbsoluteSize
-
-            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-            colorpicker.set(hue_value, y, val_value)  -- FIXED: прямое значение, не 1-y
-        end
+        handleColorInput(input, Saturation, false, true, false)
     end)
 
     Saturation.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            choosing_saturation = false
-        end
+        handleInputEnd(input, false, true, false)
     end)
 
-    -- Value slider interaction
     Value.InputBegan:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            choosing_value = true
-            
-            local mouse_pos = services.uis:GetMouseLocation()
-            local abs_pos = Value.AbsolutePosition
-            local abs_size = Value.AbsoluteSize
-
-            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-            colorpicker.set(hue_value, sat_value, y)  -- FIXED: прямое значение, не 1-y
-        end
+        handleColorInput(input, Value, false, false, true)
     end)
 
     Value.InputEnded:Connect(function(input)
-        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-            choosing_value = false
-        end
+        handleInputEnd(input, false, false, true)
     end)
 
-    -- Real-time dragging (FIXED: правильное вычисление позиции)
-    services.run.RenderStepped:Connect(function()
-        if choosing_hue then
-            local mouse_pos = services.uis:GetMouseLocation()
-            local abs_pos = Hue.AbsolutePosition
-            local abs_size = Hue.AbsoluteSize
-
-            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-            colorpicker.set(y, sat_value, val_value)
-        end
-
-        if choosing_saturation then
-            local mouse_pos = services.uis:GetMouseLocation()
-            local abs_pos = Saturation.AbsolutePosition
-            local abs_size = Saturation.AbsoluteSize
-
-            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-            colorpicker.set(hue_value, y, val_value)  -- FIXED: прямое значение
-        end
-
-        if choosing_value then
-            local mouse_pos = services.uis:GetMouseLocation()
-            local abs_pos = Value.AbsolutePosition
-            local abs_size = Value.AbsoluteSize
-
-            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-            colorpicker.set(hue_value, sat_value, y)  -- FIXED: прямое значение
-        end
-    end)
+    -- FIXED: Using InputChanged instead of RenderStepped (like in old code)
+    services.uis.InputChanged:Connect(handleInputChanged)
 
     colorpicker.set(hue_value, sat_value, val_value)
 
