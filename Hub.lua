@@ -810,242 +810,295 @@ lib.create_window = function(theme, menu_key)
 				end
 				
 				toggle.add_color = function(_default, cpcallback)
-					local colorpicker = {}
+    local colorpicker = {}
 
-					local choosing_hue = false
-					local choosing_saturation = false
+    local choosing_hue = false
+    local choosing_saturation = false
+    local choosing_value = false
 
-					local Colorpicker = Instance.new("TextButton")
+    local Colorpicker = Instance.new("TextButton")
 
-					Colorpicker.Name = "Colorpicker"
-					Colorpicker.Parent = Toggle
-					Colorpicker.BackgroundColor3 = _default
-					Colorpicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
-					Colorpicker.Position = UDim2.new(0.85, 0, 0.325, 0)
-					Colorpicker.Size = UDim2.new(0, 22, 0, 11)
-					Colorpicker.AutoButtonColor = false
-					Colorpicker.Font = Enum.Font.SourceSans
-					Colorpicker.Text = ""
-					Colorpicker.TextColor3 = Color3.fromRGB(0, 0, 0)
-					Colorpicker.TextSize = 14.000
+    Colorpicker.Name = "Colorpicker"
+    Colorpicker.Parent = Toggle
+    Colorpicker.BackgroundColor3 = _default
+    Colorpicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
+    Colorpicker.Position = UDim2.new(0.85, 0, 0.325, 0)
+    Colorpicker.Size = UDim2.new(0, 22, 0, 11)
+    Colorpicker.AutoButtonColor = false
+    Colorpicker.Font = Enum.Font.SourceSans
+    Colorpicker.Text = ""
+    Colorpicker.TextColor3 = Color3.fromRGB(0, 0, 0)
+    Colorpicker.TextSize = 14.000
 
-					local default_hue, default_saturation, default_value = _default:ToHSV()
-					local hue_value = default_hue
-					local sat_value = default_saturation
-					local val_value = default_value
+    local default_hue, default_saturation, default_value = _default:ToHSV()
+    local hue_value = default_hue
+    local sat_value = default_saturation
+    local val_value = default_value
 
-					local ColorPicker = Instance.new("Frame")
-					local Saturation = Instance.new("TextButton")
-					local WhiteToColorGradient = Instance.new("UIGradient")
-					local SaturationDrag = Instance.new("Frame")
-					local Hue = Instance.new("ImageButton")
-					local HueSelection = Instance.new("Frame")
-					local Darkness = Instance.new("TextButton")
-					local DarknessGradient = Instance.new("UIGradient")
-					local DarknessDrag = Instance.new("Frame")
+    local ColorPicker = Instance.new("Frame")
+    local Hue = Instance.new("TextButton")
+    local HueGradient = Instance.new("UIGradient")
+    local HueDrag = Instance.new("Frame")
+    local Saturation = Instance.new("TextButton")
+    local SaturationGradient = Instance.new("UIGradient")
+    local SaturationDrag = Instance.new("Frame")
+    local Value = Instance.new("TextButton")
+    local ValueGradient = Instance.new("UIGradient")
+    local ValueDrag = Instance.new("Frame")
+    local Preview = Instance.new("Frame")
 
-					ColorPicker.Name = "ColorPicker"
-					ColorPicker.Parent = Sector
-					ColorPicker.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
-					ColorPicker.BorderColor3 = Color3.fromRGB(35, 35, 35)
-					ColorPicker.BorderSizePixel = 2
-					ColorPicker.Size = UDim2.new(0, 150, 0, 140)
-					ColorPicker.Visible = false
-					ColorPicker.ZIndex = 200
+    ColorPicker.Name = "ColorPicker"
+    ColorPicker.Parent = Sector
+    ColorPicker.BackgroundColor3 = Color3.fromRGB(20, 20, 20)
+    ColorPicker.BorderColor3 = Color3.fromRGB(35, 35, 35)
+    ColorPicker.BorderSizePixel = 2
+    ColorPicker.Size = UDim2.new(0, 180, 0, 100)
+    ColorPicker.Visible = false
+    ColorPicker.ZIndex = 200
 
-					Saturation.Name = "Saturation"
-					Saturation.Parent = ColorPicker
-					Saturation.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-					Saturation.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					Saturation.BorderSizePixel = 0
-					Saturation.Position = UDim2.new(0.05, 0, 0.05, 0)
-					Saturation.Size = UDim2.new(0, 100, 0, 80)
-					Saturation.Font = Enum.Font.SourceSans
-					Saturation.Text = ""
-					Saturation.TextColor3 = Color3.fromRGB(0, 0, 0)
-					Saturation.TextSize = 14.000
-					Saturation.AutoButtonColor = false
-					Saturation.ZIndex = 201
+    -- Hue Slider (Left)
+    Hue.Name = "Hue"
+    Hue.Parent = ColorPicker
+    Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Hue.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Hue.BorderSizePixel = 0
+    Hue.Position = UDim2.new(0.05, 0, 0.1, 0)
+    Hue.Size = UDim2.new(0, 20, 0, 80)
+    Hue.Font = Enum.Font.SourceSans
+    Hue.Text = ""
+    Hue.TextColor3 = Color3.fromRGB(0, 0, 0)
+    Hue.TextSize = 14.000
+    Hue.AutoButtonColor = false
+    Hue.ZIndex = 201
 
-					-- Fixed: Only white to color gradient (vertical)
-					WhiteToColorGradient.Color = ColorSequence.new{
-						ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
-						ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, 1, 1))
-					}
-					WhiteToColorGradient.Rotation = 90
-					WhiteToColorGradient.Parent = Saturation
+    HueGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 0, 0)),
+        ColorSequenceKeypoint.new(0.17, Color3.fromRGB(255, 255, 0)),
+        ColorSequenceKeypoint.new(0.33, Color3.fromRGB(0, 255, 0)),
+        ColorSequenceKeypoint.new(0.5, Color3.fromRGB(0, 255, 255)),
+        ColorSequenceKeypoint.new(0.67, Color3.fromRGB(0, 0, 255)),
+        ColorSequenceKeypoint.new(0.83, Color3.fromRGB(255, 0, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromRGB(255, 0, 0))
+    }
+    HueGradient.Rotation = 90
+    HueGradient.Parent = Hue
 
-					SaturationDrag.Name = "SaturationDrag"
-					SaturationDrag.Parent = Saturation
-					SaturationDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-					SaturationDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					SaturationDrag.BorderSizePixel = 1
-					SaturationDrag.Size = UDim2.new(0, 3, 0, 3)
-					SaturationDrag.ZIndex = 202
+    HueDrag.Name = "HueDrag"
+    HueDrag.Parent = Hue
+    HueDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    HueDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    HueDrag.BorderSizePixel = 1
+    HueDrag.Size = UDim2.new(1, 0, 0, 2)
+    HueDrag.ZIndex = 202
 
-					Hue.Name = "Hue"
-					Hue.Parent = ColorPicker
-					Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-					Hue.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					Hue.BorderSizePixel = 0
-					Hue.Position = UDim2.new(0.75, 0, 0.05, 0)
-					Hue.Size = UDim2.new(0, 15, 0, 80)
-					Hue.Image = "rbxassetid://129669031573073"
-					Hue.AutoButtonColor = false
-					Hue.ZIndex = 201
+    -- Saturation Slider (Middle)
+    Saturation.Name = "Saturation"
+    Saturation.Parent = ColorPicker
+    Saturation.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Saturation.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Saturation.BorderSizePixel = 0
+    Saturation.Position = UDim2.new(0.25, 0, 0.1, 0)
+    Saturation.Size = UDim2.new(0, 20, 0, 80)
+    Saturation.Font = Enum.Font.SourceSans
+    Saturation.Text = ""
+    Saturation.TextColor3 = Color3.fromRGB(0, 0, 0)
+    Saturation.TextSize = 14.000
+    Saturation.AutoButtonColor = false
+    Saturation.ZIndex = 201
 
-					HueSelection.Name = "HueSelection"
-					HueSelection.Parent = Hue
-					HueSelection.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-					HueSelection.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					HueSelection.BorderSizePixel = 1
-					HueSelection.Size = UDim2.new(1, 0, 0, 2)
-					HueSelection.ZIndex = 202
+    SaturationGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+        ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, 1, 1))
+    }
+    SaturationGradient.Rotation = 90
+    SaturationGradient.Parent = Saturation
 
-					-- Added: Darkness slider at the bottom
-					Darkness.Name = "Darkness"
-					Darkness.Parent = ColorPicker
-					Darkness.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-					Darkness.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					Darkness.BorderSizePixel = 0
-					Darkness.Position = UDim2.new(0.05, 0, 0.75, 0)
-					Darkness.Size = UDim2.new(0, 115, 0, 15)
-					Darkness.Font = Enum.Font.SourceSans
-					Darkness.Text = ""
-					Darkness.TextColor3 = Color3.fromRGB(0, 0, 0)
-					Darkness.TextSize = 14.000
-					Darkness.AutoButtonColor = false
-					Darkness.ZIndex = 201
+    SaturationDrag.Name = "SaturationDrag"
+    SaturationDrag.Parent = Saturation
+    SaturationDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    SaturationDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    SaturationDrag.BorderSizePixel = 1
+    SaturationDrag.Size = UDim2.new(1, 0, 0, 2)
+    SaturationDrag.ZIndex = 202
 
-					DarknessGradient.Color = ColorSequence.new{
-						ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
-						ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, sat_value, val_value))
-					}
-					DarknessGradient.Rotation = 0
-					DarknessGradient.Parent = Darkness
+    -- Value Slider (Right)
+    Value.Name = "Value"
+    Value.Parent = ColorPicker
+    Value.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    Value.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    Value.BorderSizePixel = 0
+    Value.Position = UDim2.new(0.45, 0, 0.1, 0)
+    Value.Size = UDim2.new(0, 20, 0, 80)
+    Value.Font = Enum.Font.SourceSans
+    Value.Text = ""
+    Value.TextColor3 = Color3.fromRGB(0, 0, 0)
+    Value.TextSize = 14.000
+    Value.AutoButtonColor = false
+    Value.ZIndex = 201
 
-					DarknessDrag.Name = "DarknessDrag"
-					DarknessDrag.Parent = Darkness
-					DarknessDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-					DarknessDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
-					DarknessDrag.BorderSizePixel = 1
-					DarknessDrag.Size = UDim2.new(0, 3, 0, 15)
-					DarknessDrag.ZIndex = 202
+    ValueGradient.Color = ColorSequence.new{
+        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
+        ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, sat_value, 1))
+    }
+    ValueGradient.Rotation = 90
+    ValueGradient.Parent = Value
 
-					Colorpicker.MouseButton1Down:Connect(function()
-						for _, element in pairs(Sector:GetChildren()) do
-							if element.Name == "ColorPicker" and element ~= ColorPicker then
-								element.Visible = false
-							end
-						end
+    ValueDrag.Name = "ValueDrag"
+    ValueDrag.Parent = Value
+    ValueDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+    ValueDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
+    ValueDrag.BorderSizePixel = 1
+    ValueDrag.Size = UDim2.new(1, 0, 0, 2)
+    ValueDrag.ZIndex = 202
 
-						local abs_pos = Colorpicker.AbsolutePosition
-						ColorPicker.Position = UDim2.new(0, abs_pos.X - Sector.AbsolutePosition.X - 150, 0, abs_pos.Y - Sector.AbsolutePosition.Y + Colorpicker.Size.Y.Offset + 5)
-						ColorPicker.Visible = not ColorPicker.Visible
-					end)
+    -- Color Preview
+    Preview.Name = "Preview"
+    Preview.Parent = ColorPicker
+    Preview.BackgroundColor3 = _default
+    Preview.BorderColor3 = Color3.fromRGB(40, 40, 40)
+    Preview.BorderSizePixel = 1
+    Preview.Position = UDim2.new(0.7, 0, 0.1, 0)
+    Preview.Size = UDim2.new(0, 40, 0, 40)
+    Preview.ZIndex = 201
 
-					local function update_color_picker()
-						-- Update saturation square gradient
-						WhiteToColorGradient.Color = ColorSequence.new{
-							ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
-							ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, 1, 1))
-						}
-						
-						-- Update darkness gradient
-						local current_color = Color3.fromHSV(hue_value, sat_value, val_value)
-						DarknessGradient.Color = ColorSequence.new{
-							ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
-							ColorSequenceKeypoint.new(1, current_color)
-						}
-						
-						-- Update selection positions
-						SaturationDrag.Position = UDim2.new(sat_value, -1.5, 1 - val_value, -1.5)
-						HueSelection.Position = UDim2.new(0, 0, 1 - hue_value, -1)
-						DarknessDrag.Position = UDim2.new(val_value, -1.5, 0, 0)
-						
-						-- Calculate final color with darkness applied
-						local final_color = Color3.fromHSV(hue_value, sat_value, val_value)
-						Colorpicker.BackgroundColor3 = final_color
-						cpcallback(final_color)
-					end
+    Colorpicker.MouseButton1Down:Connect(function()
+        for _, element in pairs(Sector:GetChildren()) do
+            if element.Name == "ColorPicker" and element ~= ColorPicker then
+                element.Visible = false
+            end
+        end
 
-					colorpicker.set = function(hue, sat, val)
-						hue_value = hue
-						sat_value = sat
-						val_value = val
-						update_color_picker()
-					end
+        local abs_pos = Colorpicker.AbsolutePosition
+        ColorPicker.Position = UDim2.new(0, abs_pos.X - Sector.AbsolutePosition.X - 180, 0, abs_pos.Y - Sector.AbsolutePosition.Y + Colorpicker.Size.Y.Offset + 5)
+        ColorPicker.Visible = not ColorPicker.Visible
+    end)
 
-					Saturation.InputBegan:Connect(function(input)
-						if input.UserInputType == Enum.UserInputType.MouseButton1 then
-							choosing_saturation = true
-						end
-					end)
+    local function update_color_picker()
+        -- Update saturation gradient
+        SaturationGradient.Color = ColorSequence.new{
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+            ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, 1, 1))
+        }
+        
+        -- Update value gradient
+        ValueGradient.Color = ColorSequence.new{
+            ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
+            ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, sat_value, 1))
+        }
+        
+        -- Update selection positions
+        HueDrag.Position = UDim2.new(0, 0, hue_value, -1)
+        SaturationDrag.Position = UDim2.new(0, 0, 1 - sat_value, -1)
+        ValueDrag.Position = UDim2.new(0, 0, 1 - val_value, -1)
+        
+        -- Calculate final color
+        local final_color = Color3.fromHSV(hue_value, sat_value, val_value)
+        Colorpicker.BackgroundColor3 = final_color
+        Preview.BackgroundColor3 = final_color
+        cpcallback(final_color)
+    end
 
-					Saturation.InputEnded:Connect(function(input)
-						if input.UserInputType == Enum.UserInputType.MouseButton1 then
-							choosing_saturation = false
-						end
-					end)
+    colorpicker.set = function(hue, sat, val)
+        hue_value = hue
+        sat_value = sat
+        val_value = val
+        update_color_picker()
+    end
 
-					Hue.InputBegan:Connect(function(input)
-						if input.UserInputType == Enum.UserInputType.MouseButton1 then
-							choosing_hue = true
-						end
-					end)
+    -- Hue slider interaction
+    Hue.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            choosing_hue = true
+            
+            local mouse_pos = services.uis:GetMouseLocation()
+            local abs_pos = Hue.AbsolutePosition
+            local abs_size = Hue.AbsoluteSize
 
-					Hue.InputEnded:Connect(function(input)
-						if input.UserInputType == Enum.UserInputType.MouseButton1 then
-							choosing_hue = false
-						end
-					end)
+            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+            colorpicker.set(y, sat_value, val_value)
+        end
+    end)
 
-					Darkness.InputBegan:Connect(function(input)
-						if input.UserInputType == Enum.UserInputType.MouseButton1 then
-							-- Update value when clicking darkness slider
-							local mouse_pos = services.uis:GetMouseLocation()
-							local abs_pos = Darkness.AbsolutePosition
-							local abs_size = Darkness.AbsoluteSize
+    Hue.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            choosing_hue = false
+        end
+    end)
 
-							local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
-							val_value = x
-							update_color_picker()
-						end
-					end)
+    -- Saturation slider interaction
+    Saturation.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            choosing_saturation = true
+            
+            local mouse_pos = services.uis:GetMouseLocation()
+            local abs_pos = Saturation.AbsolutePosition
+            local abs_size = Saturation.AbsoluteSize
 
-					Darkness.InputEnded:Connect(function(input)
-						if input.UserInputType == Enum.UserInputType.MouseButton1 then
-							-- No need for choosing_darkness flag since we update immediately on click
-						end
-					end)
+            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+            colorpicker.set(hue_value, 1 - y, val_value)
+        end
+    end)
 
-					services.run.RenderStepped:Connect(function()
-						if choosing_saturation then
-							local mouse_pos = services.uis:GetMouseLocation()
-							local abs_pos = Saturation.AbsolutePosition
-							local abs_size = Saturation.AbsoluteSize
+    Saturation.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            choosing_saturation = false
+        end
+    end)
 
-							local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
-							local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+    -- Value slider interaction
+    Value.InputBegan:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            choosing_value = true
+            
+            local mouse_pos = services.uis:GetMouseLocation()
+            local abs_pos = Value.AbsolutePosition
+            local abs_size = Value.AbsoluteSize
 
-							colorpicker.set(hue_value, x, 1 - y)
-						end
+            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+            colorpicker.set(hue_value, sat_value, 1 - y)
+        end
+    end)
 
-						if choosing_hue then
-							local mouse_pos = services.uis:GetMouseLocation()
-							local abs_pos = Hue.AbsolutePosition
-							local abs_size = Hue.AbsoluteSize
+    Value.InputEnded:Connect(function(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 then
+            choosing_value = false
+        end
+    end)
 
-							local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+    -- Real-time dragging
+    services.run.RenderStepped:Connect(function()
+        if choosing_hue then
+            local mouse_pos = services.uis:GetMouseLocation()
+            local abs_pos = Hue.AbsolutePosition
+            local abs_size = Hue.AbsoluteSize
 
-							colorpicker.set(1 - y, sat_value, val_value)
-						end
-					end)
+            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+            colorpicker.set(y, sat_value, val_value)
+        end
 
-					colorpicker.set(hue_value, sat_value, val_value)
+        if choosing_saturation then
+            local mouse_pos = services.uis:GetMouseLocation()
+            local abs_pos = Saturation.AbsolutePosition
+            local abs_size = Saturation.AbsoluteSize
 
-					return colorpicker
-				end
+            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+            colorpicker.set(hue_value, 1 - y, val_value)
+        end
+
+        if choosing_value then
+            local mouse_pos = services.uis:GetMouseLocation()
+            local abs_pos = Value.AbsolutePosition
+            local abs_size = Value.AbsoluteSize
+
+            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+            colorpicker.set(hue_value, sat_value, 1 - y)
+        end
+    end)
+
+    colorpicker.set(hue_value, sat_value, val_value)
+
+    return colorpicker
+end
 				
 				toggle.get = function()
 					return Text.Text
