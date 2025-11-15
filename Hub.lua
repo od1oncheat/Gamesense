@@ -284,7 +284,7 @@ lib.create_window = function(theme, menu_key)
 			Title.BackgroundTransparency = 1.000
 			Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			Title.BorderSizePixel = 0
-			Title.Position = UDim2.new(0.028933093, 0, 0.01, 0) -- Fixed: changed from -0.012 to 0.01
+			Title.Position = UDim2.new(0.028933093, 0, 0.01, 0)
 			Title.Size = UDim2.new(0, 268, 0, 15)
 			Title.Font = Enum.Font.SourceSans
 			Title.TextColor3 = themes[theme]["Text"]
@@ -301,8 +301,8 @@ lib.create_window = function(theme, menu_key)
 			SectorContent.BackgroundTransparency = 1.000
 			SectorContent.BorderColor3 = Color3.fromRGB(0, 0, 0)
 			SectorContent.BorderSizePixel = 0
-			SectorContent.Position = UDim2.new(0.028933093, 0, 0.04, 0) -- Adjusted to make space for title
-			SectorContent.Size = UDim2.new(0, 259, 0, 550) -- Reduced height to fit title
+			SectorContent.Position = UDim2.new(0.028933093, 0, 0.04, 0)
+			SectorContent.Size = UDim2.new(0, 259, 0, 550)
 			SectorContent.CanvasSize = UDim2.new(0, 0, 0, 0)
 			SectorContent.ScrollBarThickness = 3
 			SectorContent.ClipsDescendants = true
@@ -566,179 +566,180 @@ lib.create_window = function(theme, menu_key)
 			end
 			
 			sector.dropdown = function(text, options, default, callback)
-    local dropdown = {}
-    dropdown.selected = default
+				local dropdown = {}
+				dropdown.selected = default
 
-    local Dropdown = Instance.new("TextButton")
-    local UIPadding = Instance.new("UIPadding")
-    local Image = Instance.new("ImageLabel")
-    local DropdownContent = Instance.new("ScrollingFrame")
-    local UIPadding_2 = Instance.new("UIPadding")
-    local UIListLayout = Instance.new("UIListLayout")
+				local Dropdown = Instance.new("TextButton")
+				local UIPadding = Instance.new("UIPadding")
+				local Image = Instance.new("ImageLabel")
+				local DropdownContent = Instance.new("ScrollingFrame")
+				local UIPadding_2 = Instance.new("UIPadding")
+				local UIListLayout = Instance.new("UIListLayout")
 
-    Dropdown.Name = "Dropdown"
-    Dropdown.Parent = SectorContent
-    Dropdown.BackgroundColor3 = themes[theme]["ElementBg"]
-    Dropdown.BorderColor3 = themes[theme]["ElementOutline"]
-    Dropdown.Position = UDim2.new(0.0157480314, 0, 0.254480273, 0)
-    Dropdown.Size = UDim2.new(0, 249, 0, 21)
-    Dropdown.AutoButtonColor = false
-    Dropdown.Font = Enum.Font.SourceSans
-    Dropdown.Text = text
-    Dropdown.TextColor3 = themes[theme]["Text"]
-    Dropdown.TextSize = 14.000
-    Dropdown.TextXAlignment = Enum.TextXAlignment.Left
-    Dropdown.ZIndex = 100
+				Dropdown.Name = "Dropdown"
+				Dropdown.Parent = SectorContent
+				Dropdown.BackgroundColor3 = themes[theme]["ElementBg"]
+				Dropdown.BorderColor3 = themes[theme]["ElementOutline"]
+				Dropdown.Position = UDim2.new(0.0157480314, 0, 0.254480273, 0)
+				Dropdown.Size = UDim2.new(0, 249, 0, 21)
+				Dropdown.AutoButtonColor = false
+				Dropdown.Font = Enum.Font.SourceSans
+				Dropdown.Text = text
+				Dropdown.TextColor3 = themes[theme]["Text"]
+				Dropdown.TextSize = 14.000
+				Dropdown.TextXAlignment = Enum.TextXAlignment.Left
+				Dropdown.ZIndex = 100
 
-    UIPadding.Parent = Dropdown
-    UIPadding.PaddingLeft = UDim.new(0, 5)
+				UIPadding.Parent = Dropdown
+				UIPadding.PaddingLeft = UDim.new(0, 5)
+				UIPadding.PaddingRight = UDim.new(0, 20)
 
-    Image.Name = "Image"
-    Image.Parent = Dropdown
-    Image.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-    Image.BackgroundTransparency = 1.000
-    Image.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    Image.BorderSizePixel = 0
-    Image.Position = UDim2.new(0.9, 0, 0.142857149, 0)
-    Image.Size = UDim2.new(0, 15, 0, 15)
-    Image.Image = "rbxassetid://74187648454886"
-    Image.ImageColor3 = Color3.fromRGB(115, 115, 115)
-    Image.ZIndex = 101
+				Image.Name = "Image"
+				Image.Parent = Dropdown
+				Image.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+				Image.BackgroundTransparency = 1.000
+				Image.BorderColor3 = Color3.fromRGB(0, 0, 0)
+				Image.BorderSizePixel = 0
+				Image.Position = UDim2.new(0.9, 0, 0.142857149, 0)
+				Image.Size = UDim2.new(0, 15, 0, 15)
+				Image.Image = "rbxassetid://74187648454886"
+				Image.ImageColor3 = Color3.fromRGB(115, 115, 115)
+				Image.ZIndex = 101
 
-    DropdownContent.Name = "DropdownContent"
-    DropdownContent.Parent = Dropdown
-    DropdownContent.Active = true
-    DropdownContent.BackgroundColor3 = themes[theme]["ElementBg"]
-    DropdownContent.BorderColor3 = themes[theme]["ElementOutline"]
-    DropdownContent.Position = UDim2.new(0, 0, 1, 2) -- Исправлено: теперь открывается ровно
-    DropdownContent.Size = UDim2.new(0, 249, 0, 0)
-    DropdownContent.CanvasSize = UDim2.new(0, 0, 0, 0)
-    DropdownContent.ScrollBarThickness = 3
-    DropdownContent.ScrollBarImageColor3 = Color3.fromRGB(50, 50, 50)
-    DropdownContent.Visible = false
-    DropdownContent.ZIndex = 102
-    DropdownContent.ClipsDescendants = true
+				DropdownContent.Name = "DropdownContent"
+				DropdownContent.Parent = Dropdown
+				DropdownContent.Active = true
+				DropdownContent.BackgroundColor3 = themes[theme]["ElementBg"]
+				DropdownContent.BorderColor3 = themes[theme]["ElementOutline"]
+				DropdownContent.Position = UDim2.new(0, 0, 1, 2) -- Fixed: properly aligned to left
+				DropdownContent.Size = UDim2.new(0, 249, 0, 0)
+				DropdownContent.CanvasSize = UDim2.new(0, 0, 0, 0)
+				DropdownContent.ScrollBarThickness = 3
+				DropdownContent.ScrollBarImageColor3 = Color3.fromRGB(50, 50, 50)
+				DropdownContent.Visible = false
+				DropdownContent.ZIndex = 102
+				DropdownContent.ClipsDescendants = true
 
-    UIPadding_2.Parent = DropdownContent
-    UIPadding_2.PaddingLeft = UDim.new(0, 5)
-    UIPadding_2.PaddingTop = UDim.new(0, 5)
+				UIPadding_2.Parent = DropdownContent
+				UIPadding_2.PaddingLeft = UDim.new(0, 5)
+				UIPadding_2.PaddingTop = UDim.new(0, 5)
 
-    UIListLayout.Parent = DropdownContent
-    UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
-    UIListLayout.Padding = UDim.new(0, 5)
+				UIListLayout.Parent = DropdownContent
+				UIListLayout.SortOrder = Enum.SortOrder.LayoutOrder
+				UIListLayout.Padding = UDim.new(0, 5)
 
-    local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-    
-    Dropdown.MouseEnter:Connect(function()
-        services.tween:Create(Dropdown, tweenInfo, {BackgroundColor3 = themes[theme]["ButtonHover"]}):Play()
-    end)
-    
-    Dropdown.MouseLeave:Connect(function()
-        if not DropdownContent.Visible then
-            services.tween:Create(Dropdown, tweenInfo, {BackgroundColor3 = themes[theme]["ElementBg"]}):Play()
-        end
-    end)
+				local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+				
+				Dropdown.MouseEnter:Connect(function()
+					services.tween:Create(Dropdown, tweenInfo, {BackgroundColor3 = themes[theme]["ButtonHover"]}):Play()
+				end)
+				
+				Dropdown.MouseLeave:Connect(function()
+					if not DropdownContent.Visible then
+						services.tween:Create(Dropdown, tweenInfo, {BackgroundColor3 = themes[theme]["ElementBg"]}):Play()
+					end
+				end)
 
-    local isOpen = false
-    local function toggleDropdown()
-        isOpen = not isOpen
-        
-        if isOpen then
-            DropdownContent.Visible = true
-            services.tween:Create(Image, tweenInfo, {Rotation = 180}):Play()
-            services.tween:Create(DropdownContent, tweenInfo, {Size = UDim2.new(0, 249, 0, 116)}):Play()
-        else
-            services.tween:Create(Image, tweenInfo, {Rotation = 0}):Play()
-            services.tween:Create(DropdownContent, tweenInfo, {Size = UDim2.new(0, 249, 0, 0)}):Play()
-            wait(0.2)
-            DropdownContent.Visible = false
-        end
-    end
-    
-    Dropdown.MouseButton1Down:Connect(toggleDropdown)
+				local isOpen = false
+				local function toggleDropdown()
+					isOpen = not isOpen
+					
+					if isOpen then
+						DropdownContent.Visible = true
+						services.tween:Create(Image, tweenInfo, {Rotation = 180}):Play()
+						services.tween:Create(DropdownContent, tweenInfo, {Size = UDim2.new(0, 249, 0, 116)}):Play()
+					else
+						services.tween:Create(Image, tweenInfo, {Rotation = 0}):Play()
+						services.tween:Create(DropdownContent, tweenInfo, {Size = UDim2.new(0, 249, 0, 0)}):Play()
+						wait(0.2)
+						DropdownContent.Visible = false
+					end
+				end
+				
+				Dropdown.MouseButton1Down:Connect(toggleDropdown)
 
-    dropdown.unselect_all = function()
-        for _, button in pairs(DropdownContent:GetChildren()) do
-            if button:IsA("TextButton") then
-                button.BorderColor3 = themes[theme]["ElementOutline"]
-            end
-        end
-    end
+				dropdown.unselect_all = function()
+					for _, button in pairs(DropdownContent:GetChildren()) do
+						if button:IsA("TextButton") then
+							button.BorderColor3 = themes[theme]["ElementOutline"]
+						end
+					end
+				end
 
-    dropdown.set = function(name)
-        dropdown.unselect_all()
-        dropdown.selected = name
-        local selectedButton = DropdownContent:FindFirstChild(name)
-        if selectedButton then
-            selectedButton.BorderColor3 = themes[theme]["DropdownSelected"]
-        end
-        callback(name)
-    end
-    
-    dropdown.set_text = function(_text)
-        Dropdown.Text = _text
-    end
-    
-    dropdown.get = function()
-        return dropdown.selected
-    end
-    
-    dropdown.add = function(name)
-        local Button = Instance.new("TextButton")
-        Button.Name = name
-        Button.Parent = DropdownContent
-        Button.BackgroundColor3 = themes[theme]["ElementBg"]
-        Button.BorderColor3 = themes[theme]["ElementOutline"]
-        Button.Size = UDim2.new(0, 238, 0, 21)
-        Button.Font = Enum.Font.SourceSans
-        Button.TextColor3 = themes[theme]["Text"]
-        Button.TextSize = 14.000
-        Button.Text = name
-        Button.AutoButtonColor = false
-        Button.ZIndex = 103
+				dropdown.set = function(name)
+					dropdown.unselect_all()
+					dropdown.selected = name
+					local selectedButton = DropdownContent:FindFirstChild(name)
+					if selectedButton then
+						selectedButton.BorderColor3 = themes[theme]["DropdownSelected"]
+					end
+					callback(name)
+				end
+				
+				dropdown.set_text = function(_text)
+					Dropdown.Text = _text
+				end
+				
+				dropdown.get = function()
+					return dropdown.selected
+				end
+				
+				dropdown.add = function(name)
+					local Button = Instance.new("TextButton")
+					Button.Name = name
+					Button.Parent = DropdownContent
+					Button.BackgroundColor3 = themes[theme]["ElementBg"]
+					Button.BorderColor3 = themes[theme]["ElementOutline"]
+					Button.Size = UDim2.new(0, 238, 0, 21)
+					Button.Font = Enum.Font.SourceSans
+					Button.TextColor3 = themes[theme]["Text"]
+					Button.TextSize = 14.000
+					Button.Text = name
+					Button.AutoButtonColor = false
+					Button.ZIndex = 103
 
-        local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-        
-        Button.MouseEnter:Connect(function()
-            services.tween:Create(Button, tweenInfo, {BackgroundColor3 = themes[theme]["ButtonHover"]}):Play()
-        end)
-        
-        Button.MouseLeave:Connect(function()
-            if Button.BorderColor3 ~= themes[theme]["DropdownSelected"] then
-                services.tween:Create(Button, tweenInfo, {BackgroundColor3 = themes[theme]["ElementBg"]}):Play()
-            end
-        end)
+					local tweenInfo = TweenInfo.new(0.2, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+					
+					Button.MouseEnter:Connect(function()
+						services.tween:Create(Button, tweenInfo, {BackgroundColor3 = themes[theme]["ButtonHover"]}):Play()
+					end)
+					
+					Button.MouseLeave:Connect(function()
+						if Button.BorderColor3 ~= themes[theme]["DropdownSelected"] then
+							services.tween:Create(Button, tweenInfo, {BackgroundColor3 = themes[theme]["ElementBg"]}):Play()
+						end
+					end)
 
-        Button.MouseButton1Down:Connect(function()
-            dropdown.set(name)
-            toggleDropdown()
-        end)
+					Button.MouseButton1Down:Connect(function()
+						dropdown.set(name)
+						toggleDropdown()
+					end)
 
-        if name == default then
-            dropdown.set(name)
-        end
+					if name == default then
+						dropdown.set(name)
+					end
 
-        DropdownContent.CanvasSize += UDim2.new(0, 0, 0, Button.AbsoluteSize.Y + 6)
-    end
+					DropdownContent.CanvasSize += UDim2.new(0, 0, 0, Button.AbsoluteSize.Y + 6)
+				end
 
-    dropdown.remove = function(name)
-        DropdownContent.CanvasSize -= UDim2.new(0, 0, 0, DropdownContent:FindFirstChild(name).AbsoluteSize.Y + 6)
-        DropdownContent:FindFirstChild(name):Destroy()
-        dropdown.selected = ""
-    end
-    
-    dropdown.delete = function()
-        Dropdown:Destroy()
-    end
+				dropdown.remove = function(name)
+					DropdownContent.CanvasSize -= UDim2.new(0, 0, 0, DropdownContent:FindFirstChild(name).AbsoluteSize.Y + 6)
+					DropdownContent:FindFirstChild(name):Destroy()
+					dropdown.selected = ""
+				end
+				
+				dropdown.delete = function()
+					Dropdown:Destroy()
+				end
 
-    for idx, option in pairs(options) do
-        dropdown.add(option)
-    end
+				for idx, option in pairs(options) do
+					dropdown.add(option)
+				end
 
-    sector.increase_scrollbar_size()
+				sector.increase_scrollbar_size()
 
-    return dropdown
-end
+				return dropdown
+			end
 			
 			sector.toggle = function(text,default,callback)
 				local toggle = {}
@@ -810,284 +811,269 @@ end
 				end
 				
 				toggle.add_color = function(_default, cpcallback)
-				    local colorpicker = {}
-				
-				    local choosing_hue = false
-				    local choosing_saturation = false
-				    local choosing_darkness = false
-				
-				    local Colorpicker = Instance.new("TextButton")
-				
-				    Colorpicker.Name = "Colorpicker"
-				    Colorpicker.Parent = Toggle
-				    Colorpicker.BackgroundColor3 = _default
-				    Colorpicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
-				    Colorpicker.Position = UDim2.new(0.85, 0, 0.325, 0)
-				    Colorpicker.Size = UDim2.new(0, 22, 0, 11)
-				    Colorpicker.AutoButtonColor = false
-				    Colorpicker.Font = Enum.Font.SourceSans
-				    Colorpicker.Text = ""
-				    Colorpicker.TextColor3 = Color3.fromRGB(0, 0, 0)
-				    Colorpicker.TextSize = 14.000
-				
-				    local default_hue, default_saturation, default_value = _default:ToHSV()
-				    local hue_value = default_hue
-				    local sat_value = default_saturation
-				    local val_value = default_value
-				    local darkness_value = 1.0
-				
-				    local ColorPicker = Instance.new("Frame")
-				    local Saturation = Instance.new("TextButton")
-				    local WhiteToColorGradient = Instance.new("UIGradient")
-				    local SaturationDrag = Instance.new("Frame")
-				    local Hue = Instance.new("ImageButton")
-				    local HueSelection = Instance.new("Frame")
-				    local Darkness = Instance.new("TextButton")
-				    local DarknessGradient = Instance.new("UIGradient")
-				    local DarknessDrag = Instance.new("Frame")
-				
-				    ColorPicker.Name = "ColorPicker"
-				    ColorPicker.Parent = Sector
-				    ColorPicker.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
-				    ColorPicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
-				    ColorPicker.BorderSizePixel = 2
-				    ColorPicker.Size = UDim2.new(0, 150, 0, 140)
-				    ColorPicker.Visible = false
-				    ColorPicker.ZIndex = 200
-				
-				    Saturation.Name = "Saturation"
-				    Saturation.Parent = ColorPicker
-				    Saturation.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				    Saturation.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				    Saturation.BorderSizePixel = 0
-				    Saturation.Position = UDim2.new(0.05, 0, 0.05, 0)
-				    Saturation.Size = UDim2.new(0, 100, 0, 80)
-				    Saturation.Font = Enum.Font.SourceSans
-				    Saturation.Text = ""
-				    Saturation.TextColor3 = Color3.fromRGB(0, 0, 0)
-				    Saturation.TextSize = 14.000
-				    Saturation.AutoButtonColor = false
-				    Saturation.ZIndex = 201
-				
-				    -- Градиент: белый сверху, цвет снизу
-				    WhiteToColorGradient.Color = ColorSequence.new{
-				        ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
-				        ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, 1, 1))
-				    }
-				    WhiteToColorGradient.Rotation = 90
-				    WhiteToColorGradient.Parent = Saturation
-				
-				    SaturationDrag.Name = "SaturationDrag"
-				    SaturationDrag.Parent = Saturation
-				    SaturationDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				    SaturationDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				    SaturationDrag.BorderSizePixel = 1
-				    SaturationDrag.Size = UDim2.new(0, 3, 0, 3)
-				    SaturationDrag.ZIndex = 202
-				
-				    Hue.Name = "Hue"
-				    Hue.Parent = ColorPicker
-				    Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				    Hue.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				    Hue.BorderSizePixel = 0
-				    Hue.Position = UDim2.new(0.75, 0, 0.05, 0)
-				    Hue.Size = UDim2.new(0, 15, 0, 80)
-				    Hue.Image = "rbxassetid://129669031573073"
-				    Hue.AutoButtonColor = false
-				    Hue.ZIndex = 201
-				
-				    HueSelection.Name = "HueSelection"
-				    HueSelection.Parent = Hue
-				    HueSelection.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				    HueSelection.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				    HueSelection.BorderSizePixel = 1
-				    HueSelection.Size = UDim2.new(1, 0, 0, 2)
-				    HueSelection.ZIndex = 202
-				
-				    -- Шкала темноты
-				    Darkness.Name = "Darkness"
-				    Darkness.Parent = ColorPicker
-				    Darkness.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				    Darkness.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				    Darkness.BorderSizePixel = 0
-				    Darkness.Position = UDim2.new(0.05, 0, 0.7, 0)
-				    Darkness.Size = UDim2.new(0, 115, 0, 15)
-				    Darkness.Font = Enum.Font.SourceSans
-				    Darkness.Text = ""
-				    Darkness.TextColor3 = Color3.fromRGB(0, 0, 0)
-				    Darkness.TextSize = 14.000
-				    Darkness.AutoButtonColor = false
-				    Darkness.ZIndex = 201
-				
-				    -- Градиент темноты: черный слева, цвет справа
-				    DarknessGradient.Color = ColorSequence.new{
-				        ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
-				        ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, sat_value, val_value))
-				    }
-				    DarknessGradient.Rotation = 0
-				    DarknessGradient.Parent = Darkness
-				
-				    DarknessDrag.Name = "DarknessDrag"
-				    DarknessDrag.Parent = Darkness
-				    DarknessDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-				    DarknessDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
-				    DarknessDrag.BorderSizePixel = 1
-				    DarknessDrag.Size = UDim2.new(0, 3, 0, 15)
-				    DarknessDrag.ZIndex = 202
-				
-				    Colorpicker.MouseButton1Down:Connect(function()
-				        for _, element in pairs(Sector:GetChildren()) do
-				            if element.Name == "ColorPicker" and element ~= ColorPicker then
-				                element.Visible = false
-				            end
-				        end
-				
-				        local abs_pos = Colorpicker.AbsolutePosition
-				        ColorPicker.Position = UDim2.new(0, abs_pos.X - Sector.AbsolutePosition.X - 150, 0, abs_pos.Y - Sector.AbsolutePosition.Y + Colorpicker.Size.Y.Offset + 5)
-				        ColorPicker.Visible = not ColorPicker.Visible
-				    end)
-				
-				    local function update_color_picker()
-				        -- Обновляем градиент цвета в квадрате
-				        WhiteToColorGradient.Color = ColorSequence.new{
-				            ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
-				            ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, 1, 1))
-				        }
-				        
-				        -- Обновляем градиент темноты
-				        local base_color = Color3.fromHSV(hue_value, sat_value, val_value)
-				        DarknessGradient.Color = ColorSequence.new{
-				            ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
-				            ColorSequenceKeypoint.new(1, base_color)
-				        }
-				        
-				        -- Обновляем позиции бегунков
-				        SaturationDrag.Position = UDim2.new(sat_value, -1.5, 1 - val_value, -1.5)
-				        HueSelection.Position = UDim2.new(0, 0, hue_value, -1)
-				        DarknessDrag.Position = UDim2.new(darkness_value, -1.5, 0, 0)
-				        
-				        -- Рассчитываем финальный цвет с учетом темноты
-				        local final_color = Color3.new(
-				            base_color.R * darkness_value,
-				            base_color.G * darkness_value,
-				            base_color.B * darkness_value
-				        )
-				        
-				        Colorpicker.BackgroundColor3 = final_color
-				        cpcallback(final_color)
-				    end
-				
-				    colorpicker.set = function(hue, sat, val, darkness)
-				        if hue then hue_value = hue end
-				        if sat then sat_value = sat end
-				        if val then val_value = val end
-				        if darkness then darkness_value = darkness end
-				        update_color_picker()
-				    end
-				
-				    -- Обработка квадрата насыщенности/яркости
-				    Saturation.InputBegan:Connect(function(input)
-				        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-				            choosing_saturation = true
-				            
-				            local mouse_pos = services.uis:GetMouseLocation()
-				            local abs_pos = Saturation.AbsolutePosition
-				            local abs_size = Saturation.AbsoluteSize
-				
-				            local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
-				            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-				
-				            colorpicker.set(nil, x, 1 - y, nil)
-				        end
-				    end)
-				
-				    Saturation.InputEnded:Connect(function(input)
-				        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-				            choosing_saturation = false
-				        end
-				    end)
-				
-				    -- Обработка ползунка оттенка
-				    Hue.InputBegan:Connect(function(input)
-				        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-				            choosing_hue = true
-				            
-				            local mouse_pos = services.uis:GetMouseLocation()
-				            local abs_pos = Hue.AbsolutePosition
-				            local abs_size = Hue.AbsoluteSize
-				
-				            local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-				
-				            colorpicker.set(1 - y, nil, nil, nil)
-				        end
-				    end)
-				
-				    Hue.InputEnded:Connect(function(input)
-				        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-				            choosing_hue = false
-				        end
-				    end)
-				
-				    -- Обработка шкалы темноты
-				    Darkness.InputBegan:Connect(function(input)
-				        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-				            choosing_darkness = true
-				            
-				            local mouse_pos = services.uis:GetMouseLocation()
-				            local abs_pos = Darkness.AbsolutePosition
-				            local abs_size = Darkness.AbsoluteSize
-				
-				            local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
-				
-				            colorpicker.set(nil, nil, nil, x)
-				        end
-				    end)
-				
-				    Darkness.InputEnded:Connect(function(input)
-				        if input.UserInputType == Enum.UserInputType.MouseButton1 then
-				            choosing_darkness = false
-				        end
-				    end)
-				
-				    services.uis.InputChanged:Connect(function(input)
-				        if input.UserInputType == Enum.UserInputType.MouseMovement then
-				            if choosing_saturation then
-				                local mouse_pos = services.uis:GetMouseLocation()
-				                local abs_pos = Saturation.AbsolutePosition
-				                local abs_size = Saturation.AbsoluteSize
-				
-				                local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
-				                local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-				
-				                colorpicker.set(nil, x, 1 - y, nil)
-				            end
-				
-				            if choosing_hue then
-				                local mouse_pos = services.uis:GetMouseLocation()
-				                local abs_pos = Hue.AbsolutePosition
-				                local abs_size = Hue.AbsoluteSize
-				
-				                local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
-				
-				                colorpicker.set(1 - y, nil, nil, nil)
-				            end
-				
-				            if choosing_darkness then
-				                local mouse_pos = services.uis:GetMouseLocation()
-				                local abs_pos = Darkness.AbsolutePosition
-				                local abs_size = Darkness.AbsoluteSize
-				
-				                local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
-				
-				                colorpicker.set(nil, nil, nil, x)
-				            end
-				        end
-				    end)
-				
-				    colorpicker.set(hue_value, sat_value, val_value, darkness_value)
-				
-				    return colorpicker
+					local colorpicker = {}
+
+					local choosing_hue = false
+					local choosing_saturation = false
+					local choosing_darkness = false
+
+					local Colorpicker = Instance.new("TextButton")
+
+					Colorpicker.Name = "Colorpicker"
+					Colorpicker.Parent = Toggle
+					Colorpicker.BackgroundColor3 = _default
+					Colorpicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
+					Colorpicker.Position = UDim2.new(0.85, 0, 0.325, 0)
+					Colorpicker.Size = UDim2.new(0, 22, 0, 11)
+					Colorpicker.AutoButtonColor = false
+					Colorpicker.Font = Enum.Font.SourceSans
+					Colorpicker.Text = ""
+					Colorpicker.TextColor3 = Color3.fromRGB(0, 0, 0)
+					Colorpicker.TextSize = 14.000
+
+					local default_hue, default_saturation, default_value = _default:ToHSV()
+					local hue_value = default_hue
+					local sat_value = default_saturation
+					local val_value = default_value
+					local darkness_value = 1.0
+
+					local ColorPicker = Instance.new("Frame")
+					local Saturation = Instance.new("TextButton")
+					local WhiteToColorGradient = Instance.new("UIGradient")
+					local SaturationDrag = Instance.new("Frame")
+					local Hue = Instance.new("ImageButton")
+					local SaturationDrag_2 = Instance.new("Frame")
+					local Darkness = Instance.new("TextButton")
+					local DarknessGradient = Instance.new("UIGradient")
+					local DarknessDrag = Instance.new("Frame")
+
+					ColorPicker.Name = "ColorPicker"
+					ColorPicker.Parent = Sector
+					ColorPicker.BackgroundColor3 = Color3.fromRGB(27, 27, 27)
+					ColorPicker.BorderColor3 = Color3.fromRGB(40, 40, 40)
+					ColorPicker.BorderSizePixel = 2
+					ColorPicker.Size = UDim2.new(0, 150, 0, 130)
+					ColorPicker.Visible = false
+					ColorPicker.ZIndex = 200
+
+					Saturation.Name = "Saturation"
+					Saturation.Parent = ColorPicker
+					Saturation.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					Saturation.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					Saturation.BorderSizePixel = 0
+					Saturation.Position = UDim2.new(0.288, 0, 0.1, 0)
+					Saturation.Size = UDim2.new(0, 76, 0, 60)
+					Saturation.Font = Enum.Font.SourceSans
+					Saturation.Text = ""
+					Saturation.TextColor3 = Color3.fromRGB(0, 0, 0)
+					Saturation.TextSize = 14.000
+					Saturation.AutoButtonColor = false
+					Saturation.ZIndex = 201
+
+					-- Fixed: Vertical gradient - white to color
+					WhiteToColorGradient.Color = ColorSequence.new{
+						ColorSequenceKeypoint.new(0, Color3.fromRGB(255, 255, 255)),
+						ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, 1, 1))
+					}
+					WhiteToColorGradient.Rotation = 90
+					WhiteToColorGradient.Parent = Saturation
+
+					SaturationDrag.Name = "SaturationDrag"
+					SaturationDrag.Parent = Saturation
+					SaturationDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					SaturationDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					SaturationDrag.Size = UDim2.new(0, 3, 0, 3)
+					SaturationDrag.ZIndex = 202
+
+					Hue.Name = "Hue"
+					Hue.Parent = ColorPicker
+					Hue.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					Hue.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					Hue.BorderSizePixel = 0
+					Hue.Position = UDim2.new(0.112, 0, 0.1, 0)
+					Hue.Size = UDim2.new(0, 13, 0, 60)
+					Hue.Image = "rbxassetid://129669031573073"
+					Hue.AutoButtonColor = false
+					Hue.ZIndex = 201
+
+					SaturationDrag_2.Name = "SaturationDrag_2"
+					SaturationDrag_2.Parent = Hue
+					SaturationDrag_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					SaturationDrag_2.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					SaturationDrag_2.BorderSizePixel = 1
+					SaturationDrag_2.Size = UDim2.new(1, 0, 0, 3)
+					SaturationDrag_2.ZIndex = 202
+
+					-- Added darkness slider
+					Darkness.Name = "Darkness"
+					Darkness.Parent = ColorPicker
+					Darkness.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					Darkness.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					Darkness.BorderSizePixel = 0
+					Darkness.Position = UDim2.new(0.05, 0, 0.75, 0)
+					Darkness.Size = UDim2.new(0, 115, 0, 15)
+					Darkness.Font = Enum.Font.SourceSans
+					Darkness.Text = ""
+					Darkness.TextColor3 = Color3.fromRGB(0, 0, 0)
+					Darkness.TextSize = 14.000
+					Darkness.AutoButtonColor = false
+					Darkness.ZIndex = 201
+
+					DarknessGradient.Color = ColorSequence.new{
+						ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
+						ColorSequenceKeypoint.new(1, Color3.fromHSV(hue_value, sat_value, val_value))
+					}
+					DarknessGradient.Rotation = 0
+					DarknessGradient.Parent = Darkness
+
+					DarknessDrag.Name = "DarknessDrag"
+					DarknessDrag.Parent = Darkness
+					DarknessDrag.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+					DarknessDrag.BorderColor3 = Color3.fromRGB(0, 0, 0)
+					DarknessDrag.Size = UDim2.new(0, 3, 0, 15)
+					DarknessDrag.ZIndex = 202
+
+					Colorpicker.MouseButton1Down:Connect(function()
+						for _, element in pairs(Sector:GetChildren()) do
+							if element.Name == "ColorPicker" and element ~= ColorPicker then
+								element.Visible = false
+							end
+						end
+
+						local abs_pos = Colorpicker.AbsolutePosition
+						ColorPicker.Position = UDim2.new(0, abs_pos.X - Sector.AbsolutePosition.X - 150, 0, abs_pos.Y - Sector.AbsolutePosition.Y + Colorpicker.Size.Y.Offset + 5)
+						ColorPicker.Visible = not ColorPicker.Visible
+					end)
+
+					local function update_color_picker()
+						-- Update saturation background color with current hue
+						Saturation.BackgroundColor3 = Color3.fromHSV(hue_value, 1, 1)
+						
+						-- Update darkness gradient with current color
+						local current_color = Color3.fromHSV(hue_value, sat_value, val_value)
+						DarknessGradient.Color = ColorSequence.new{
+							ColorSequenceKeypoint.new(0, Color3.fromRGB(0, 0, 0)),
+							ColorSequenceKeypoint.new(1, current_color)
+						}
+						
+						-- Update selection positions
+						SaturationDrag.Position = UDim2.new(sat_value - 0.015, 0, 1 - val_value - 0.015, 0)
+						SaturationDrag_2.Position = UDim2.new(0, 0, 1 - hue_value - 0.02, 0)
+						DarknessDrag.Position = UDim2.new(darkness_value - 0.015, 0, 0, 0)
+						
+						-- Calculate final color with darkness
+						local final_color = Color3.new(
+							current_color.R * darkness_value,
+							current_color.G * darkness_value,
+							current_color.B * darkness_value
+						)
+						
+						Colorpicker.BackgroundColor3 = final_color
+						cpcallback(final_color)
+					end
+
+					colorpicker.set = function(hue, sat, val)
+						hue_value = hue
+						sat_value = sat
+						val_value = val
+						update_color_picker()
+					end
+
+					Saturation.InputBegan:Connect(function(input)
+						if input.UserInputType == Enum.UserInputType.MouseButton1 then
+							choosing_saturation = true
+						end
+					end)
+
+					Saturation.InputEnded:Connect(function(input)
+						if input.UserInputType == Enum.UserInputType.MouseButton1 then
+							choosing_saturation = false
+						end
+					end)
+
+					Hue.InputBegan:Connect(function(input)
+						if input.UserInputType == Enum.UserInputType.MouseButton1 then
+							choosing_hue = true
+						end
+					end)
+
+					Hue.InputEnded:Connect(function(input)
+						if input.UserInputType == Enum.UserInputType.MouseButton1 then
+							choosing_hue = false
+						end
+					end)
+
+					Darkness.InputBegan:Connect(function(input)
+						if input.UserInputType == Enum.UserInputType.MouseButton1 then
+							choosing_darkness = true
+						end
+					end)
+
+					Darkness.InputEnded:Connect(function(input)
+						if input.UserInputType == Enum.UserInputType.MouseButton1 then
+							choosing_darkness = false
+						end
+					end)
+
+					services.run.RenderStepped:Connect(function()
+						if choosing_saturation then
+							local mouse_pos = services.uis:GetMouseLocation()
+							local abs_pos = Saturation.AbsolutePosition
+							local abs_size = Saturation.AbsoluteSize
+
+							local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
+							local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+
+							colorpicker.set(hue_value, x, 1 - y)
+						end
+
+						if choosing_hue then
+							local mouse_pos = services.uis:GetMouseLocation()
+							local abs_pos = Hue.AbsolutePosition
+							local abs_size = Hue.AbsoluteSize
+
+							local y = math.clamp((mouse_pos.Y - abs_pos.Y) / abs_size.Y, 0, 1)
+
+							colorpicker.set(1 - y, sat_value, val_value)
+						end
+
+						if choosing_darkness then
+							local mouse_pos = services.uis:GetMouseLocation()
+							local abs_pos = Darkness.AbsolutePosition
+							local abs_size = Darkness.AbsoluteSize
+
+							local x = math.clamp((mouse_pos.X - abs_pos.X) / abs_size.X, 0, 1)
+
+							darkness_value = x
+							update_color_picker()
+						end
+					end)
+
+					colorpicker.set(hue_value, sat_value, val_value)
+
+					return colorpicker
 				end
+				
+				toggle.get = function()
+					return Text.Text
+				end
+				
+				Toggle.MouseButton1Down:Connect(function()
+					value = not value
+					toggle.set(value)
+				end)
+				
+				Bg.MouseButton1Down:Connect(function()
+					value = not value
+					toggle.set(value)
+				end)
+				
+				toggle.set(value)
+				
+				sector.increase_scrollbar_size()
+				
+				return toggle
+			end
 			
 			sector.slider = function(text, indicator, min, max, default, callback)
 				local slider = {}
