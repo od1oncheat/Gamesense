@@ -668,6 +668,33 @@ lib.create_window = function(theme, menu_key)
     
     Dropdown.MouseButton1Down:Connect(toggleDropdown)
 
+    -- Функция для закрытия dropdown при клике вне его
+    local function closeDropdownOnClickOutside(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 and isOpen then
+            local mousePos = input.Position
+            local dropdownAbsPos = Dropdown.AbsolutePosition
+            local dropdownAbsSize = Dropdown.AbsoluteSize
+            local contentAbsPos = DropdownContent.AbsolutePosition
+            local contentAbsSize = DropdownContent.AbsoluteSize
+            
+            -- Проверяем, был ли клик вне dropdown и его контента
+            local isInDropdown = 
+                mousePos.X >= dropdownAbsPos.X and mousePos.X <= dropdownAbsPos.X + dropdownAbsSize.X and
+                mousePos.Y >= dropdownAbsPos.Y and mousePos.Y <= dropdownAbsPos.Y + dropdownAbsSize.Y
+                
+            local isInContent = 
+                mousePos.X >= contentAbsPos.X and mousePos.X <= contentAbsPos.X + contentAbsSize.X and
+                mousePos.Y >= contentAbsPos.Y and mousePos.Y <= contentAbsPos.Y + contentAbsSize.Y
+            
+            if not isInDropdown and not isInContent then
+                toggleDropdown()
+            end
+        end
+    end
+
+    -- Подписываемся на клики
+    services.userInputService.InputBegan:Connect(closeDropdownOnClickOutside)
+
     dropdown.unselect_all = function()
         for _, button in pairs(DropdownContent:GetChildren()) do
             if button:IsA("TextButton") then
@@ -754,8 +781,25 @@ end
 -- Исправленный мультикомбобокс
 sector.multicombobox = function(text, options, defaults, callback)
     local multicombobox = {}
-    multicombobox.selected = defaults or {}
+    multicombobox.selected = {}
     multicombobox.options = {}
+
+    -- Исправляем обработку defaults
+    if type(defaults) == "table" then
+        for _, option in pairs(options) do
+            multicombobox.selected[option] = false
+        end
+        for _, defaultOption in pairs(defaults) do
+            if multicombobox.selected[defaultOption] ~= nil then
+                multicombobox.selected[defaultOption] = true
+            end
+        end
+    else
+        -- Если defaults не таблица, то все опции не выбраны
+        for _, option in pairs(options) do
+            multicombobox.selected[option] = false
+        end
+    end
 
     local MultiCombobox = Instance.new("TextButton")
     local UIPadding = Instance.new("UIPadding")
@@ -845,6 +889,33 @@ sector.multicombobox = function(text, options, defaults, callback)
     
     MultiCombobox.MouseButton1Down:Connect(toggleMultiCombobox)
 
+    -- Функция для закрытия multicombobox при клике вне его
+    local function closeMultiComboboxOnClickOutside(input)
+        if input.UserInputType == Enum.UserInputType.MouseButton1 and isOpen then
+            local mousePos = input.Position
+            local comboboxAbsPos = MultiCombobox.AbsolutePosition
+            local comboboxAbsSize = MultiCombobox.AbsoluteSize
+            local contentAbsPos = MultiComboboxContent.AbsolutePosition
+            local contentAbsSize = MultiComboboxContent.AbsoluteSize
+            
+            -- Проверяем, был ли клик вне combobox и его контента
+            local isInCombobox = 
+                mousePos.X >= comboboxAbsPos.X and mousePos.X <= comboboxAbsPos.X + comboboxAbsSize.X and
+                mousePos.Y >= comboboxAbsPos.Y and mousePos.Y <= comboboxAbsPos.Y + comboboxAbsSize.Y
+                
+            local isInContent = 
+                mousePos.X >= contentAbsPos.X and mousePos.X <= contentAbsPos.X + contentAbsSize.X and
+                mousePos.Y >= contentAbsPos.Y and mousePos.Y <= contentAbsPos.Y + contentAbsSize.Y
+            
+            if not isInCombobox and not isInContent then
+                toggleMultiCombobox()
+            end
+        end
+    end
+
+    -- Подписываемся на клики
+    services.userInputService.InputBegan:Connect(closeMultiComboboxOnClickOutside)
+
     multicombobox.update_text = function()
         local selectedCount = 0
         local selectedNames = {}
@@ -865,30 +936,34 @@ sector.multicombobox = function(text, options, defaults, callback)
     end
 
     multicombobox.toggle_option = function(name)
-        multicombobox.selected[name] = not multicombobox.selected[name]
-        
-        local optionButton = MultiComboboxContent:FindFirstChild(name)
-        if optionButton then
-            if multicombobox.selected[name] then
-                optionButton.BorderColor3 = themes[theme]["DropdownSelected"]
-                optionButton.BackgroundColor3 = themes[theme]["ButtonHover"]
-            else
-                optionButton.BorderColor3 = themes[theme]["ElementOutline"]
-                optionButton.BackgroundColor3 = themes[theme]["ElementBg"]
+        if multicombobox.selected[name] ~= nil then
+            multicombobox.selected[name] = not multicombobox.selected[name]
+            
+            local optionButton = MultiComboboxContent:FindFirstChild(name)
+            if optionButton then
+                if multicombobox.selected[name] then
+                    optionButton.BorderColor3 = themes[theme]["DropdownSelected"]
+                    optionButton.BackgroundColor3 = themes[theme]["ButtonHover"]
+                else
+                    optionButton.BorderColor3 = themes[theme]["ElementOutline"]
+                    optionButton.BackgroundColor3 = themes[theme]["ElementBg"]
+                end
             end
+            
+            multicombobox.update_text()
+            callback(multicombobox.selected)
         end
-        
-        multicombobox.update_text()
-        callback(multicombobox.selected)
     end
 
     multicombobox.set = function(name, value)
-        multicombobox.selected[name] = value
-        multicombobox.toggle_option(name)
+        if multicombobox.selected[name] ~= nil then
+            multicombobox.selected[name] = value
+            multicombobox.toggle_option(name)
+        end
     end
     
     multicombobox.get = function(name)
-        return multicombobox.selected[name]
+        return multicombobox.selected[name] or false
     end
     
     multicombobox.get_all = function()
@@ -953,10 +1028,13 @@ sector.multicombobox = function(text, options, defaults, callback)
         multicombobox.options[name] = nil
         multicombobox.selected[name] = nil
         
-        MultiComboboxContent.CanvasSize -= UDim2.new(0, 0, 0, MultiComboboxContent:FindFirstChild(name).AbsoluteSize.Y + 6)
-        MultiComboboxContent:FindFirstChild(name):Destroy()
-        multicombobox.update_text()
-        callback(multicombobox.selected)
+        local optionElement = MultiComboboxContent:FindFirstChild(name)
+        if optionElement then
+            MultiComboboxContent.CanvasSize -= UDim2.new(0, 0, 0, optionElement.AbsoluteSize.Y + 6)
+            optionElement:Destroy()
+            multicombobox.update_text()
+            callback(multicombobox.selected)
+        end
     end
     
     multicombobox.delete = function()
