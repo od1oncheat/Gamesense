@@ -278,6 +278,7 @@ the ui automatically parents to the safest available location to prevent detecti
 example menu
 
 <img width="697" height="625" alt="image" src="https://github.com/user-attachments/assets/c5a7282d-365e-439a-9ef6-9044ff1f93e6" />
+
 ```
 local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/od1oncheat/Gamesense/refs/heads/main/gamesense.lua"))()
 
