@@ -269,9 +269,52 @@ security
 the library includes built-in gui protection for various executors:
 
 synapse x
-
 script-ware
 
 other common exploit environments
 
 the ui automatically parents to the safest available location to prevent detection.
+
+example menu
+<img width="697" height="625" alt="image" src="https://github.com/user-attachments/assets/c5a7282d-365e-439a-9ef6-9044ff1f93e6" />
+```
+local lib = loadstring(game:HttpGet("https://raw.githubusercontent.com/od1oncheat/Gamesense/refs/heads/main/gamesense.lua"))()
+
+-- initialize window
+local window = lib.create_window("gamesense", Enum.KeyCode.Insert)
+
+-- rage tab
+local rage = window.create_tab("rbxassetid://18484264435") -- rage icon
+local rage_aim = rage.create_sector("aimbot")
+local rage_resolver = rage.create_sector("resolver")
+
+-- legit tab
+local legit = window.create_tab("rbxassetid://14695120237") -- legit icon
+local legit_aim = legit.create_sector("triggerbot")
+local legit_movement = legit.create_sector("movement")
+
+-- antiaim tab
+local antiaim = window.create_tab("rbxassetid://7992557358") -- antiaim icon
+local antiaim_angles = antiaim.create_sector("angles")
+local antiaim_fake = antiaim.create_sector("fake lag")
+
+-- visuals tab
+local visuals = window.create_tab("rbxassetid://5881046614") -- visuals icon
+local visuals_esp = visuals.create_sector("esp")
+local visuals_chams = visuals.create_sector("chams")
+
+-- misc tab
+local misc = window.create_tab("rbxassetid://7059346373") -- misc icon
+local misc_exploits = misc.create_sector("exploits")
+local misc_other = misc.create_sector("other")
+
+-- playerlist tab
+local playerlist = window.create_tab("rbxassetid://15016878198") -- playerlist icon
+local playerlist_main = playerlist.create_sector("players")
+local playerlist_actions = playerlist.create_sector("actions")
+
+-- config tab
+local config = window.create_tab("rbxassetid://78388764182737") -- config icon
+local config_load = config.create_sector("load/save")
+local config_settings = config.create_sector("settings")
+```
