@@ -1,19 +1,19 @@
 local lib = {}
 local themes = {
 ["gamesense"] = {
-["Window"] = Color3.fromRGB(5, 5, 5),
-["Tabs"] = Color3.fromRGB(4, 4, 4),
+["Window"] = Color3.fromRGB(8, 8, 8),
+["Tabs"] = Color3.fromRGB(6, 6, 6),
 ["Gradient"] = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(61, 130, 162)), ColorSequenceKeypoint.new(0.50, Color3.fromRGB(156, 59, 145)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(155, 161, 48))},
-["Sector"] = Color3.fromRGB(10, 10, 10),
+["Sector"] = Color3.fromRGB(15, 15, 15),
 ["Text"] = Color3.fromRGB(180, 180, 180),
 ["TabSelected"] = Color3.fromRGB(10, 10, 10),
-["ElementBg"] = Color3.fromRGB(15, 15, 15),
+["ElementBg"] = Color3.fromRGB(20, 20, 20),
 ["ElementOutline"] = Color3.fromRGB(35,35,35),
-["DropdownSelected"] = Color3.fromRGB(150, 200, 50),
-["Toggle"] = Color3.fromRGB(150, 200, 50),
+["DropdownSelected"] = Color3.fromRGB(135, 176, 27),
+["Toggle"] = Color3.fromRGB(135, 176, 27),
 ["ToggleUnchecked"] = Color3.fromRGB(25,25,25),
-["Slider"] = Color3.fromRGB(150, 200, 50),
-["SliderBg"] = Color3.fromRGB(15, 15, 15),
+["Slider"] = Color3.fromRGB(135, 176, 27),
+["SliderBg"] = Color3.fromRGB(20, 20, 20),
 ["ButtonHover"] = Color3.fromRGB(30, 30, 30),
 ["ButtonPressed"] = Color3.fromRGB(35, 35, 35)
 }
@@ -63,57 +63,118 @@ local UIGridLayout = Instance.new("UIGridLayout")
 local UIPadding = Instance.new("UIPadding")
 local TopGradient = Instance.new("Frame")
 local UIGradient = Instance.new("UIGradient")
+local TopGradientOutline = Instance.new("Frame")
 local Content = Instance.new("Frame")
 local UIListLayout = Instance.new("UIListLayout")
 local Watermark = Instance.new("Frame")
-local WatermarkText = Instance.new("TextLabel")
 local WatermarkGradient = Instance.new("Frame")
-local WatermarkUIGradient = Instance.new("UIGradient")
-local WatermarkBg = Instance.new("ImageLabel")
-local ft = 0
+local UIGradientWatermark = Instance.new("UIGradient")
+local WatermarkText = Instance.new("TextLabel")
+local WatermarkPattern = Instance.new("ImageLabel")
+local WatermarkGradientOutline = Instance.new("Frame")
+local WatermarkOutlineLeft = Instance.new("Frame")
+local WatermarkOutlineRight = Instance.new("Frame")
+local WatermarkOutlineTop = Instance.new("Frame")
+local WatermarkOutlineBottom = Instance.new("Frame")
+local WatermarkInnerOutlineLeft = Instance.new("Frame")
+local WatermarkInnerOutlineRight = Instance.new("Frame")
+local WatermarkInnerOutlineTop = Instance.new("Frame")
+local WatermarkInnerOutlineBottom = Instance.new("Frame")
 local function get_fps()
-    ft = ft * 0.9 + services.run.RenderStepped:Wait() * 0.1
+    local ft = 0
+    services.run.RenderStepped:Connect(function(delta)
+        ft = ft * 0.9 + delta * 0.1
+    end)
     return math.floor(1 / ft + 0.5)
 end
-services.run.RenderStepped:Connect(function()
-    local fps = get_fps()
-    WatermarkText.Text = "gamesense | " .. fps .. " fps"
-end)
 Watermark.Name = "Watermark"
 Watermark.Parent = Mute
 Watermark.BackgroundColor3 = Color3.fromRGB(62, 62, 62)
-Watermark.BorderColor3 = Color3.fromRGB(18, 18, 18)
-Watermark.BorderSizePixel = 1
+Watermark.BorderSizePixel = 0
 Watermark.Position = UDim2.new(1, -200, 0, 15)
-Watermark.Size = UDim2.new(0, 160, 0, 24)
-WatermarkBg.Name = "WatermarkBg"
-WatermarkBg.Parent = Watermark
-WatermarkBg.BackgroundTransparency = 1
-WatermarkBg.Position = UDim2.new(0, 4, 0, 4)
-WatermarkBg.Size = UDim2.new(1, -8, 1, -8)
-WatermarkBg.Image = "rbxassetid://0" -- Placeholder, create 4x4 texture
-WatermarkBg.ScaleType = Enum.ScaleType.Tile
-WatermarkBg.TileSize = UDim2.new(0, 4, 0, 4)
--- Simulate the texture
-local textureData = "\20\20\20\255\20\20\20\255\20\20\20\255\12\12\12\255\20\20\20\255\12\12\12\255\20\20\20\255\12\12\12\255\20\20\20\255\12\12\12\255\20\20\20\255\20\20\20\255\20\20\20\255\12\12\12\255\20\20\20\255\12\12\12\255"
--- In Roblox, need to create an image asset or use decal, but for simplicity, assume it's set
+Watermark.Size = UDim2.new(0, 150, 0, 24)
+Watermark.Visible = true
+WatermarkPattern.Name = "WatermarkPattern"
+WatermarkPattern.Parent = Watermark
+WatermarkPattern.BackgroundTransparency = 1
+WatermarkPattern.Position = UDim2.new(0, 4, 0, 4)
+WatermarkPattern.Size = UDim2.new(1, -8, 1, -8)
+WatermarkPattern.TileSize = UDim2.new(0, 4, 0, 4)
+WatermarkPattern.Image = "rbxassetid://0" -- placeholder, simulate checkerboard
+WatermarkPattern.ImageColor3 = Color3.fromRGB(255, 255, 255)
+WatermarkPattern.ScaleType = Enum.ScaleType.Tile
 WatermarkGradient.Name = "WatermarkGradient"
 WatermarkGradient.Parent = Watermark
 WatermarkGradient.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 WatermarkGradient.BorderSizePixel = 0
 WatermarkGradient.Position = UDim2.new(0, 5, 0, 4)
 WatermarkGradient.Size = UDim2.new(1, -10, 0, 1)
-WatermarkUIGradient.Color = ColorSequence.new{ColorSequenceKeypoint.new(0, Color3.fromRGB(61, 130, 162)), ColorSequenceKeypoint.new(0.5, Color3.fromRGB(156, 59, 145)), ColorSequenceKeypoint.new(1, Color3.fromRGB(155, 161, 48))}
-WatermarkUIGradient.Parent = WatermarkGradient
+UIGradientWatermark.Color = ColorSequence.new{ColorSequenceKeypoint.new(0.00, Color3.fromRGB(61, 130, 162)), ColorSequenceKeypoint.new(0.50, Color3.fromRGB(156, 59, 145)), ColorSequenceKeypoint.new(1.00, Color3.fromRGB(155, 161, 48))}
+UIGradientWatermark.Parent = WatermarkGradient
+WatermarkGradientOutline.Name = "WatermarkGradientOutline"
+WatermarkGradientOutline.Parent = WatermarkGradient
+WatermarkGradientOutline.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+WatermarkGradientOutline.BorderSizePixel = 0
+WatermarkGradientOutline.Position = UDim2.new(0, -1, 0, -1)
+WatermarkGradientOutline.Size = UDim2.new(1, 2, 0, 3)
 WatermarkText.Name = "WatermarkText"
 WatermarkText.Parent = Watermark
 WatermarkText.BackgroundTransparency = 1
 WatermarkText.Position = UDim2.new(0, 8, 0, 5)
 WatermarkText.Size = UDim2.new(1, 0, 1, 0)
 WatermarkText.Font = Enum.Font.SourceSans
+WatermarkText.Text = "gamesense | " .. get_fps() .. " fps"
 WatermarkText.TextColor3 = Color3.fromRGB(255, 255, 255)
 WatermarkText.TextSize = 14
 WatermarkText.TextXAlignment = Enum.TextXAlignment.Left
+WatermarkOutlineTop.Name = "WatermarkOutlineTop"
+WatermarkOutlineTop.Parent = Watermark
+WatermarkOutlineTop.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+WatermarkOutlineTop.BorderSizePixel = 0
+WatermarkOutlineTop.Position = UDim2.new(0, 0, 0, 0)
+WatermarkOutlineTop.Size = UDim2.new(1, 0, 0, 1)
+WatermarkOutlineBottom.Name = "WatermarkOutlineBottom"
+WatermarkOutlineBottom.Parent = Watermark
+WatermarkOutlineBottom.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+WatermarkOutlineBottom.BorderSizePixel = 0
+WatermarkOutlineBottom.Position = UDim2.new(0, 0, 1, -1)
+WatermarkOutlineBottom.Size = UDim2.new(1, 0, 0, 1)
+WatermarkOutlineLeft.Name = "WatermarkOutlineLeft"
+WatermarkOutlineLeft.Parent = Watermark
+WatermarkOutlineLeft.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+WatermarkOutlineLeft.BorderSizePixel = 0
+WatermarkOutlineLeft.Position = UDim2.new(0, 0, 0, 0)
+WatermarkOutlineLeft.Size = UDim2.new(0, 1, 1, 0)
+WatermarkOutlineRight.Name = "WatermarkOutlineRight"
+WatermarkOutlineRight.Parent = Watermark
+WatermarkOutlineRight.BackgroundColor3 = Color3.fromRGB(18, 18, 18)
+WatermarkOutlineRight.BorderSizePixel = 0
+WatermarkOutlineRight.Position = UDim2.new(1, -1, 0, 0)
+WatermarkOutlineRight.Size = UDim2.new(0, 1, 1, 0)
+WatermarkInnerOutlineTop.Name = "WatermarkInnerOutlineTop"
+WatermarkInnerOutlineTop.Parent = Watermark
+WatermarkInnerOutlineTop.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+WatermarkInnerOutlineTop.BorderSizePixel = 0
+WatermarkInnerOutlineTop.Position = UDim2.new(0, 5, 0, 3)
+WatermarkInnerOutlineTop.Size = UDim2.new(1, -10, 0, 1)
+WatermarkInnerOutlineBottom.Name = "WatermarkInnerOutlineBottom"
+WatermarkInnerOutlineBottom.Parent = Watermark
+WatermarkInnerOutlineBottom.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+WatermarkInnerOutlineBottom.BorderSizePixel = 0
+WatermarkInnerOutlineBottom.Position = UDim2.new(0, 5, 0, 5)
+WatermarkInnerOutlineBottom.Size = UDim2.new(1, -10, 0, 1)
+WatermarkInnerOutlineLeft.Name = "WatermarkInnerOutlineLeft"
+WatermarkInnerOutlineLeft.Parent = Watermark
+WatermarkInnerOutlineLeft.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+WatermarkInnerOutlineLeft.BorderSizePixel = 0
+WatermarkInnerOutlineLeft.Position = UDim2.new(0, 4, 0, 4)
+WatermarkInnerOutlineLeft.Size = UDim2.new(0, 1, 0, 1)
+WatermarkInnerOutlineRight.Name = "WatermarkInnerOutlineRight"
+WatermarkInnerOutlineRight.Parent = Watermark
+WatermarkInnerOutlineRight.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+WatermarkInnerOutlineRight.BorderSizePixel = 0
+WatermarkInnerOutlineRight.Position = UDim2.new(0, -5, 0, 4)
+WatermarkInnerOutlineRight.Size = UDim2.new(0, 1, 0, 1)
 window.update_window = function(input)
 local delta = input.Position - window.drag_start
 Main.Position = UDim2.new(window.start_pos.X.Scale, window.start_pos.X.Offset + delta.X, window.start_pos.Y.Scale, window.start_pos.Y.Offset + delta.Y)
@@ -168,31 +229,22 @@ Mute.IgnoreGuiInset = true
 Main.Name = "Main"
 Main.Parent = Mute
 Main.BackgroundColor3 = themes[theme]["Window"]
-Main.BorderColor3 = Color3.fromRGB(0, 0, 0)
-Main.BorderSizePixel = 1
+Main.BorderColor3 = Color3.fromRGB(40, 40, 40)
+Main.BorderSizePixel = 3
 Main.Position = UDim2.new(0.38166827, 0, 0.249408439, 0)
 Main.Size = UDim2.new(0, 684, 0, 605)
-local MainBg = Instance.new("ImageLabel")
-MainBg.Name = "MainBg"
-MainBg.Parent = Main
-MainBg.BackgroundTransparency = 1
-MainBg.Size = UDim2.new(1, 0, 1, 0)
-MainBg.Image = "rbxassetid://0" -- Placeholder
-MainBg.ScaleType = Enum.ScaleType.Tile
-MainBg.TileSize = UDim2.new(0, 4, 0, 4)
--- Texture data simulation
 Tabs.Name = "Tabs"
 Tabs.Parent = Main
 Tabs.BackgroundColor3 = themes[theme]["Tabs"]
 Tabs.BorderColor3 = Color3.fromRGB(18, 18, 18)
 Tabs.Position = UDim2.new(0, 0, 0.00330578513, 0)
-Tabs.Size = UDim2.new(0, 113, 0, 602)
+Tabs.Size = UDim2.new(0, 102, 0, 602)
 UIGridLayout.Parent = Tabs
 UIGridLayout.SortOrder = Enum.SortOrder.LayoutOrder
 UIGridLayout.CellPadding = UDim2.new(0, 15, 0, 0)
-UIGridLayout.CellSize = UDim2.new(0, 100, 0, 70)
+UIGridLayout.CellSize = UDim2.new(0, 85, 0, 70)
 UIPadding.Parent = Tabs
-UIPadding.PaddingLeft = UDim.new(0, 14)
+UIPadding.PaddingLeft = UDim.new(0, 13)
 UIPadding.PaddingTop = UDim.new(0, 15)
 TopGradient.Name = "TopGradient"
 TopGradient.Parent = Main
@@ -202,6 +254,12 @@ TopGradient.BorderSizePixel = 0
 TopGradient.Size = UDim2.new(0, 684, 0, 2)
 UIGradient.Color = themes[theme]["Gradient"]
 UIGradient.Parent = TopGradient
+TopGradientOutline.Name = "TopGradientOutline"
+TopGradientOutline.Parent = TopGradient
+TopGradientOutline.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+TopGradientOutline.BorderSizePixel = 0
+TopGradientOutline.Position = UDim2.new(0, -1, 0, -1)
+TopGradientOutline.Size = UDim2.new(1, 2, 1, 2)
 Content.Name = "Content"
 Content.Parent = Main
 Content.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -308,7 +366,7 @@ Title.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Title.BackgroundTransparency = 1.000
 Title.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Title.BorderSizePixel = 0
-Title.Position = UDim2.new(0.028933093, 0, 0, -10)
+Title.Position = UDim2.new(0.028933093, 0, -0.01, 0)
 Title.Size = UDim2.new(0, 268, 0, 20)
 Title.Font = Enum.Font.SourceSans
 Title.TextColor3 = themes[theme]["Text"]
@@ -536,32 +594,32 @@ end
 sector.dropdown = function(text, options, default, callback)
     local dropdown = {}
     dropdown.selected = default
-    local DropdownFrame = Instance.new("Frame")
-    local DropdownText = Instance.new("TextLabel")
+    local DropdownContainer = Instance.new("Frame")
+    local DropdownLabel = Instance.new("TextLabel")
     local Dropdown = Instance.new("TextButton")
     local UIPadding = Instance.new("UIPadding")
     local Image = Instance.new("ImageLabel")
     local DropdownContent = Instance.new("ScrollingFrame")
     local UIPadding_2 = Instance.new("UIPadding")
     local UIListLayout = Instance.new("UIListLayout")
-    DropdownFrame.Name = "DropdownFrame"
-    DropdownFrame.Parent = SectorContent
-    DropdownFrame.BackgroundTransparency = 1
-    DropdownFrame.Size = UDim2.new(0, 249, 0, 33)
-    DropdownText.Name = "DropdownText"
-    DropdownText.Parent = DropdownFrame
-    DropdownText.BackgroundTransparency = 1
-    DropdownText.Size = UDim2.new(0, 249, 0, 12)
-    DropdownText.Font = Enum.Font.SourceSans
-    DropdownText.Text = text
-    DropdownText.TextColor3 = themes[theme]["Text"]
-    DropdownText.TextSize = 14.000
-    DropdownText.TextXAlignment = Enum.TextXAlignment.Left
+    DropdownContainer.Name = "DropdownContainer"
+    DropdownContainer.Parent = SectorContent
+    DropdownContainer.BackgroundTransparency = 1
+    DropdownContainer.Size = UDim2.new(0, 249, 0, 35)
+    DropdownLabel.Name = "DropdownLabel"
+    DropdownLabel.Parent = DropdownContainer
+    DropdownLabel.BackgroundTransparency = 1
+    DropdownLabel.Size = UDim2.new(0, 249, 0, 14)
+    DropdownLabel.Font = Enum.Font.SourceSans
+    DropdownLabel.Text = text
+    DropdownLabel.TextColor3 = themes[theme]["Text"]
+    DropdownLabel.TextSize = 14.000
+    DropdownLabel.TextXAlignment = Enum.TextXAlignment.Left
     Dropdown.Name = "Dropdown"
-    Dropdown.Parent = DropdownFrame
+    Dropdown.Parent = DropdownContainer
     Dropdown.BackgroundColor3 = themes[theme]["ElementBg"]
     Dropdown.BorderColor3 = themes[theme]["ElementOutline"]
-    Dropdown.Position = UDim2.new(0, 0, 0, 12)
+    Dropdown.Position = UDim2.new(0, 0, 0, 14)
     Dropdown.Size = UDim2.new(0, 249, 0, 21)
     Dropdown.AutoButtonColor = false
     Dropdown.Font = Enum.Font.SourceSans
@@ -571,7 +629,7 @@ sector.dropdown = function(text, options, default, callback)
     Dropdown.TextXAlignment = Enum.TextXAlignment.Left
     Dropdown.ZIndex = 100
     UIPadding.Parent = Dropdown
-    UIPadding.PaddingLeft = UDim.new(0, 5)
+    UIPadding.PaddingLeft = UDim.new(0, 30)
     Image.Name = "Image"
     Image.Parent = Dropdown
     Image.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -644,16 +702,16 @@ sector.dropdown = function(text, options, default, callback)
         if selectedButton then
             selectedButton.BorderColor3 = themes[theme]["DropdownSelected"]
         end
-        Dropdown.Text = name or "None"
       
         if not skipCallback then
             callback(name)
             toggleDropdown()
         end
+        Dropdown.Text = name or "None"
     end
   
     dropdown.set_text = function(_text)
-        DropdownText.Text = _text
+        DropdownLabel.Text = _text
     end
   
     dropdown.get = function()
@@ -704,7 +762,7 @@ sector.dropdown = function(text, options, default, callback)
     end
   
     dropdown.delete = function()
-        DropdownFrame:Destroy()
+        DropdownContainer:Destroy()
     end
     for idx, option in pairs(options) do
         dropdown.add(option, true)
@@ -734,32 +792,32 @@ sector.multicombobox = function(text, options, defaults, callback)
             multicombobox.selected[option] = false
         end
     end
-    local MultiComboboxFrame = Instance.new("Frame")
-    local MultiComboboxText = Instance.new("TextLabel")
+    local MultiComboboxContainer = Instance.new("Frame")
+    local MultiComboboxLabel = Instance.new("TextLabel")
     local MultiCombobox = Instance.new("TextButton")
     local UIPadding = Instance.new("UIPadding")
     local Image = Instance.new("ImageLabel")
     local MultiComboboxContent = Instance.new("ScrollingFrame")
     local UIPadding_2 = Instance.new("UIPadding")
     local UIListLayout = Instance.new("UIListLayout")
-    MultiComboboxFrame.Name = "MultiComboboxFrame"
-    MultiComboboxFrame.Parent = SectorContent
-    MultiComboboxFrame.BackgroundTransparency = 1
-    MultiComboboxFrame.Size = UDim2.new(0, 249, 0, 33)
-    MultiComboboxText.Name = "MultiComboboxText"
-    MultiComboboxText.Parent = MultiComboboxFrame
-    MultiComboboxText.BackgroundTransparency = 1
-    MultiComboboxText.Size = UDim2.new(0, 249, 0, 12)
-    MultiComboboxText.Font = Enum.Font.SourceSans
-    MultiComboboxText.Text = text
-    MultiComboboxText.TextColor3 = themes[theme]["Text"]
-    MultiComboboxText.TextSize = 14.000
-    MultiComboboxText.TextXAlignment = Enum.TextXAlignment.Left
+    MultiComboboxContainer.Name = "MultiComboboxContainer"
+    MultiComboboxContainer.Parent = SectorContent
+    MultiComboboxContainer.BackgroundTransparency = 1
+    MultiComboboxContainer.Size = UDim2.new(0, 249, 0, 35)
+    MultiComboboxLabel.Name = "MultiComboboxLabel"
+    MultiComboboxLabel.Parent = MultiComboboxContainer
+    MultiComboboxLabel.BackgroundTransparency = 1
+    MultiComboboxLabel.Size = UDim2.new(0, 249, 0, 14)
+    MultiComboboxLabel.Font = Enum.Font.SourceSans
+    MultiComboboxLabel.Text = text
+    MultiComboboxLabel.TextColor3 = themes[theme]["Text"]
+    MultiComboboxLabel.TextSize = 14.000
+    MultiComboboxLabel.TextXAlignment = Enum.TextXAlignment.Left
     MultiCombobox.Name = "MultiCombobox"
-    MultiCombobox.Parent = MultiComboboxFrame
+    MultiCombobox.Parent = MultiComboboxContainer
     MultiCombobox.BackgroundColor3 = themes[theme]["ElementBg"]
     MultiCombobox.BorderColor3 = themes[theme]["ElementOutline"]
-    MultiCombobox.Position = UDim2.new(0, 0, 0, 12)
+    MultiCombobox.Position = UDim2.new(0, 0, 0, 14)
     MultiCombobox.Size = UDim2.new(0, 249, 0, 21)
     MultiCombobox.AutoButtonColor = false
     MultiCombobox.Font = Enum.Font.SourceSans
@@ -769,7 +827,7 @@ sector.multicombobox = function(text, options, defaults, callback)
     MultiCombobox.TextXAlignment = Enum.TextXAlignment.Left
     MultiCombobox.ZIndex = 100
     UIPadding.Parent = MultiCombobox
-    UIPadding.PaddingLeft = UDim.new(0, 5)
+    UIPadding.PaddingLeft = UDim.new(0, 30)
     Image.Name = "Image"
     Image.Parent = MultiCombobox
     Image.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
@@ -843,7 +901,7 @@ sector.multicombobox = function(text, options, defaults, callback)
         elseif selectedCount == 1 then
             MultiCombobox.Text = selectedNames[1]
         else
-            MultiCombobox.Text = selectedCount.." selected"
+            MultiCombobox.Text = "("..selectedCount.." selected)"
         end
     end
     multicombobox.toggle_option = function(name)
@@ -942,7 +1000,7 @@ sector.multicombobox = function(text, options, defaults, callback)
     end
   
     multicombobox.delete = function()
-        MultiComboboxFrame:Destroy()
+        MultiComboboxContainer:Destroy()
     end
     for idx, option in pairs(options) do
         multicombobox.add(option)
@@ -1273,7 +1331,7 @@ Text.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 Text.BackgroundTransparency = 1.000
 Text.BorderColor3 = Color3.fromRGB(0, 0, 0)
 Text.BorderSizePixel = 0
-Text.Position = UDim2.new(0.02, 0, -0.05, 0)
+Text.Position = UDim2.new(0.02, 0, 0, 0)
 Text.Size = UDim2.new(0, 226, 0, 12)
 Text.Font = Enum.Font.SourceSans
 Text.TextColor3 = themes[theme]["Text"]
